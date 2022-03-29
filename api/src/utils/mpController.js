@@ -18,14 +18,14 @@ module.exports = {
                 quantity: product.amount
             })),
             back_urls:{
-                failure: "https://electroshop-ecommerce.vercel.app/payment/failure",
-                pending: "https://electroshop-ecommerce.vercel.app/payment/pending",
-                success: "https://electroshop-ecommerce.vercel.app/payment/success"
+                failure: `${process.env.REDIRECT_MP}/payment/failure`,
+                pending: `${process.env.REDIRECT_MP}/payment/pending`,
+                success: `${process.env.REDIRECT_MP}/payment/success`
             },
             external_reference: orderId.toString(),
             auto_return: 'approved',
                               //localhost:3001/notification
-            notification_url:'https://e-commerce-henry.herokuapp.com/notification',
+            notification_url: `${process.env.NOTIFICATION_MP}/notification`,
         };
         mercadopago.preferences.create(preference)
         .then(response => {
