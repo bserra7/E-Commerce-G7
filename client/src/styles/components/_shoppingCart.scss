@@ -7,7 +7,18 @@
   border-radius: 5px;
   box-shadow: 1px 1px 5px $black;
   background-color: $white;
-  width: 400px;
+  width: 85%;
+  max-width: 400px;
+
+  @include mq(medium) {
+    right: 7rem;
+  }
+  @include mq(large) {
+    right: 10rem;
+  }
+  @include mq(x-large) {
+    right: 12rem;
+  }
 
   &__header {
     display: flex;
@@ -18,7 +29,7 @@
     right: 1.5rem;
     top: 1rem;
     font-weight: bolder;
-    background-color: $orange;
+    background-color: rgba($black, .8);
     width: 25px;
     height: 25px;
     padding: 2px 6px;
@@ -45,7 +56,7 @@
   &__button {
     display: block;
     margin-bottom: 0;
-    background-color: $orange;
+    background-color: rgba($black, .8);
     color: $white;
     font-weight: bold;
     width: 90%;
@@ -53,9 +64,10 @@
     border-radius: 15px;
     text-align: center;
     padding: .5rem;
+    transition: background-color .3s ease-in-out;
 
     &:hover {
-      background-color: lighten($orange, 5);
+      background-color: $black;
     }
   }
 

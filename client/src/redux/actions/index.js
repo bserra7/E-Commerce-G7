@@ -21,7 +21,15 @@ export const GET_ORDER = "GET_ORDER";
 export const CLEAR_CART = "CLEAR_CART";
 export const GET_ORDER_DETAIL = "GET_ORDER_DETAIL";
 export const GET_REVIEWS = "GET_REVIEWS";
-export const CLEAR_REVIEWS = "CLEAR_REVIEWS"
+export const CLEAR_REVIEWS = "CLEAR_REVIEWS";
+export const VERIFY_TWO_FA = "VERIFY_TWO_FA";
+export const GET_VISITED_PRODUCTS = "GET_VISITED_PRODUCTS";
+export const GET_WISHLIST = "GET_WISHLIST";
+export const GET_ALL_STORES = "GET_ALL_STORES";
+export const GET_STORE_DETAIL = "GET_STORE_DETAIL";
+export const GET_ALL_DISCOUNTS = "GET_ALL_DISCOUNTS";
+export const GET_PAYMENT_DETAIL = "GET_PAYMENT_DETAIL";
+
 
 export const getAllProducts = () => {
   return async (dispatch) => {
@@ -180,6 +188,12 @@ export function userLogout(){
   }
 }
 
+export function verifyTwoFA(){
+  return{
+    type: VERIFY_TWO_FA
+  }
+}
+
 export function getAllOrders(id = '', status = ''){
   return async function (dispatch){
     try {
@@ -202,6 +216,17 @@ export function getOrderDetail(id = '', status = ''){
   }
 }
 
+export function getPaymentDetail(id){
+  return async function (dispatch){
+    try {
+      const payment = await axios.get(`/payment/${id}`);
+      dispatch({type: GET_PAYMENT_DETAIL, payload: payment.data})
+    } catch (error) {
+      console.log('Error: ' + error);
+    }
+  }
+}
+
 export function getAllRoles(token){
   return async function (dispatch){
     try {
@@ -218,6 +243,39 @@ export function getAllUsers(){
     try {
       const users = await axios.get('/users');
       dispatch({type: GET_ALL_USERS, payload: users.data})
+    } catch (error) {
+      console.log('Error: ' + error);
+    }
+  }
+}
+
+export function getAllStores(){
+  return async function (dispatch){
+    try {
+      const stores = await axios.get('/stores');
+      dispatch({type: GET_ALL_STORES, payload: stores.data})
+    } catch (error) {
+      console.log('Error: ' + error);
+    }
+  }
+}
+
+export function getStoreDetail(id){
+  return async function (dispatch){
+    try {
+      const store = await axios.get(`/stores?storeId=${id}`);
+      dispatch({type: GET_STORE_DETAIL, payload: store.data})
+    } catch (error) {
+      console.log('Error: ' + error);
+    }
+  }
+}
+
+export function getAllDiscounts(){
+  return async function (dispatch){
+    try {
+      const discounts = await axios.get('/discount');
+      dispatch({type: GET_ALL_DISCOUNTS, payload: discounts.data})
     } catch (error) {
       console.log('Error: ' + error);
     }
@@ -250,3 +308,34 @@ export const getOrderByUserId = (userId) => {
   };
 };
 
+export const getVisitedProducts = (userId) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`/visited?userId=${userId}`);
+      const data = await response.data;
+      dispatch({
+        type: GET_VISITED_PRODUCTS,
+        payload: data,
+      });
+    } catch (error) {
+      console.log('Error', error);
+    }
+  };
+};
+
+// WISHLIST
+
+export const getUserWishlist = (userId) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`/wishlist?userId=${userId}`);
+      const data = await response.data;
+      dispatch({
+        type: GET_WISHLIST,
+        payload: data,
+      });
+    } catch (error) {
+      console.log('Error', error);
+    }
+  };
+};

@@ -1,7 +1,7 @@
 const mercadopago = require("mercadopago");
 const { Payment, Order } = require('../db')
 const axios = require('axios');
-const { orderStatusChange } = require('./emailSender');
+const { orderStatusChange, PaymentStatusRejected, PaymentStatusApproved } = require('./emailSender');
 
 module.exports = {
     createOrderMP: async (req, res) => {
@@ -29,15 +29,19 @@ module.exports = {
         };
         mercadopago.preferences.create(preference)
         .then(response => {
+            Order.findByPk(orderId).then(order => {
+                order.payment_link = response.response.sandbox_init_point;
+                order.save();
+            })      
             res.json(response)
-        }, err => console.log(err))
+        })
+        .catch(error => console.log(error))
     },
     notificationOrder: async (req, res) => {
         const data = req.query;
         const config = {
             headers: { Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}` }
-        };
-        res.status(200);       
+        };    
         if(data['data.id']){
             const infoPayment = await axios.get(`https://api.mercadopago.com/v1/payments/${data['data.id']}`, config)
             try {
@@ -65,9 +69,24 @@ module.exports = {
                         const order = await Order.findByPk(infoPayment.data.external_reference);
                         if(!order) throw Error('Order not found');
                         order.status = 'processing';
+                        order.payment_status = 'approved';
+                        order.payment_meli_id = infoPayment.data.id;
                         order.save();
                         orderStatusChange("processing", order)
+                        PaymentStatusApproved("approved", order)
                     }
+                } else if(infoPayment.data.status === 'rejected' && infoPayment.data.external_reference){
+                    const order = await Order.findByPk(infoPayment.data.external_reference);
+                    if(!order) throw Error('Order not found');
+                    order.payment_status = 'rejected';
+                    order.save();
+                    PaymentStatusRejected("rejected", order)
+                } else if(infoPayment.data.status === 'pending' && infoPayment.data.external_reference){
+                    const order = await Order.findByPk(infoPayment.data.external_reference);
+                    if(!order) throw Error('Order not found');
+                    order.payment_status = 'canceled';
+                    order.save();
+                    PaymentStatusPending("canceled", order)
                 }             
                 res.sendStatus(201);
             } catch (err) {

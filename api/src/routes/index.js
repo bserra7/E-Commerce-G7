@@ -26,6 +26,11 @@ const allRoles = require("./getRoles-route");
 const setNewPass = require("./setNewPassword-route");
 const allReviews = require("./getReviews-route");
 const updateUser = require("./updateAccount-route");
+const TwoFA = require("./set2FA");
+const visitedProducts = require("./getProductsVisited-route");
+const discount = require("./createDiscount-route");
+const wishlist = require("./manageWishlist-route");
+const store = require('./store')
 
 // Middlewares
 const auth = require("./authenticate-route");
@@ -33,6 +38,7 @@ const verifyGoogleToken = require("../utils/verifyGoogleToken");
 const { isAuthenticated } = require('../utils/isAuthenticated');
 const adminOnly = require('../utils/adminOnly');
 const superAdminOnly = require("../utils/superAdminOnly");
+const payment = require("./getPayment-route");
 
 // Config routers
 // Example: router.use('/users', getUsers);
@@ -89,5 +95,18 @@ router.use("/admin/authenticate", adminOnly, auth)
 router.use("/roles", allRoles);
 
 router.use("/password", setNewPass);
+
+router.use("/twofa", TwoFA);
+
+router.use("/visited", visitedProducts);
+
+router.use("/discount", discount);
+
+router.use("/wishlist", wishlist);
+
+router.use("/stores", store);
+
+router.use("/payment", payment);
+
 
 module.exports = router;

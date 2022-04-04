@@ -14,7 +14,7 @@ server.use(express.json({ limit: '50mb' }));
 server.use(cookieParser());
 server.use(morgan('dev'));
 server.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'https://electroshop-ecommerce.vercel.app');
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000'); // agregar https://electroshop-ecommerce.vercel.app
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);

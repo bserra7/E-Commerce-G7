@@ -16,6 +16,11 @@ module.exports = (sequelize) => {
             defaultValue:'pending',
             allowNull: false
         },
+        payment_status: {
+            type: DataTypes.ENUM('pending', 'approved', 'rejected', 'canceled'),
+            defaultValue:'pending',
+            allowNull: false
+        },
         notification_email: {
             type: DataTypes.STRING,
             allowNull: false
@@ -31,6 +36,12 @@ module.exports = (sequelize) => {
         shipping_zip_code: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        payment_link: {
+            type: DataTypes.TEXT,
+        },
+        payment_meli_id: {
+            type: DataTypes.INTEGER,
         },
         // cuando le pedimos la fecha, la entrega formateada en dia/mes/año y en hora argentina, se calcula apartir del createdAt timestamp
         date: {

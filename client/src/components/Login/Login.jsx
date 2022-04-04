@@ -1,83 +1,112 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import GoogleLogin from 'react-google-login';
 import '../../styles/styles.scss';
 import validate from './services/validateLogin.js';
-import useUser from "./hooks/useUser";
-import { useHistory } from "react-router-dom";
-import axios from "axios";
-import { useDispatch } from "react-redux";
-import { userLogin } from "../../redux/actions";
+import useUser from './hooks/useUser';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { userLogin } from '../../redux/actions';
 
 export default function Login() {
   const dispatch = useDispatch();
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState({});
   const [input, setInput] = useState({
-      username:"",
-      rememberMe: false,
-      password: ""
-  })
+    username: '',
+    rememberMe: false,
+    password: '',
+  });
   const history = useHistory();
   const { login, isLogged, isLoginLoading, hasLoginError } = useUser();
-  
-  useEffect(()=>{
-    if (isLogged) history.push('/')
-  }, [isLogged, history])
 
-  const handleChange = e => {
+  useEffect(() => {
+    if (isLogged) history.push('/');
+  }, [isLogged, history]);
+
+  const handleChange = (e) => {
     setInput({
       ...input,
       [e.target.name]: e.target.value,
-    })
-    setErrors(validate({
+    });
+    setErrors(
+      validate({
         ...input,
-        [e.target.name] : e.target.value
-    }))
-};
+        [e.target.name]: e.target.value,
+      })
+    );
+  };
 
   const handleCheckbox = () => {
-    if(input.rememberMe) setInput({ ...input, rememberMe: false})
-    if(!input.rememberMe) setInput({ ...input, rememberMe: true})
-  }
+    if (input.rememberMe) setInput({ ...input, rememberMe: false });
+    if (!input.rememberMe) setInput({ ...input, rememberMe: true });
+  };
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     login(input);
-  }
+  };
 
-  const responseGoogle = response => {
-    axios.post('/googleLogin', {id_token: response.tokenId})
-      .then(res => {
-        input.rememberMe ? localStorage.setItem('jwt', res.data.token) : sessionStorage.setItem('jwt', res.data.token) 
-        dispatch(userLogin(res.data.user))
+  const responseGoogle = (response) => {
+    axios
+      .post('/googleLogin', { id_token: response.tokenId })
+      .then((res) => {
+        input.rememberMe
+          ? localStorage.setItem('jwt', res.data.token)
+          : sessionStorage.setItem('jwt', res.data.token);
+        dispatch(userLogin(res.data.user));
       })
-      .catch(err => {
-        console.log(err)
-      })
-  }
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
-  <div className="wrapper">
-    {isLoginLoading && <span>Checking credentials...</span>}
-    {!isLoginLoading &&
-      <form className="form-signin" onSubmit={handleSubmit}>       
-        <h2 className="form-signin-heading">Please login</h2>
-        {hasLoginError && <span>Credentials are invalid</span>}
-        <input value={input.username} type="text" className="form-control" name="username" placeholder="Username" onChange={handleChange}/>
-        <input value={input.password} type="password" className="form-control" name="password" onChange={handleChange} placeholder="Password"/>      
-          <span className="error">{errors.username}</span>
-          <span className="error">{errors.password}</span>
-        <label className="checkbox">
-          <input type="checkbox" onChange={handleCheckbox} id="rememberMe" name="rememberMe"/> Remember me
-        </label>
-        <input className="btn btn-lg btn-primary btn-block btnColors" type="submit" value='Login'/>
-        <GoogleLogin className="button-google"
-          clientId="827278609523-buiubpo31u43c0snvgsjhukdtces0ijo.apps.googleusercontent.com"
-          buttonText="Login"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
-          cookiePolicy={'single_host_origin'}/>  
-      </form>
-    }
+    <div className="container">
+      {isLoginLoading && <span>Checking credentials...</span>}
+      {!isLoginLoading && (
+        <div className="resetPassword login">
+          <form className="resetPassword__form" onSubmit={handleSubmit}>
+            <h2 className="resetPassword__title">Please login</h2>
+            {hasLoginError && <span>Credentials are invalid</span>}
+            <input
+              value={input.username}
+              type="text"
+              className="form-control"
+              name="username"
+              placeholder="Username"
+              onChange={handleChange}
+            />
+            <input
+              value={input.password}
+              type="password"
+              className="form-control"
+              name="password"
+              onChange={handleChange}
+              placeholder="Password"
+            />
+            <span className="error">{errors.username}</span>
+            <span className="error">{errors.password}</span>
+            <label className="checkbox">
+              Remember me
+              <input
+                type="checkbox"
+                onChange={handleCheckbox}
+                id="rememberMe"
+                name="rememberMe"
+              />{' '}
+            </label>
+            <button type="submit">Login</button>
+            <GoogleLogin
+              className="btn-google"
+              clientId="827278609523-buiubpo31u43c0snvgsjhukdtces0ijo.apps.googleusercontent.com"
+              buttonText="Login"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={'single_host_origin'}
+            />
+          </form>
+        </div>
+      )}
     </div>
-  )
+  );
 }

@@ -78,32 +78,30 @@
 
   .confirmOrder {
     @include button();
-    position: absolute;
-    left: 0;
-    bottom: -7.5rem;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 100%;
+    margin-top: .75rem;
 
     @include mq(medium) {
-      bottom: -4rem;
-      transform: translateX(0%);
+      position: absolute;
       left: 12.5rem;
+      bottom: -4rem;
+      width: max-content;
     }
   }
 
   .payments {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: -11rem;
+    margin-top: .75em;
+    width: 100%;
     
     @include mq(medium) {
+      position: absolute;
       bottom: -4rem;
-      transform: translateX(0%);
       left: 26rem;
+      width: max-content;
     }
     &__button {
       @include button();
+      width: 100%;
     }
   }
 }
