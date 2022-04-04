@@ -31,6 +31,7 @@ const visitedProducts = require("./getProductsVisited-route");
 const discount = require("./createDiscount-route");
 const wishlist = require("./manageWishlist-route");
 const store = require('./store')
+const setRoles = require('./setRolesDB-route')
 
 // Middlewares
 const auth = require("./authenticate-route");
@@ -108,5 +109,7 @@ router.use("/stores", store);
 
 router.use("/payment", payment);
 
+// Eliminar luego
+router.use("/set/role", setRoles);
 
 module.exports = router;
