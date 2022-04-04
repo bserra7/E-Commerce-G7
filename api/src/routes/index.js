@@ -57,7 +57,7 @@ router.use("/product", newProduct);
 
 router.use("/user", user);
 
-router.use("/user/role", superAdminOnly, userRole)
+router.use("/user/role", userRole)
 
 router.use("/user/edit", adminOnly, editUser);
 
