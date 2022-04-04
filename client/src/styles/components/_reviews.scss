@@ -16,6 +16,14 @@
     font-weight: bold;
     font-size: 1rem;
   }
+
+  &__comment {
+    display: flex;
+    overflow: hidden;
+    div {
+      margin-left: .2rem;
+    }
+  }
 }
 
 .reviewAndRating {
@@ -34,5 +42,9 @@
   .rating-number {
     display: inline-block;
     margin-left: .2rem;
+  }
+
+  textarea {
+    padding: .5rem;
   }
 }

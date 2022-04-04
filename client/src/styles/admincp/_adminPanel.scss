@@ -1,12 +1,37 @@
 .adminCP{
     &__button {
-        padding: .5rem 0.8rem;
-        border-radius: 5px;
+        padding: 0 1rem;
         margin: 0 5px;
-        background-color: $orange;
+        height: 2.3rem;
+        border: none;
         color: $white;
         letter-spacing: 1px;
-        font-family: $font-kumbh-sans;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        text-align: center;
+        position: relative;
+        transition: all .15s ease;
+        background-color: rgba($black,.75);
+        cursor: pointer;
+    
+        &:hover::before {
+          width: 100%;
+          transform: skew(0deg);
+          left: 0;
+          transition: all .3s ease;
+        }
+    
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 50%;
+          width: 20px;
+          height: 100%;
+          transform: translateX(-50%) skew(20deg);
+          background-color: rgba($black,.3);
+          z-index: -10;
+        }
         &:disabled {
             background-color: $grayish-blue;
           }
@@ -50,6 +75,7 @@
     flex-direction: row;
     padding: 20px 0;
     padding-right: 20px;
+    margin-right: 20px;
     :nth-child(odd){
         width: 20%;
         text-align: center;
@@ -77,10 +103,10 @@
 .prodList, .itemList {
     display: flex;
     flex-direction: row;
-    border-radius: 6px;
     padding: 15px 0;
     align-items: center;
     margin: 10px 0;
+    margin-right: 20px;
     border: 1px solid $grayish-blue;
     background-color: $light-grayish-blue;
 }

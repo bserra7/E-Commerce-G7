@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategories, getProductDetail } from '../redux/actions';
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
+import swal from 'sweetalert';
 
 export function validate(input) {
     let errors = {};
@@ -99,10 +100,27 @@ export function UpdateProduct(props){
     const handleSubmit = async (e) => {
         const product = {...input, id}
         e.preventDefault();
-        await axios.put("/product/update", product)
-        alert(`${input.name} was updated!`)
-        if(history.location.pathname === '/admincp') props.showComponent('products')
-        else history.push("/")
+        const response = await axios.put("/product/update", product);
+        if(response.status === 200){
+            swal({
+                title: 'Product was updated successfully!',
+                text: ' ',
+                icon: 'success',
+                timer: 3000,
+                button: null
+            })
+            if(history.location.pathname === '/admincp') props.showComponent('products')
+            else history.push("/")
+        }else {
+            swal({
+                title: 'Something went wrong',
+                text: ' ',
+                icon: 'error',
+                timer: 3000,
+                button: null
+            })
+        }
+
     }
 
     return (

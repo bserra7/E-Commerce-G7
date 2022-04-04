@@ -46,14 +46,12 @@
     @include button();
     margin-top: 1rem;
     text-align: center;
-    position: absolute;
-    left: 50%;
-    bottom: -4rem;
-    transform: translateX(-50%);
-    
+    width: 100%;
+
     @include mq(medium) {
-      left: 0;
-      transform: translateX(0%);
+      position: absolute;
+      bottom: -4rem;
+      width: max-content;
     }
   }
 }

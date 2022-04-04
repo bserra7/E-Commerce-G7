@@ -11,7 +11,9 @@ module.exports = {
         stock: product.stock,
         categories: product.categories?.map(category => category.name),
         rating: product.rating,
-        price: product.price
+        price: product.price,
+        discount: product.discount,
+        discounted_price: product.discounted_price
     }));
     
     let toFilter = [...products];

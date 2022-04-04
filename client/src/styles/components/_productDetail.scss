@@ -44,9 +44,23 @@
     //   width: 650px;
     // }
     .price {
-      display: block;
+      display: inline-block;
       font-size: 1.5rem;
       font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+    }
+
+    .price-discount {
+      display: block;
+      font-size: 1.5rem;
+      text-decoration:line-through;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      color: $grayish-blue;
+    }
+    .discount {
+      padding: 0 10px;
+      font-size: 1.5rem;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      color: rgb(22, 199, 22);
     }
 
     .stock span,
@@ -102,5 +116,17 @@
 
 .wrapper-reviews {
   margin: 1rem 0;
-  max-width: 670px;
+  // max-width: 670px;
+
+  @include mq(medium) {
+    width: 65.5%;
+    margin-left: auto;
+    margin-top: 2rem;
+  }
+
+  @include mq(large) {
+    width: 67%;
+    margin-left: auto;
+    margin-top: 2rem;
+  }
 }

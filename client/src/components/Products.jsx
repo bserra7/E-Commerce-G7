@@ -4,13 +4,9 @@ import Product from './Product';
 const Products = ({ products }) => {
   return (
     <div className="products">
-      {Array.isArray(products) && products.length === 0 ? (
-        <h2>No hay productos</h2>
-      ) : (
-        products?.map((product) => (
-          <Product key={product.id} {...product} />
-        ))
-      )}
+      {products.length 
+        ? products?.map(product => <Product key={product.id} {...product} />) 
+        : <h2>There's no items to show</h2>}
     </div>
   );
 };

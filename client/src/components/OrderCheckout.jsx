@@ -7,9 +7,10 @@ import useUser from "./Login/hooks/useUser";
 import swal from 'sweetalert';
 import { clearCart } from "../redux/actions";
 import OrderShipping from "./OrderShipping";
+import WhatsApp from "./WhatsApp";
 
 
-export function OrderCheckout(){
+export function OrderCheckout() {
     const history = useHistory();
     const dispatch = useDispatch();
     const { isLogged } = useUser();
@@ -31,20 +32,20 @@ export function OrderCheckout(){
     }
 
     useEffect(() => {
-        if(!isLogged){
+        if (!isLogged) {
             swal({
                 title: 'You must be logged to proceed Checkout',
                 text: 'Please log in to finish your purchase',
                 icon: 'error',
                 buttons: ['Cancel', 'Ok']
             }).then(proceed => {
-                if(proceed) history.push('/login');
+                if (proceed) history.push('/login');
                 else history.push('/');
             })
         }
-    },[])
+    }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         setOrder({
             total: setTotal(),
             products: setProducts(),
@@ -53,17 +54,17 @@ export function OrderCheckout(){
     }, [cart, user]) //eslint-disable-line
 
     const setTotal = _ => {
-        if(cart?.length){
-            const subtotal = cart?.map(el => el.amount * el.price)
+        if (cart?.length) {
+            const subtotal = cart?.map(el => el.amount * (el.discount ? Number(el.discounted_price?.toFixed(2)) : Number(el.price?.toFixed(2))))
             const total = subtotal?.reduce((acumulator, current) => acumulator + current);
-            return total;
+            return Number(total.toFixed(2));
         }
     }
 
     const setProducts = _ => {
         const productData = cart?.map(prod => {
             return {
-                id: prod.id, 
+                id: prod.id,
                 amount: prod.amount
             }
         })
@@ -81,13 +82,13 @@ export function OrderCheckout(){
         // PARA LA ORDEN DE PAGO (NO BORRAR)
         const products = cart?.map(product => ({
             name: product.name,
-            price: product.price,
+            price: product.discount ? Number(product.discounted_price?.toFixed(2)) : Number(product.price?.toFixed(2)),
             amount: product.amount
         }));
 
         try {
-            const response = await axios.post("/order", {...order, ...notification});
-            if(response.status === 200) {
+            const response = await axios.post("/order", { ...order, ...notification });
+            if (response.status === 200) {
                 orderId = response.data.id;
                 swal({
                     title: 'Your order has been confirmed',
@@ -96,10 +97,10 @@ export function OrderCheckout(){
                     timer: 3000,
                     button: null
                 })
-            
+
                 // PARA LA ORDEN DE PAGO(NO BORRAR)
-                const res = await axios.post("/createPayment", {products, orderId});
-                if(res.status === 200) setUrl(res.data.response.sandbox_init_point);
+                const res = await axios.post("/createPayment", { products, orderId });
+                if (res.status === 200) setUrl(res.data.response.sandbox_init_point);
 
             }
         } catch (error) {
@@ -114,50 +115,53 @@ export function OrderCheckout(){
     }
 
     return (
-        <div className="orderCheckout">
-            {isLogged ? 
-            cart?.length ?
-            <div className="container">
-                <h2 className="orderCheckout__title">Order summary</h2>
-                    {cart?.map(product => 
-                        <div key={product.id} className="orderCheckout__content">
-                            <table className="order-table">
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <img src={product.images} alt="product ph" />
-                                        </td>
-                                        <td>
-                                            <br /> <span className='thin'>{product.name}</span>
-                                            <br /> Amount: {product.amount}<br />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div className='price'>${product.price}</div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div className="line"></div>
-                        </div>)}
+        <>
+            <div className="orderCheckout">
+                {isLogged ?
+                    cart?.length ?
+                        <div className="container">
+                            <h2 className="orderCheckout__title">Order summary</h2>
+                            {cart?.map(product =>
+                                <div key={product.id} className="orderCheckout__content">
+                                    <table className="order-table">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <img src={product.images} alt="product ph" />
+                                                </td>
+                                                <td>
+                                                    <br /> <span className='thin'>{product.name}</span>
+                                                    <br /> Amount: {product.amount}<br />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div className='price'>$ {product.discount ? Number(product.discounted_price?.toFixed(2)) : Number(product.price?.toFixed(2))}</div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div className="line"></div>
+                                </div>)}
 
-                <div className="total">
-                    <span style={{float: "left"}}>
-                        TOTAL:
-                        </span>
-                        <span style={{float: "right", textAlign: "right", fontWeight: "bold"}}>
-                        {setTotal()} USD
-                    </span>
-                </div>
+                            <div className="total">
+                                <span style={{ float: "left" }}>
+                                    TOTAL:
+                                </span>
+                                <span style={{ float: "right", textAlign: "right", fontWeight: "bold" }}>
+                                    $ {setTotal()}
+                                </span>
+                            </div>
 
-                <OrderShipping setShipping={setShipping}/>
-                <button className="confirmOrder" onClick={(e)=>handleSubmit(e)} disabled={!Object.keys(notification).length || confirmed}>CONFIRM ORDER</button>
-                <Payments clearCart={clearShopCart} url={url}/>
-            </div> : <><div className="message">Your cart is empty</div> 
-            </>
-            : <div className="message">Please Login to finish your Purchase</div>}
-        </div>
+                            <OrderShipping confirmed={confirmed} setShipping={setShipping} />
+                            <button className="confirmOrder" onClick={(e) => handleSubmit(e)} disabled={!Object.keys(notification).length || confirmed}>CONFIRM ORDER</button>
+                            <Payments clearCart={clearShopCart} url={url} />
+                        </div> : <><div className="message">Your cart is empty</div>
+                        </>
+                    : <div className="message">Please Login to finish your Purchase</div>}
+            </div>
+            <WhatsApp />
+        </>
     )
 }
 

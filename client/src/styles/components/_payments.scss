@@ -1,0 +1,10 @@
+.payments { 
+    @include mq(medium) {
+      bottom: -4rem;
+      transform: translateX(0%);
+      left: 26rem;
+    }
+    &__button {
+        @include button();
+    }
+  }

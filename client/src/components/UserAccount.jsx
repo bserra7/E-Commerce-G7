@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import TwoFaActivate from "./TwoFaActivate";
 
 export function UserAccount(){
 
@@ -73,6 +74,7 @@ export function UserAccount(){
                 </div>
                 
                     <Link to='/user/account/edit' className="userAccount__button">EDIT ACCOUNT</Link>
+                    <TwoFaActivate/>
               
             </div>
         </div>

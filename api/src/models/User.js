@@ -55,6 +55,16 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: false
     },
+    is_two_fa:{
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    two_fa_verified:{
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    }
   },{
     timestamps: false
   });

@@ -4,6 +4,7 @@ import loginService from '../services/login';
 import { useDispatch, useSelector } from 'react-redux';
 import { userLogin, userLogout } from '../../../redux/actions';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 export default function useUser(){
     const dispatch = useDispatch();
@@ -28,13 +29,14 @@ export default function useUser(){
         })
     }, [setJwt]) //eslint-disable-line
 
-    const logout = useCallback(() => {
+    const logout = async () => {
+        await axios.put('/twofa', {action: 'logout', userId: logged?.id, two_fa: false})
         localStorage.removeItem('jwt');
         sessionStorage.removeItem('jwt');
         Cookies.remove('jwt', { path: '/' })
         setJwt(null);
         dispatch(userLogout());
-    }, [setJwt]) //eslint-disable-line
+    } //eslint-disable-line
 
     return {
         isLogged: Boolean(logged),

@@ -4,9 +4,11 @@
   text-align: center;
   display: flex;
   flex-direction: column;
+  position: relative;
 
   @include mq(medium) {
     margin: 2rem 0;
+    margin-bottom: 0;
     flex-direction: row;
     justify-content: center;
   }
@@ -20,14 +22,72 @@
     }
   }
 
+  
+
   &__searching,select {
+    width: 18rem;
     height: 3rem;
     padding: 0 .75rem;
     outline: none;
+    font-size: 1rem;
+    &:focus{
+      border: 1px solid $black;
+      border-bottom: none;
+    }
+  }
+
+  &__searching {
+    width: 100%;
+    position: relative;
+  }
+
+  select {
+    width: 100%;
   }
 
   &__btn {
     @include button();
   }
 
+}
+
+.autoContainer {
+  background-color: $white;
+  border: 1px solid $dark-grayish-blue;
+  // padding: 0 .3rem;
+  margin-top: 0;
+  margin-left: 0;
+  border-top: transparent;
+  
+  @include mq(medium) {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 3rem;
+  }
+}
+.option {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 0;
+  margin: 0;
+  &:hover {
+    background-color: $grayish-blue;
+    cursor: pointer;
+  }
+  span {
+    width: 250px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  img{
+    width: 40px;
+    height: 40px;
+    margin: 0 5px;
+    filter: brightness(1.1);
+    mix-blend-mode: multiply;
+  }
 }

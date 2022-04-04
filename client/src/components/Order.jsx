@@ -8,6 +8,7 @@ export function Order({ order }) {
         <div>Order N°: <span>{order.id}</span></div>
         <div>Date: <span>{order.date}</span></div>
         <div>Order Status: <span>{order.status}</span></div>
+        <div>Payment Status: <span>{order.payment_status}</span></div>
         <div>Total: <span>{order.total}</span></div>
       </div>
     </Link>

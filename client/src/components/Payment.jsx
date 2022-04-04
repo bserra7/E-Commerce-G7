@@ -5,17 +5,25 @@ export function Payment(props) {
   const url = window.location.href;
   const query = new URL(url);
   const { paymentStatus } = props.match.params
-  /* console.log(props.match.params); */
-/*   console.log(query);
-  console.log(query.searchParams.get("external_reference"));  //ID DE LA ORDEN DE NUESTRO SISTEMA
-  console.log(query.searchParams.forEach((a,b,c) => console.log(a,b,c))); */
-  console.log(query.searchParams.has('external_reference')); // TODO: COMPROBAR EN DB LA ORDEN CON EL ID DE EXTERNAL REFERENCE
+  const orderId = query?.searchParams?.get("external_reference");
   return (
-    <div>
-      {paymentStatus === 'success' && <div>EL PAGO SE COMPLETÓ CON ÉXITO</div>}
-      {paymentStatus === 'failure' && <div>EL PAGO FALLÓ CON ÉXITO</div>}
-      {paymentStatus === 'pending' && <div>EL PAGO SE ENCUENTRA PENDIENTE DE APROBACIÓN</div>}
+    <div className='container'>
+      <div className="orderDetails shadow">
+           <div className="orderDetails__item">
+              <div className="item__details">
+                <div className="item__title">
+                    {paymentStatus === 'success' ? `Your Payment has been Approved ✅` : 
+                    paymentStatus === 'failure' ? `Your Payment has been Rejected ❌` : 
+                    `Your Payment is Pending ⏱️`}
+                </div>
+                <div className="item__description">
+                  {<Link to={`/user/account/order/detail/${orderId}`}><button className="register__button">Order Details</button></Link>}
+                </div>
+              </div>
+            </div>
+      </div>
     </div>
+
   );
 }
 

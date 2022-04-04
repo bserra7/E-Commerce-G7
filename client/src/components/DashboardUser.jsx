@@ -3,6 +3,7 @@ import { NavLink, useHistory } from 'react-router-dom';
 import useUser from './Login/hooks/useUser';
 import UserAccount from './UserAccount';
 
+
 export function DashboardUser(){
 
     const history = useHistory()
@@ -30,8 +31,11 @@ export function DashboardUser(){
                     <NavLink to='/user/account/reset-password'
                         activeClassName='active' className="dashboardUser__link">Change Password</NavLink>
                 </li>
+                <li className='dashboardUser__item'>
+                    <NavLink to='/user/account/wishlist'
+                        activeClassName='active' className="dashboardUser__link">My Wishlist</NavLink>
+                </li>
             </div>
-            {/* <h2>My Wishlist</h2> */}
         </nav>
         {history.location.pathname === "/user/account" && <UserAccount />}
         </>

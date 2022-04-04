@@ -15,8 +15,11 @@ const postOrder = async (order) => {
 
   const product_order = await Promise.all(
     order.products.map((product) => {
-      Product.findOne({ where: { id: product.id } }).then((produc) =>
-        newOrder.addProduct(produc, { through: { amount: product.amount } })
+      Product.findOne({ where: { id: product.id } }).then((produc) => {
+          produc.stock = produc.stock - product.amount;
+          produc.save();
+          return newOrder.addProduct(produc, { through: { amount: product.amount } }
+        )}
       );
     })
   );

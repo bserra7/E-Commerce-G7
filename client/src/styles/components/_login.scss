@@ -1,110 +1,38 @@
-@import "bourbon";
-
-.wrapper {	
-	margin-top: 80px;
+.wrapper {
+  margin-top: 80px;
   margin-bottom: 80px;
 }
 
-.form-signin {
-  max-width: 380px;
-  padding: 15px 35px 45px;
-  margin: 0 auto;
-  background-color: #fff;
-  border: 1px solid rgba(0,0,0,0.1);  
-
-  .form-signin-heading{
-	  margin-bottom: 30px;
-	}
-
-	.checkbox {
-	  font-weight: normal;
-    margin-bottom: 30px;
-	}
-
-	.form-control {
-	  position: relative;
-	  font-size: 16px;
-	  height: auto;
-	  padding: 10px;
-    width: 100%;
-		&:focus {
-		  z-index: 2;
-		}
-	}
-
-  .error{
-    display:block;
-    font-size: 14px;
-  }
-
-	input[type="email"]{
-	  margin-bottom: -1px;
-	  border-bottom-left-radius: 0;
-	  border-bottom-right-radius: 0;
-	}
-
-	input[type="password"]{
-	  margin-bottom: 20px;
-	  border-top-left-radius: 0;
-	  border-top-right-radius: 0;
-	}
-}
-
-
-.button-google {
-  display: block;
+.resetPassword.login {
   width: 100%;
-  padding-right: 0;
-  padding-left: 0;
-  margin-top: 20px;
-  justify-content: center !important;
-  font-size: 18px !important;
-  transition: ease-in 0.3s;
-  border-radius: 6px !important;
-  div {
-    margin-right: 0px !important;
-  }
-  &:hover{
-    transition: ease-out 0.3s;
-    transform: scale(1.03);
-  }
-}
+  max-width: 400px;
 
-.btn-block {
-    display: block;
-    width: 100%;
-    padding-right: 0;
-    padding-left: 0;
-}
+  label.checkbox {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: flex-end;
+    height: 30px;
+    margin-bottom: 0.75rem;
 
-.btn-lg {
-    padding: 10px 16px;
-    font-size: 18px;
-    line-height: 1.33;
-    border-radius: 6px;
-}
-.btnColors {
-    color: $white;
-    background-color: $orange  !important;
-    border-color: #f57615 !important;
-    transition: ease-in 0.3s;
-    &:hover{
-      transition: ease-out 0.3s;
-      transform: scale(1.03);
+    input {
+      width: 20px;
+      margin-bottom: 0;
+      margin-right: 0.5rem;
     }
-} 
-.btn {
-    display: inline-block;
-    padding: 6px 12px;
-    margin-bottom: 0;
-    font-size: 14px;
-    font-weight: normal;
-    line-height: 1.428571429;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    background-image: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
+  }
+
+  .btn-google {
+    background-color: $white;
+    margin-top: 0.75rem;
+    justify-content: center;
+
+    &:hover {
+      background-color: $grayish-blue;
+    }
+
+    &::before {
+      content: none;
+    }
+  }
 }

@@ -4,34 +4,77 @@
   height: 50px;
   margin-top: 1.3rem;
 
-    &:hover a{
-      display: block;
-    }
+  &:hover .wrapper-isLogged {
+    display: block;
+  }
 
   &__button {
-    position: absolute;
-    top: 2.5rem;
-    right: 0;
     padding: .5rem 1.5rem;
-    border-radius: 5px;
-    display: none;
-    background-color: $orange;
-    color: $white;
+    display: block;
+    color: $light-grayish-blue;
     letter-spacing: 1px;
     font-family: $font-kumbh-sans;
+    border-top: 1px solid $light-grayish-blue;
+    padding: .75rem 0;
+    background-color: #505254;
+    transition: all .3s ease;
+    border-radius: 0 0 5px 5px;
+
+    &:hover {
+      background-color: $black;
+    }
+  }
+
+
+  .wrapper-isLogged {
+    display: none;
+    position: absolute;
+    right: 5px;
+    width: 150px;
+    z-index: 30;
+    background-color: #505254;
+    color: $white;
+    text-align: center;
+    border-radius: 5px;
+    font-size: .9rem;
+    margin-top: 1.2rem;
+    
+    h3 {
+      font-size: .9rem;
+      font-family: $font-roboto;
+      font-weight: normal;
+      line-height: 1.5;
+      padding: .5rem 0;
+      span {
+        display: block;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .wrapper-isLogged.login {
+    top: 1.5rem;
+    border: none;
+    width: 120px;
+    
+    a {
+      border-radius: 5px;
+      border-bottom: none;
+    }
   }
 
   .admButton {
-    position: absolute;
-    top: 4.8rem;
-    right: 0;
-    padding: .5rem 1.5rem;
-    border-radius: 5px;
-    display: none;
-    background-color: $orange;
-    color: $white;
+    display: block;
+    color: $light-grayish-blue;
     letter-spacing: 1px;
     font-family: $font-kumbh-sans;
+    padding: .75rem 0;
+    background-color: #505254;
+    transition: .3s ease;
+
+    &:hover {
+      background-color: $black;
+    }
   }
 
   &__logged {
@@ -43,6 +86,7 @@
     }
 
     .client {
+      display: none;
       text-transform: uppercase;
       letter-spacing: 1px;
       font-size: .8rem;
