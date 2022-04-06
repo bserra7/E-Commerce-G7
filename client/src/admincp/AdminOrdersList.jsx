@@ -4,12 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllOrders } from '../redux/actions';
 import AdminSearchBar from './AdminSearchBar';
 import swal from 'sweetalert';
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
+import useCurrency from '../context/useCurrency';
+import formatter from '../lang/NumberFormat';
 
 export default function AdminOrdersList({getId, showComponent}) {
     const dispatch = useDispatch();
     const intl = useIntl();
     let orders = useSelector(state => state.orders);
+    const { currency, multiplier } = useCurrency();
+
     useEffect(()=>{
         dispatch(getAllOrders());
     },[])
@@ -56,7 +60,7 @@ export default function AdminOrdersList({getId, showComponent}) {
                 <ul>
                     {Array.isArray(orders) ? (orders?.map(order => <li className='itemList' key={order.id}>
                         <div>{order.id}</div>
-                        <div>US$ {order.total}</div>
+                        <div>{currency === "USD" && "US"} {formatter(currency).format(order.total*multiplier)}</div>
                         <div>{order.date}</div>
                         <div>{order.status} <button className='adminCP__button' onClick={e => seeOrderDetails(order.id)}><FormattedMessage id="app.btn-details" defaultMessage="Details"/></button></div>
                         <div>

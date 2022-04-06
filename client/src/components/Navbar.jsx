@@ -13,6 +13,8 @@ import ukflag from '../assets/images/UK-flag.png'
 import spflag from '../assets/images/SPAIN-flag.png'
 import { FormattedMessage } from 'react-intl'
 import { langContext } from './../context/langContext';
+import currContext from '../context/currencyContext';
+import useCurrency from '../context/useCurrency';
 
 const Navbar = () => {
   const iconMenuRef = useRef(null);
@@ -23,6 +25,7 @@ const Navbar = () => {
   const user = useSelector(state => state?.user);
   const shopCart = useSelector(state => state?.cart);
   const idioma = useContext(langContext);
+  const { setCurrency } = useCurrency();
 
 
   const handleMenu = () => {
@@ -36,10 +39,10 @@ const Navbar = () => {
     iconMenuRef.current.style.display = 'block';
     listRef.current.style.display = 'none';
   };
-  
+
   useEffect(() => {
-    if(!showCart && shopCart?.length) cartShow()
-  },[shopCart])
+    if (!showCart && shopCart?.length) cartShow()
+  }, [shopCart])
 
   const cartShow = () => {
     setShowCart(!showCart);
@@ -74,7 +77,7 @@ const Navbar = () => {
                 <FormattedMessage
                   id="app.shop"
                   defaultMessage="Shop"
-                  />
+                />
               </NavLink>
             </li>
             <li className="list__item" onClick={handleClose}>
@@ -84,8 +87,8 @@ const Navbar = () => {
                 activeClassName="active"
               >
                 <FormattedMessage
-                id="app.stores"
-                defaultMessage="Stores"
+                  id="app.stores"
+                  defaultMessage="Stores"
                 />
               </NavLink>
             </li>
@@ -98,7 +101,7 @@ const Navbar = () => {
                 <FormattedMessage
                   id="app.about"
                   defaultMessage="About"
-                  />
+                />
               </NavLink>
             </li>
             <li className="list__item" onClick={handleClose}>
@@ -110,7 +113,7 @@ const Navbar = () => {
                 <FormattedMessage
                   id="app.contact"
                   defaultMessage="Contact"
-                  />
+                />
               </NavLink>
             </li>
             <li className="list__item" onClick={handleClose}>
@@ -122,15 +125,23 @@ const Navbar = () => {
                 <FormattedMessage
                   id="app.sign-up"
                   defaultMessage="Sign Up"
-                  />
+                />
               </NavLink>
             </li>
           </ul>
         </nav>
+        
 
         <div className="navbar__cart">
+        <figure>
+                <span onClick={()=>setCurrency('USD')} alt='USD' height="20px" width="50px">USD</span><br/><br/>
+                <span onClick={()=>setCurrency('ARS')} alt='ARS' height="20px" width="50px">ARS</span>
+              </figure>
           <figure>
-            <img src={cart} alt="shoping cart" onClick={cartShow} />
+            <div style={{ position: "relative" }}>
+              {shopCart.length !== 0 && <div className='cart__notifi' >{shopCart.length}</div>}
+              <img src={cart} alt="shoping cart" onClick={cartShow} />
+            </div>
             {showCart && <ShoppingCart cartShow={cartShow} />}
           </figure>
           {isLogged
@@ -139,24 +150,28 @@ const Navbar = () => {
                 <Link to='/user/account/profile'><img src={avatar} alt="avatar" /></Link>
               </figure>
               <div className='wrapper-isLogged'>
-                <h3><FormattedMessage id="app.sign-in" defaultMessage="Signed in as"/><span>{user?.name} {user?.last_name}</span></h3>
-                <Link to="/user/account/profile" className='navbarLogin__button'><FormattedMessage id="app.account-title" defaultMessage="Account"/></Link>
-                {user?.roleId < 3 && <Link to="/admincp" className='admButton'><FormattedMessage id="app.admin" defaultMessage="AdminCP"/></Link>}
-                <Link to="/" className='navbarLogin__button' onClick={logout}><FormattedMessage id="app.log-out" defaultMessage="Logout"/></Link>
+                <h3><FormattedMessage id="app.sign-in" defaultMessage="Signed in as" /><span>{user?.name} {user?.last_name}</span></h3>
+                <Link to="/user/account/profile" className='navbarLogin__button'><FormattedMessage id="app.account-title" defaultMessage="Account" /></Link>
+                {user?.roleId < 3 && <Link to="/admincp" className='admButton'><FormattedMessage id="app.admin" defaultMessage="AdminCP" /></Link>}
+                <Link to="/" className='navbarLogin__button' onClick={logout}><FormattedMessage id="app.log-out" defaultMessage="Logout" /></Link>
               </div>
             </div>
             : <div className='navbarLogin'>
               <figure>
-              <Link to='/login'><img src={avatar1} alt="avatar" /></Link>
+                <Link to='/login'><img src={avatar1} alt="avatar" /></Link>
               </figure>
               <div className='wrapper-isLogged login'>
-                <Link to="/login" className='navbarLogin__button'><FormattedMessage id="app.login" defaultMessage="Login"/></Link>
+                <Link to="/login" className='navbarLogin__button'><FormattedMessage id="app.login" defaultMessage="Login" /></Link>
               </div>
             </div>}
             <figure className='navbar__language'>
                 <img onClick={() => idioma.setLanguage('en-UK')} src={ukflag} alt='EN-LANG' height="20px" width="50px"/>
                 <img onClick={() => idioma.setLanguage('es-ES')} src={spflag} alt='ES-LANG' height="20px" width="50px"/>
             </figure>
+          <figure>
+            <img src={ukflag} onClick={() => idioma.setLanguage('en-UK')} alt='EN-LANG' height="20px" width="50px" /><br />
+            <img src={spflag} onClick={() => idioma.setLanguage('es-ES')} alt='ES-LANG' height="20px" width="50px" />
+          </figure>
         </div>
       </div>
     </div>

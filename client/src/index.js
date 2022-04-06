@@ -9,19 +9,22 @@ import { store } from "../src/redux/store/index.js";
 import axios from "axios";
 import dotenv from "dotenv";
 import { LangProvider } from "./context/langContext";
+import { CurrencyProvider } from "./context/currencyContext";
 dotenv.config();
 
 axios.defaults.baseURL = process.env.REACT_APP_API || "http://localhost:3001";
 
 ReactDOM.render(
   <LangProvider>
-    <Provider store={store}>
-      <React.StrictMode>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </React.StrictMode>
-    </Provider>
+    <CurrencyProvider>
+      <Provider store={store}>
+        <React.StrictMode>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </React.StrictMode>
+      </Provider>
+    </CurrencyProvider>
   </LangProvider>,
   document.getElementById("root")
 );

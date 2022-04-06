@@ -37,6 +37,7 @@ import About from './components/About';
 import Footer from './components/Footer';
 import NotFound404 from './components/NotFound404';
 import ScrollComponent from './components/ScrollComponent';
+import useCurrency from './context/useCurrency';
 
 export const alert2FA = () => {
   swal({
@@ -53,6 +54,7 @@ function App() {
   const dispatch = useDispatch();
   const { cart } = useSelector(state => state)
   const userLogged = useSelector(state => state?.user);
+  const { setCurrency } = useCurrency();
 
   const resetPasswordAlert = () => {
     swal({
@@ -72,6 +74,9 @@ function App() {
   },[cart])
 
   useEffect(()=> {
+    if(localStorage.getItem('currency')){
+      setCurrency(localStorage.getItem('currency'))
+    }
     if(localStorage.getItem("cart")){
       let cartStorage = localStorage.getItem('cart')
       cartStorage = JSON.parse(cartStorage)

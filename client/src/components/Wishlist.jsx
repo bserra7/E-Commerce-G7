@@ -6,12 +6,14 @@ import swal from "sweetalert";
 import { Link } from "react-router-dom";
 import { FormattedMessage, useIntl } from 'react-intl'
 import { FaStar } from "react-icons/fa";
+import useCurrency from "../context/useCurrency";
+import formatter from "../lang/NumberFormat";
 
 export function Wishlist() {
   const dispatch = useDispatch();
   const intl = useIntl();
   const { user, wishlist } = useSelector((state) => state);
-
+  const { currency, multiplier } = useCurrency();
 
   useEffect(() => {
     dispatch(getUserWishlist(user?.id))
@@ -75,10 +77,10 @@ export function Wishlist() {
                         <div>
                           {prod.discount ? 
                             <> 
-                                <span className="full-price" >$ {Number(prod.price?.toFixed(2))}</span>
-                                <span>$ {Number(prod.discounted_price?.toFixed(2))}</span>
+                                <span className="full-price" >{currency === "USD" && "US"} {formatter(currency).format(prod.price*multiplier)}</span>
+                                <span>{currency === "USD" && "US"} {formatter(currency).format(prod.discounted_price*multiplier)}</span>
                             </>
-                            : <span>$ {Number(prod.price?.toFixed(2))}</span> }
+                            : <span>{currency === "USD" && "US"} {formatter(currency).format(prod.price*multiplier)}</span> }
                         </div>
                         <button onClick={()=>{deleteProduct(prod.id)}}>X</button>
                       </div>

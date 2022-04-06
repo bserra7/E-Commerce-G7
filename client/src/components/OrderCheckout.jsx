@@ -9,6 +9,8 @@ import { clearCart } from "../redux/actions";
 import OrderShipping from "./OrderShipping";
 import WhatsApp from "./WhatsApp";
 import { FormattedMessage, useIntl } from 'react-intl'
+import formatter from "../lang/NumberFormat";
+import useCurrency from "../context/useCurrency";
 
 
 export function OrderCheckout() {
@@ -19,6 +21,7 @@ export function OrderCheckout() {
     const { cart, user } = useSelector(state => state);
     const [url, setUrl] = useState('');
     const [confirmed, setConfirmed] = useState(false);
+    const { currency, multiplier } = useCurrency();
     let orderId;
 
     const [order, setOrder] = useState({
@@ -57,9 +60,9 @@ export function OrderCheckout() {
 
     const setTotal = _ => {
         if (cart?.length) {
-            const subtotal = cart?.map(el => el.amount * (el.discount ? Number(el.discounted_price?.toFixed(2)) : Number(el.price?.toFixed(2))))
+            const subtotal = cart?.map(el => el.amount * (el.discount ? el.discounted_price : el.price))
             const total = subtotal?.reduce((acumulator, current) => acumulator + current);
-            return Number(total.toFixed(2));
+            return total;
         }
     }
 
@@ -139,7 +142,12 @@ export function OrderCheckout() {
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <div className='price'>$ {product.discount ? Number(product.discounted_price?.toFixed(2)) : Number(product.price?.toFixed(2))}</div>
+                                                    <div className='price'>{product.discount ?
+                                                        <>
+                                                        <span className="full-price">{currency === "USD" && "US"} {formatter(currency).format(product.price*multiplier)}</span>
+                                                        <span className="discount-price">{currency === "USD" && "US"} {formatter(currency).format(product.discounted_price*multiplier)}</span>
+                                                        </>
+                                                      : <span>{currency === "USD" && "US"} {formatter(currency).format(product.price*multiplier)}</span>}</div>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -152,7 +160,7 @@ export function OrderCheckout() {
                                     TOTAL:
                                 </span>
                                 <span style={{ float: "right", textAlign: "right", fontWeight: "bold" }}>
-                                    $ {setTotal()}
+                                    {currency === "USD" && "US"} {formatter(currency).format(setTotal()*multiplier)}
                                 </span>
                             </div>
                             <OrderShipping confirmed={confirmed} setShipping={setShipping} />

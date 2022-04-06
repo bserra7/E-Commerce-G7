@@ -3,13 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { getOrderDetail } from "../redux/actions";
 import Payments from "./Payments";
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl';
+import useCurrency from '../context/useCurrency';
+import formatter from '../lang/NumberFormat';
 
 export default function OrderDetail(props) {
     const dispatch = useDispatch();
     const history = useHistory();
     const orderId = props.id || props.match.params.id ;
     const orderDetail = useSelector((state) => state.orderDetail);
+    const { currency, multiplier } = useCurrency();
 
     useEffect(() => {
         dispatch(getOrderDetail(orderId));
@@ -77,7 +80,7 @@ export default function OrderDetail(props) {
                             </ul>
                             <div className="total">
                                 <span>Total: </span>
-                                <span>{orderDetail.total} USD</span>
+                                <span>{currency === "USD" && "US"} {formatter(currency).format(orderDetail?.total*multiplier)}</span>
                             </div>
                         </div>
                         </div>
