@@ -69,7 +69,7 @@ export default function AdminOrdersList({getId, showComponent}) {
                             <button value='complete' onClick={e => changeStatus(e, order.id)} disabled={order.status === 'canceled' || order.status === 'complete'} className='adminCP__button'><FormattedMessage id="app.btn-complete" defaultMessage="Complete"/></button>
                         </div>
                         
-                        </li>)): <div className='noDataFound'>{orders}</div>}
+                        </li>)): <div className='noDataFound'><FormattedMessage id="message-no-found-order" defaultMessage="No orders found"/></div>}
                 </ul>
             </div>
         </div>

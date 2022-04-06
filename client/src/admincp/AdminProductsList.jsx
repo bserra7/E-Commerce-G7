@@ -85,7 +85,7 @@ export default function AdminProductsList({showComponent, getId}) {
                             <button onClick={e => deleteProduct(prod.id)}className='adminCP__button'><FormattedMessage id="app.btn-delete" defaultMessage="Delete"/></button>
                         </div>
                         
-                        </li>) : <div className='noDataFound'>{products}</div>}
+                        </li>) : <div className='noDataFound'><FormattedMessage id="message-no-found-product" defaultMessage="No products found"/></div>}
                 </ul>
             </div>
         </div>

@@ -103,7 +103,7 @@ export default function AdminUsersList({getId, showComponent}) {
                             <button onClick={e => editUser(user.id)} disabled={(loggedUser?.roleId === 2 && user?.roleId === 1) || (loggedUser?.roleId === 2 && user.roleId === 2)} className='adminCP__button'><FormattedMessage id="app.btn-edit" defaultMessage="Edit"/></button>
                             <button onClick={e => deleteUser(user.id)} disabled={(loggedUser?.roleId === 2 && user?.roleId === 1) || (loggedUser?.roleId === 2 && user.roleId === 2)} className='adminCP__button'><FormattedMessage id="app.btn-delete" defaultMessage="Delete"/></button>
                         </div>
-                        </li>) : <div className='noDataFound'>{users}</div>}
+                        </li>) : <div className='noDataFound'><FormattedMessage id="message-no-found-user" defaultMessage="No users found"/></div>}
                 </ul>
             </div>
         </div>
