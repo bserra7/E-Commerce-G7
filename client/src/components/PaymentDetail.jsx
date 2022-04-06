@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrderDetail, getPaymentDetail } from "../redux/actions";
 import { FormattedMessage, useIntl } from "react-intl";
+import useCurrency from '../context/useCurrency';
+import formatter from '../lang/NumberFormat';
 
 export default function PaymentDetail(props, {meliId, idOrder}) {
     const dispatch = useDispatch();
@@ -10,6 +12,7 @@ export default function PaymentDetail(props, {meliId, idOrder}) {
     const paymentDetail = useSelector((state) => state.paymentDetail);
     const paymentId = meliId || props.match?.params.id;
     const orderId = idOrder || paymentDetail?.orderId;
+    const { currency, multiplier } = useCurrency();
 
     useEffect(() => {
         dispatch(getOrderDetail(orderId));
@@ -22,9 +25,9 @@ export default function PaymentDetail(props, {meliId, idOrder}) {
                      <div className="orderDetails__item">
                         <div className="item__details">
                         <div className="item__title" style={{textAlign: "center", marginBottom: "1.5rem"}}>
-                            {paymentDetail?.status === 'approved' ? intl.formatMessage( {id: "message-payment" })` ${paymentDetail?.status} ✅` : 
-                            paymentDetail?.status === 'rejected' ? intl.formatMessage( {id: "message-payment" })` ${paymentDetail?.status} ❌` : 
-                            intl.formatMessage( {id: "message-payment-is" })` ${paymentDetail?.status} ⏱️`}
+                            {paymentDetail?.status === 'approved' ? intl.formatMessage( {id: "message-payment" }) + ` ${paymentDetail?.status} ✅` : 
+                            paymentDetail?.status === 'rejected' ? intl.formatMessage( {id: "message-payment" }) + ` ${paymentDetail?.status} ❌` : 
+                            intl.formatMessage( {id: "message-payment-is" }) + ` ${paymentDetail?.status} ⏱️`}
                         </div>
                         <div className="item__description">
                             <ul>
@@ -68,15 +71,15 @@ export default function PaymentDetail(props, {meliId, idOrder}) {
                                 </li>
                                 <li>
                                     <span><FormattedMessage id="app.install-amount" defaultMessage="Installments Amount: "/></span>
-                                    <span>{paymentDetail?.installment_amount}</span>
+                                    <span>{currency === "USD" && "US"} {formatter(currency).format(paymentDetail?.installment_amount*multiplier)}</span>
                                 </li>
                                 <li>
                                     <span><FormattedMessage id="app.order-total" defaultMessage="Order Total: "/></span>
-                                    <span>{orderDetail.total} USD</span>
+                                    <span>{currency === "USD" && "US"} {formatter(currency).format(orderDetail?.total*multiplier)}</span>
                                 </li>
                                 <li>
                                     <span><FormattedMessage id="app.total-pay" defaultMessage="Total Paid: "/></span>
-                                    <span>{paymentDetail?.total_paid_amount} USD</span>
+                                    <span>{currency === "USD" && "US"} {formatter(currency).format(paymentDetail?.total_paid_amount*multiplier)}</span>
                                 </li>
                             </ul>
                         </div>

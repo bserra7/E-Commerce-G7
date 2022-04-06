@@ -13,6 +13,8 @@ import ukflag from '../assets/images/UK-flag.png'
 import spflag from '../assets/images/SPAIN-flag.png'
 import { FormattedMessage } from 'react-intl'
 import { langContext } from './../context/langContext';
+import currContext from '../context/currencyContext';
+import useCurrency from '../context/useCurrency';
 
 const Navbar = () => {
   const iconMenuRef = useRef(null);
@@ -23,6 +25,7 @@ const Navbar = () => {
   const user = useSelector(state => state?.user);
   const shopCart = useSelector(state => state?.cart);
   const idioma = useContext(langContext);
+  const { setCurrency } = useCurrency();
 
 
   const handleMenu = () => {
@@ -127,8 +130,13 @@ const Navbar = () => {
             </li>
           </ul>
         </nav>
+        
 
         <div className="navbar__cart">
+        <figure>
+                <span onClick={()=>setCurrency('USD')} alt='USD' height="20px" width="50px">USD</span><br/><br/>
+                <span onClick={()=>setCurrency('ARS')} alt='ARS' height="20px" width="50px">ARS</span>
+              </figure>
           <figure>
             <img src={cart} alt="shoping cart" onClick={cartShow} />
             {showCart && <ShoppingCart cartShow={cartShow} />}

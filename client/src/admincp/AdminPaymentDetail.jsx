@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrderDetail, getPaymentDetail } from "../redux/actions";
 import { FormattedMessage } from "react-intl";
+import useCurrency from '../context/useCurrency';
+import formatter from '../lang/NumberFormat';
 
 export default function AdminPaymentDetail({meliId, idOrder}) {
     const dispatch = useDispatch();
@@ -9,6 +11,7 @@ export default function AdminPaymentDetail({meliId, idOrder}) {
     const paymentDetail = useSelector((state) => state.paymentDetail);
     const paymentId = meliId
     const orderId = idOrder;
+    const { currency, multiplier } = useCurrency();
 
     useEffect(() => {
         dispatch(getOrderDetail(orderId));
@@ -65,15 +68,15 @@ export default function AdminPaymentDetail({meliId, idOrder}) {
                                 </li>
                                 <li>
                                     <span><FormattedMessage id="app.install-amount" defaultMessage="Installments Amount: "/></span>
-                                    <span>{paymentDetail?.installment_amount}</span>
+                                    <span>{currency === "USD" && "US"} {formatter(currency).format(paymentDetail?.installment_amount*multiplier)}</span>
                                 </li>
                                 <li>
                                     <span><FormattedMessage id="app.order-total" defaultMessage="Order Total: "/></span>
-                                    <span>{orderDetail.total} USD</span>
+                                    <span>{currency === "USD" && "US"} {formatter(currency).format(orderDetail?.total*multiplier)}</span>
                                 </li>
                                 <li>
                                     <span><FormattedMessage id="app.total-pay" defaultMessage="Total Paid: "/></span>
-                                    <span>{paymentDetail?.total_paid_amount} USD</span>
+                                    <span>{currency === "USD" && "US"} {formatter(currency).format(paymentDetail?.total_paid_amount*multiplier)}</span>
                                 </li>
                             </ul>
                         </div>

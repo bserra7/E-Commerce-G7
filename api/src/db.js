@@ -90,7 +90,7 @@ const Discount_category = sequelize.define("discount_category", {
     allowNull: false
   },
   weekday: {
-    type: DataTypes.ENUM("sunday","monday","tuesday","wednesday ","thursday","friday","saturday"),
+    type: DataTypes.ENUM("sunday","monday","tuesday","wednesday","thursday","friday","saturday"),
     allowNull: false
   }
 },

@@ -4,7 +4,7 @@ const { DataTypes } = require('sequelize');
 function getWeekday(){
   var today = new Date();
   var day = today.getDay();
-  var daylist = ["sunday","monday","tuesday","wednesday ","thursday","friday","saturday"];
+  var daylist = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
   return daylist[day]
 }
 

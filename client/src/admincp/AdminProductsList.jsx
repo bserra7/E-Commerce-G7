@@ -6,11 +6,14 @@ import { Link } from 'react-router-dom';
 import AdminSearchBar from './AdminSearchBar';
 import swal from 'sweetalert';
 import { FormattedMessage, useIntl } from 'react-intl'
+import useCurrency from '../context/useCurrency';
+import formatter from '../lang/NumberFormat';
 
 export default function AdminProductsList({showComponent, getId}) {
     const dispatch = useDispatch();
     const intl = useIntl();
     const products = useSelector(state => state.products);
+    const { currency, multiplier } = useCurrency();
 
     useEffect(()=>{
         dispatch(getAllProducts());
@@ -71,9 +74,9 @@ export default function AdminProductsList({showComponent, getId}) {
                         <div><Link className='link' to={`/product/${prod.id}`}>{prod.name.slice(0, 35)}{prod.name.length > 35 && '...'}</Link></div>
                         <div>{prod.discount ? 
                         <>
-                            <span className='discounted'>$ {Number(prod?.price?.toFixed(2))}</span>
-                            <span className='fullprice'>$ {Number(prod?.discounted_price?.toFixed(2))}</span>
-                        </> : <span className='fullprice'>$ {Number(prod?.price?.toFixed(2))}</span>}
+                            <span className='discounted'>{currency === "USD" && "US"} {formatter(currency).format(prod.price*multiplier)}</span>
+                            <span className='fullprice'>{currency === "USD" && "US"} {formatter(currency).format(prod.discounted_price*multiplier)}</span>
+                        </> : <span className='fullprice'>{currency === "USD" && "US"} {formatter(currency).format(prod.price*multiplier)}</span>}
                         </div>
                         <div>{prod.stock}</div>
                         <div>{prod.rating}</div>

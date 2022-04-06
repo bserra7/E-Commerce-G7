@@ -1,11 +1,15 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllPayments } from '../redux/actions';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl';
+import useCurrency from '../context/useCurrency';
+import formatter from '../lang/NumberFormat';
 
 export default function AdminPaymentsList({getId, showComponent}) {
     const dispatch = useDispatch();
     const payments = useSelector(state => state?.payments);
+    const { currency, multiplier } = useCurrency();
+
     useEffect(()=>{
         dispatch(getAllPayments());
     },[])
@@ -28,7 +32,7 @@ export default function AdminPaymentsList({getId, showComponent}) {
                     {Array.isArray(payments) ? (payments?.map(payment => 
                     <li className='itemList' key={payment.id}>
                         <div>{payment.id_meli}</div>
-                        <div>US$ {payment.total_paid_amount}</div>
+                        <div>{currency === "USD" && "US"} {formatter(currency).format(payment.total_paid_amount*multiplier)}</div>
                         <div>{payment.payment_type_id?.split('_').join(' ')}</div>
                         <div>{payment.payment_method_id}</div>
                         <div>{payment.status} <button className='adminCP__button' onClick={e => seeOrderDetails(payment.id_meli, payment.orderId)}><FormattedMessage id="app.details" defaultMessage="Details"/></button></div>    

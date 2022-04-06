@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { clearStore, getProductDetail, addProduct, productAmountSum, getReviews } from '../redux/actions';
@@ -9,12 +9,15 @@ import axios from 'axios';
 import AddToWishList from './AddToWishList';
 import WhatsApp from './WhatsApp';
 import { FormattedMessage } from 'react-intl'
+import useCurrency from '../context/useCurrency';
+import formatter from '../lang/NumberFormat';
 
 export function ProductDetail(props) {
     const dispatch = useDispatch();
     const id = props.match.params.id;
     const { details, cart, user, reviews } = useSelector((state) => state);
     const alreadyCommented = reviews.find(review => user?.id === review?.userId);
+    const { currency, multiplier } = useCurrency();
 
     const { isLogged } = useUser();
 
@@ -66,9 +69,9 @@ export function ProductDetail(props) {
                                 {isLogged && <AddToWishList userId={user?.id} productId={id} />}
                                 {details.discount > 0 ?
                                     <>
-                                        <span className='price-discount'>US${Number(details.price?.toFixed(2))}</span>
-                                        <span className='price'>US$ {Number(details.discounted_price?.toFixed(2))}</span> <span className='discount'>-{details.discount}% OFF</span>
-                                    </> : <span className='price'>US$ {Number(details.price?.toFixed(2))}</span>
+                                        <span className='price-discount'>{currency === "USD" && "US"} {formatter(currency).format(details?.price*multiplier)}</span>
+                                        <span className='price'>{currency === "USD" && "US"} {formatter(currency).format(details?.discounted_price*multiplier)}</span> <span className='discount'>-{details.discount}% OFF</span>
+                                    </> : <span className='price'>{currency === "USD" && "US"} {formatter(currency).format(details?.price*multiplier)}</span>
                                 }
                                 <p className='description'>{details.description}</p>
                                 {details.stock ? <p className='stock'><span><FormattedMessage id="app.stock" defaultMessage="In stock"/></span> ({details.stock} <FormattedMessage id="app.available" defaultMessage="available"/>)</p> : <p className='stock'><span>⚠️<FormattedMessage id="app.not-available" defaultMessage="This product isn't available for shopping"/></span></p>}

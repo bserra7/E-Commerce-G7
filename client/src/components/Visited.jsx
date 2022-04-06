@@ -2,8 +2,11 @@ import React from "react";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FormattedMessage } from 'react-intl'
+import useCurrency from "../context/useCurrency";
+import formatter from "../lang/NumberFormat";
 
 export default function Visited({id, name, images, price, rating, discount, discounted_price}){
+    const { currency, multiplier } = useCurrency();
 
     return(
         <div className="">
@@ -16,10 +19,10 @@ export default function Visited({id, name, images, price, rating, discount, disc
                 <h3>{name.slice(0, 30)}{name.length > 30 && "..."}</h3>
                 <span className="price">{discount ? 
                 <> 
-                    <span className="full-price" >$ {Number(price?.toFixed(2))}</span>
-                    <span>$ {Number(discounted_price?.toFixed(2))}</span>
+                    <span className="full-price" >{currency === "USD" && "US"} {formatter(currency).format(price*multiplier)}</span>
+                    <span>{currency === "USD" && "US"} {formatter(currency).format(discounted_price*multiplier)}</span>
                 </>
-                : <span>$ {Number(price?.toFixed(2))}</span> }</span>
+                : <span>{currency === "USD" && "US"} {formatter(currency).format(price*multiplier)}</span> }</span>
                 <span>{!rating ? <span><FormattedMessage id="app.no-rated" defaultMessage="No rated yet"/></span> : [...Array(rating)].map(star =>{return <FaStar key={Math.random().toString(16).slice(2)} color="orange" size={16}/>})}</span>
             </Link>
             ) : (

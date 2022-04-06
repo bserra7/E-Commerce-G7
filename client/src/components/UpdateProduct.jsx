@@ -161,7 +161,7 @@ export function UpdateProduct(props){
                         <div className='register__error'>{errors.name}</div>
                     </div>
                     <div className="register-group">
-                    <label className="col-md-4 control-label"><FormattedMessage id="app.price-product" defaultMessage="Price:"/></label>
+                    <label className="col-md-4 control-label"><FormattedMessage id="app.price-product" defaultMessage="Price: (in USD)"/></label>
                     <input name="price" value={input.price} onChange={handleChange} />
                     <div className='register__error'>{errors.price}</div>
                     </div>
