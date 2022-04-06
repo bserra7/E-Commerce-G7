@@ -66,13 +66,13 @@ export default function AdminEditRole({showComponent}) {
                         <div>{user.username}</div>
                         <div>{user.email}</div>
                         <div>
-                            <select disabled={loggedUser?.roleId !== 1} name={user.id} onChange={handleSelect} value={role[user.id]}>
-                                <option value={user.role?.name} hidden>{user.role?.name}</option>
-                                {roles?.map(role => <option disabled={role.id === 1} key={role.id} value={role.id}>{role.name}</option>)}
+                            <select onChange={handleSelect} value={role[user.id]}>
+                                <option value={user.role?.name}>{user.role?.name}</option>
+                                {roles?.map(role => <option key={role.id} value={role.id}>{role.name}</option>)}
                             </select>
                         </div>
                         <div>
-                            <button onClick={e => editRole(user.id)} disabled={loggedUser?.roleId !== 1} className='adminCP__button'><FormattedMessage id="app.set-role" defaultMessage="Set Role"/></button>
+                            <button onClick={e => editRole(user.id)} className='adminCP__button'><FormattedMessage id="app.set-role" defaultMessage="Set Role"/></button>
                         </div>
                         </li>) : <div className='noDataFound'>{users}</div>}
                 </ul>

@@ -30,7 +30,7 @@ export default function AdminSideBar({showComponent}){
                 <i className="fa fa-info fa-2x"></i>
                 <span className="nav-text"><FormattedMessage id="app.payments" defaultMessage="Payments"/></span>
             </li> 
-            {user?.roleId === 1 && 
+            {user?.roleId !== 5 && 
             <li onClick={e => showComponent('editRole')}>
                 <i className="fa fa-bar-chart-o fa-2x"></i>
                 <span className="nav-text"><FormattedMessage id="app-edit-roles" defaultMessage="Edit roles"/></span>
