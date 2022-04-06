@@ -36,7 +36,7 @@ export default function AdminPaymentsList({getId, showComponent}) {
                         <div>{payment.payment_type_id?.split('_').join(' ')}</div>
                         <div>{payment.payment_method_id}</div>
                         <div>{payment.status} <button className='adminCP__button' onClick={e => seeOrderDetails(payment.id_meli, payment.orderId)}><FormattedMessage id="app.details" defaultMessage="Details"/></button></div>    
-                    </li>)): <div className='noDataFound'>{payments}</div>}
+                    </li>)): <div className='noDataFound'><FormattedMessage id="message-no-found-payment" defaultMessage="No payments found"/></div>}
                 </ul>
             </div>
         </div>

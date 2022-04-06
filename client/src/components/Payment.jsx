@@ -22,9 +22,9 @@ export function Payment(props) {
            <div className="orderDetails__item" style={styles}>
               <div className="item__details">
                 <div className="item__title">
-                    {paymentStatus === 'success' ? intl.formatMessage( { id: "message-success"}) `✅` : 
-                    paymentStatus === 'failure' ? intl.formatMessage( { id: "message-failure"})`❌` : 
-                    intl.formatMessage( { id: "message-pending"})`⏱️`}
+                    {paymentStatus === 'success' ? intl.formatMessage( { id: "message-success"}) + `✅` : 
+                    paymentStatus === 'failure' ? intl.formatMessage( { id: "message-failure"}) + `❌` : 
+                    intl.formatMessage( { id: "message-pending"}) + `⏱️`}
                 </div>
                 <div className="item__description">
                   {<Link to={`/user/account/order/detail/${orderId}`}>

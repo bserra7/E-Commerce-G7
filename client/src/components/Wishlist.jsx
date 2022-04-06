@@ -23,7 +23,7 @@ export function Wishlist() {
       let userId = user?.id
     try {
         swal({
-          title: intl.formatMessage({ id: "message-removed" }),
+          title: intl.formatMessage({ id: "message-delete-prod-wish" }),
             text: " ",
             icon: 'warning',
             buttons: ['No', intl.formatMessage({ id: "message-yes" })]
@@ -57,7 +57,7 @@ export function Wishlist() {
     <div className="wishlist">
       <div className="container">
         {wishlist.length === 0
-          ? <h2 style={{"textAlign": "center", marginTop: "6rem", marginBottom: "4rem"}}>No hay Productos</h2>
+          ? <h2 style={{"textAlign": "center", marginTop: "6rem", marginBottom: "4rem"}}><FormattedMessage id="app.wish-products" defaultMessage= "You don't have products in wishlist"/></h2>
           : <h2 className="orders__title"><FormattedMessage id="app.wish" defaultMessage="MY WISHLIST"/></h2>
           }
         <div className="visited-wrapper">
@@ -68,7 +68,7 @@ export function Wishlist() {
                   <div key={prod.id}>
                       <Link to={`/product/${prod.id}`} className="wishlist__item">
                         <h2>{prod.name?.length > 30 ? prod.name?.slice(0,30) + " ..." : prod.name}</h2>
-                        {prod?.rating ? <span>{[...Array(prod?.rating)].map(star =>{return <FaStar key={Math.random().toString(16).slice(2)} color="orange" size={15}/>})}</span> :<span>No rated</span>}
+                        {prod?.rating ? <span>{[...Array(prod?.rating)].map(star =>{return <FaStar key={Math.random().toString(16).slice(2)} color="orange" size={15}/>})}</span> :<span><FormattedMessage id="app.no-rated" defaultMessage="No rated yet"/></span>}
                         <figure>
                           <img src={prod.images} width='250px' height='250px' alt="productpic"/>
                         </figure>
