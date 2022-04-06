@@ -8,4 +8,12 @@ const getPayment = async (paymentId) => {
   return payment;
 };
 
-module.exports = { getPayment };
+const getAllPayments = async () => {
+  const payments = await Payment.findAll();
+
+  if(!payments) throw Error("There's no payments on DB")
+
+  return payments;
+};
+
+module.exports = { getPayment, getAllPayments };

@@ -58,6 +58,19 @@
     position:absolute;
     right:0px;
     font-weight: bold;
+    .full-price {
+      text-decoration:line-through;
+      color: $grayish-blue;
+      display: block;
+    }
+    .discount-price {
+      font-size: 1.2rem;
+    }
+    .discount {
+      display: block;
+      font-size: .9rem;
+      color: rgb(22, 199, 22);
+    }
   }
   .line {
     height:1px;

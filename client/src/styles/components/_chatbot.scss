@@ -1,0 +1,93 @@
+//botones de opcion
+.option-button{
+    display: flex-inline;
+    padding: 0.5em 1em;
+    margin: 5px 0;
+    height: 35px;
+    width: 230px;
+    border:  solid $grayish-blue;
+    border-radius: 99px;
+    box-sizing: border-box;
+    background-color: $white;
+    text-decoration: none;
+    color: $black;
+    text-shadow: 0 0.04em 0.04em rgb(255, 255, 255);
+    text-align: center;
+    transition: all 0.2s;
+    cursor: pointer;
+    align-self: flex-end;
+    align-content: space-around;
+    align-items: flex-start;
+    &:hover{
+      background-color: $light-grayish-blue;
+      color: $black;
+      border: solid rgb(0, 183, 255);
+    }
+    &:active{
+      background-color: rgb(0, 183, 255);
+      color: white;
+      border: solid rgb(0, 183, 255);
+    }
+  }
+//cambio boton opcion al pasar por arriba
+
+    .react-chatbot-kit-chat-bot-avatar-letter {
+    font-size: 1.5em;
+    
+    }
+    .react-chatbot-kit-chat-bot-avatar-letter:hover {
+    color: rgb(0, 183, 255);
+    }
+    ///Bot Avatar
+    .Bot-Avatar{
+      height: 50px;
+      width: 50px;
+      border-radius: 25px;
+      background-color: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }  
+
+    .react-chatbot-kit-chat-container {
+        height: 380px !important;
+      }
+    .react-chatbot-kit-chat-message-container {
+        height: 300px !important;
+      }
+    .react-chatbot-kit-chat-inner-container {
+        height: 380px !important;
+      }
+    
+    .orders{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2em;
+      color: #000;
+    }
+    
+    .chatIcon{
+      height: 120px;
+      width:120px;
+      border-radius: 25px;
+      background-color: transparent;
+      display: flex-inline;
+      justify-content: center;
+      align-items: flex-end;
+      position: fixed;
+      bottom: 400px;
+      left: 20px;
+    }
+    .chatbot-payments {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      img {
+        width: 200px;
+        margin: 10px 0;
+      }
+    }
+    
+    

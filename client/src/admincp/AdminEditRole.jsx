@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllRoles, getAllUsers} from '../redux/actions';
 import AdminSearchBar from './AdminSearchBar';
 import swal from 'sweetalert';
+import { FormattedMessage, useIntl} from 'react-intl'
 
 export default function AdminEditRole({showComponent}) {
     const dispatch = useDispatch();
+    const intl = useIntl();
     const loggedUser = useSelector(state => state.user)
     const users = useSelector(state => state.allUsers);
 
@@ -25,7 +27,7 @@ export default function AdminEditRole({showComponent}) {
         try {
             await axios.put('/user/role', {userId, role: role[Object.keys(role)[0]], token});
             swal({
-                title: 'User role changed successfully',
+                title: intl.formatMessage({ id: "message-change-role" }),
                 text: ' ',
                 icon: 'success',
                 timer: 3000,
@@ -34,8 +36,8 @@ export default function AdminEditRole({showComponent}) {
             showComponent('editRole');
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to see more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text: intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 2000,
                 button: null
@@ -54,9 +56,9 @@ export default function AdminEditRole({showComponent}) {
 
     return(
         <div className='adminSubComp'>
-            <div className='componentTitle'>Edit Users Permissions</div>
+            <div className='componentTitle'><FormattedMessage id="app.edit-permissions" defaultMessage="Edit Users Permissions"/></div>
             <AdminSearchBar search='users' />
-            <div className='tableHeader'><div>Name</div>|<div>Username</div>|<div>Email</div>|<div>Role</div>|<div>Action</div></div>
+            <div className='tableHeader'><div><FormattedMessage id="app.name-prod" defaultMessage="Name"/></div>|<div><FormattedMessage id="app.user-name" defaultMessage="Username"/></div>|<div><FormattedMessage id="app.email-user" defaultMessage="Email"/></div>|<div><FormattedMessage id="app.role" defaultMessage="Role"/></div>|<div><FormattedMessage id="app.action" defaultMessage="Action"/></div></div>
             <div className='adminTable'>
                 <ul>
                     {Array.isArray(users) ? users?.map(user => <li className='itemList' key={user.id}>
@@ -70,7 +72,7 @@ export default function AdminEditRole({showComponent}) {
                             </select>
                         </div>
                         <div>
-                            <button onClick={e => editRole(user.id)} disabled={loggedUser?.roleId !== 1} className='adminCP__button'>Set Role</button>
+                            <button onClick={e => editRole(user.id)} disabled={loggedUser?.roleId !== 1} className='adminCP__button'><FormattedMessage id="app.set-role" defaultMessage="Set Role"/></button>
                         </div>
                         </li>) : <div className='noDataFound'>{users}</div>}
                 </ul>

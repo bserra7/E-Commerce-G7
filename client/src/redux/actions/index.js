@@ -21,7 +21,7 @@ export const GET_ORDER = "GET_ORDER";
 export const CLEAR_CART = "CLEAR_CART";
 export const GET_ORDER_DETAIL = "GET_ORDER_DETAIL";
 export const GET_REVIEWS = "GET_REVIEWS";
-export const CLEAR_REVIEWS = "CLEAR_REVIEWS";
+export const CLEAR_STORE = "CLEAR_STORE";
 export const VERIFY_TWO_FA = "VERIFY_TWO_FA";
 export const GET_VISITED_PRODUCTS = "GET_VISITED_PRODUCTS";
 export const GET_WISHLIST = "GET_WISHLIST";
@@ -29,7 +29,8 @@ export const GET_ALL_STORES = "GET_ALL_STORES";
 export const GET_STORE_DETAIL = "GET_STORE_DETAIL";
 export const GET_ALL_DISCOUNTS = "GET_ALL_DISCOUNTS";
 export const GET_PAYMENT_DETAIL = "GET_PAYMENT_DETAIL";
-
+export const GET_ALL_PAYMENTS = "GET_ALL_PAYMENTS";
+export const PAG_CURRENT = "PAG_CURRENT";
 
 export const getAllProducts = () => {
   return async (dispatch) => {
@@ -95,9 +96,10 @@ export function getReviews(idProduct) {
   };
 };
 
-export function clearReviews() {
+export function clearStore(storeName) {
   return{
-    type: CLEAR_REVIEWS
+    type: CLEAR_STORE,
+    payload: storeName
   }
 }
 
@@ -227,6 +229,17 @@ export function getPaymentDetail(id){
   }
 }
 
+export function getAllPayments(){
+  return async function (dispatch){
+    try {
+      const payments = await axios.get(`/payment/`);
+      dispatch({type: GET_ALL_PAYMENTS, payload: payments.data})
+    } catch (error) {
+      console.log('Error: ' + error);
+    }
+  }
+}
+
 export function getAllRoles(token){
   return async function (dispatch){
     try {
@@ -339,3 +352,11 @@ export const getUserWishlist = (userId) => {
     }
   };
 };
+
+export const currentPag = (value) => {
+  return {
+    type: PAG_CURRENT,
+    payload: value
+  }
+}
+

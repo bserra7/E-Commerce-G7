@@ -8,15 +8,20 @@ import swal from 'sweetalert';
 import { clearCart } from "../redux/actions";
 import OrderShipping from "./OrderShipping";
 import WhatsApp from "./WhatsApp";
+import { FormattedMessage, useIntl } from 'react-intl'
+import formatter from "../lang/NumberFormat";
+import useCurrency from "../context/useCurrency";
 
 
 export function OrderCheckout() {
     const history = useHistory();
+    const intl = useIntl();
     const dispatch = useDispatch();
     const { isLogged } = useUser();
     const { cart, user } = useSelector(state => state);
     const [url, setUrl] = useState('');
     const [confirmed, setConfirmed] = useState(false);
+    const { currency, multiplier } = useCurrency();
     let orderId;
 
     const [order, setOrder] = useState({
@@ -34,10 +39,10 @@ export function OrderCheckout() {
     useEffect(() => {
         if (!isLogged) {
             swal({
-                title: 'You must be logged to proceed Checkout',
-                text: 'Please log in to finish your purchase',
+                title: intl.formatMessage( { id: "message-logged" }),
+                text: intl.formatMessage( { id: "message-logged-finish" }),
                 icon: 'error',
-                buttons: ['Cancel', 'Ok']
+                buttons: [intl.formatMessage( { id: "message-cancel" }), 'Ok']
             }).then(proceed => {
                 if (proceed) history.push('/login');
                 else history.push('/');
@@ -55,9 +60,9 @@ export function OrderCheckout() {
 
     const setTotal = _ => {
         if (cart?.length) {
-            const subtotal = cart?.map(el => el.amount * (el.discount ? Number(el.discounted_price?.toFixed(2)) : Number(el.price?.toFixed(2))))
+            const subtotal = cart?.map(el => el.amount * (el.discount ? el.discounted_price : el.price))
             const total = subtotal?.reduce((acumulator, current) => acumulator + current);
-            return Number(total.toFixed(2));
+            return total;
         }
     }
 
@@ -91,8 +96,8 @@ export function OrderCheckout() {
             if (response.status === 200) {
                 orderId = response.data.id;
                 swal({
-                    title: 'Your order has been confirmed',
-                    text: 'Thanks for your purchase',
+                    title: intl.formatMessage({ id: "message-confirm" }),
+                    text: intl.formatMessage({ id: "message-thanks" }),
                     icon: 'success',
                     timer: 3000,
                     button: null
@@ -103,10 +108,11 @@ export function OrderCheckout() {
                 if (res.status === 200) setUrl(res.data.response.sandbox_init_point);
 
             }
+            localStorage.removeItem('cart')
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to see more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text:  intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 3000,
                 button: null
@@ -120,7 +126,7 @@ export function OrderCheckout() {
                 {isLogged ?
                     cart?.length ?
                         <div className="container">
-                            <h2 className="orderCheckout__title">Order summary</h2>
+                            <h2 className="orderCheckout__title"><FormattedMessage id="app.summary" defaultMessage="Order summary"/></h2>
                             {cart?.map(product =>
                                 <div key={product.id} className="orderCheckout__content">
                                     <table className="order-table">
@@ -131,12 +137,17 @@ export function OrderCheckout() {
                                                 </td>
                                                 <td>
                                                     <br /> <span className='thin'>{product.name}</span>
-                                                    <br /> Amount: {product.amount}<br />
+                                                    <br /> <FormattedMessage id="app.amount" defaultMessage="Amount: "/>{product.amount}<br />
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <div className='price'>$ {product.discount ? Number(product.discounted_price?.toFixed(2)) : Number(product.price?.toFixed(2))}</div>
+                                                    <div className='price'>{product.discount ?
+                                                        <>
+                                                        <span className="full-price">{currency === "USD" && "US"} {formatter(currency).format(product.price*multiplier)}</span>
+                                                        <span className="discount-price">{currency === "USD" && "US"} {formatter(currency).format(product.discounted_price*multiplier)}</span>
+                                                        </>
+                                                      : <span>{currency === "USD" && "US"} {formatter(currency).format(product.price*multiplier)}</span>}</div>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -149,16 +160,15 @@ export function OrderCheckout() {
                                     TOTAL:
                                 </span>
                                 <span style={{ float: "right", textAlign: "right", fontWeight: "bold" }}>
-                                    $ {setTotal()}
+                                    {currency === "USD" && "US"} {formatter(currency).format(setTotal()*multiplier)}
                                 </span>
                             </div>
-
                             <OrderShipping confirmed={confirmed} setShipping={setShipping} />
-                            <button className="confirmOrder" onClick={(e) => handleSubmit(e)} disabled={!Object.keys(notification).length || confirmed}>CONFIRM ORDER</button>
+                            <button className="confirmOrder" onClick={(e) => handleSubmit(e)} disabled={!Object.keys(notification).length || confirmed}><FormattedMessage id="app.confirm-order" defaultMessage="CONFIRM ORDER"/></button>
                             <Payments clearCart={clearShopCart} url={url} />
-                        </div> : <><div className="message">Your cart is empty</div>
+                        </div> : <><div className="message"><FormattedMessage id="app.cart-empty" defaultMessage="Your cart is empty"/></div>
                         </>
-                    : <div className="message">Please Login to finish your Purchase</div>}
+                    : <div className="message"><FormattedMessage id="app.finish-purchase" defaultMessage="Please Login to finish your purchase"/></div>}
             </div>
             <WhatsApp />
         </>

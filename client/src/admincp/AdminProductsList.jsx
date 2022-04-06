@@ -2,12 +2,18 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts } from '../redux/actions';
+import { Link } from 'react-router-dom';
 import AdminSearchBar from './AdminSearchBar';
 import swal from 'sweetalert';
+import { FormattedMessage, useIntl } from 'react-intl'
+import useCurrency from '../context/useCurrency';
+import formatter from '../lang/NumberFormat';
 
 export default function AdminProductsList({showComponent, getId}) {
     const dispatch = useDispatch();
+    const intl = useIntl();
     const products = useSelector(state => state.products);
+    const { currency, multiplier } = useCurrency();
 
     useEffect(()=>{
         dispatch(getAllProducts());
@@ -28,15 +34,15 @@ export default function AdminProductsList({showComponent, getId}) {
         else if(sessionStorage.getItem('jwt')) token = sessionStorage.getItem('jwt');
         try {
             swal({
-                title: 'Do you want delete the user?',
-                text: "You won't be able to revert this!",
+                title: intl.formatMessage({ id: "message-delete-prod-quest" }),
+                text: intl.formatMessage({ id: "message-text-disc" }),
                 icon: 'warning',
-                buttons: ['No','Yes']
+                buttons: ['No', intl.formatMessage({ id: "message-yes" })]
             }).then(async (result) => {
                 if (result) {
                     await axios.delete('/product', {data: {token, productId}});
                     swal({
-                        title: 'You deleted the product with ID: ' + productId,
+                        title: intl.formatMessage({ id: "message-delete-prod" }) + productId,
                         text: ' ',
                         icon: 'success',
                         timer: 2000,
@@ -47,8 +53,8 @@ export default function AdminProductsList({showComponent, getId}) {
             })
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to see more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text: intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 2000,
                 button: null
@@ -59,22 +65,27 @@ export default function AdminProductsList({showComponent, getId}) {
 
     return(
         <div className='adminSubComp'>
-            <div className='componentTitle'>Products Management <button onClick={addProduct} className='componentTitle__button'>Add new Product</button></div>
+            <div className='componentTitle'><FormattedMessage id="app.manage-prod" defaultMessage="Products Management"/> <button onClick={addProduct} className='componentTitle__button'><FormattedMessage id="app.add-new-prod" defaultMessage="Add new Product"/></button></div>
             <AdminSearchBar search='products' />
-            <div className='tableHeader'><div>Product name</div>|<div>Price</div>|<div>Stock</div>|<div>Rate</div>|<div>Action</div></div>
+            <div className='tableHeader'><div><FormattedMessage id="app.product-name" defaultMessage="Product name"/></div>|<div><FormattedMessage id="app.price" defaultMessage="Price"/></div>|<div><FormattedMessage id="app.stok-prod" defaultMessage="Stock"/></div>|<div><FormattedMessage id="app.rate" defaultMessage="Rate"/></div>|<div><FormattedMessage id="app.action" defaultMessage="Action"/></div></div>
             <div className='adminTable'>
                 <ul>
                     {Array.isArray(products) ? products?.map(prod => <li className='prodList' key={prod.id}>
-                        <div>{prod.name.slice(0, 35)}{prod.name.length > 35 && '...'}</div>
-                        <div>US$ {prod.price}</div>
+                        <div><Link className='link' to={`/product/${prod.id}`}>{prod.name.slice(0, 35)}{prod.name.length > 35 && '...'}</Link></div>
+                        <div>{prod.discount ? 
+                        <>
+                            <span className='discounted'>{currency === "USD" && "US"} {formatter(currency).format(prod.price*multiplier)}</span>
+                            <span className='fullprice'>{currency === "USD" && "US"} {formatter(currency).format(prod.discounted_price*multiplier)}</span>
+                        </> : <span className='fullprice'>{currency === "USD" && "US"} {formatter(currency).format(prod.price*multiplier)}</span>}
+                        </div>
                         <div>{prod.stock}</div>
                         <div>{prod.rating}</div>
                         <div>
-                            <button onClick={e => editProduct(prod.id)} className='adminCP__button'>Edit</button>
-                            <button onClick={e => deleteProduct(prod.id)}className='adminCP__button'>Delete</button>
+                            <button onClick={e => editProduct(prod.id)} className='adminCP__button'><FormattedMessage id="app.btn-edit" defaultMessage="Edit"/></button>
+                            <button onClick={e => deleteProduct(prod.id)}className='adminCP__button'><FormattedMessage id="app.btn-delete" defaultMessage="Delete"/></button>
                         </div>
                         
-                        </li>) : <div className='noDataFound'>{products}</div>}
+                        </li>) : <div className='noDataFound'><FormattedMessage id="message-no-found-product" defaultMessage="No products found"/></div>}
                 </ul>
             </div>
         </div>

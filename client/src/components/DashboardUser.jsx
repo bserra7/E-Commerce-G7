@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import useUser from './Login/hooks/useUser';
 import UserAccount from './UserAccount';
+import { FormattedMessage } from 'react-intl';
 
 
 export function DashboardUser(){
@@ -21,19 +22,19 @@ export function DashboardUser(){
                 <li className='dashboardUser__item'>
                     <NavLink to="/user/account/profile"
                         activeClassName='active'
-                        className="dashboardUser__link">Profile</NavLink>
+                        className="dashboardUser__link"><FormattedMessage id="app.profile" defaultMessage="Profile"/></NavLink>
                 </li>
                 <li className='dashboardUser__item'>
                     <NavLink to="/user/account/orders"
-                        activeClassName='active' className="dashboardUser__link">View Orders</NavLink>
+                        activeClassName='active' className="dashboardUser__link"> <FormattedMessage id="app.view-order" defaultMessage="View Orders"/></NavLink>
                 </li>
                 <li className='dashboardUser__item'>
                     <NavLink to='/user/account/reset-password'
-                        activeClassName='active' className="dashboardUser__link">Change Password</NavLink>
+                        activeClassName='active' className="dashboardUser__link"><FormattedMessage id="app.change-password" defaultMessage="Change Password"/></NavLink>
                 </li>
                 <li className='dashboardUser__item'>
                     <NavLink to='/user/account/wishlist'
-                        activeClassName='active' className="dashboardUser__link">My Wishlist</NavLink>
+                        activeClassName='active' className="dashboardUser__link"><FormattedMessage id="app.wishlist" defaultMessage="My Wishlist"/></NavLink>
                 </li>
             </div>
         </nav>

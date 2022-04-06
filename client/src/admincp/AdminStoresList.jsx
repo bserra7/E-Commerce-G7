@@ -3,9 +3,11 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllStores } from '../redux/actions';
 import swal from 'sweetalert';
+import { FormattedMessage, useIntl } from 'react-intl'
 
 export default function AdminStoresList({showComponent, getId}) {
     const dispatch = useDispatch();
+    const intl = useIntl();
     const stores = useSelector(state => state.stores);
 
     useEffect(()=>{
@@ -27,15 +29,15 @@ export default function AdminStoresList({showComponent, getId}) {
         else if(sessionStorage.getItem('jwt')) token = sessionStorage.getItem('jwt');
         try {
             swal({
-                title: 'Do you want delete the store?',
-                text: "You won't be able to revert this!",
+                title: intl.formatMessage({ id: "message-store-delete" }),
+                text: intl.formatMessage({ id: "message-text-disc" }),
                 icon: 'warning',
-                buttons: ['No','Yes']
+                buttons: ['No', intl.formatMessage({ id: "message-yes" })]
             }).then(async (result) => {
                 if (result) {
                     await axios.delete('/stores', {data: {token, storeId}});
                     swal({
-                        title: 'You deleted the store with Number: ' + storeId,
+                        title:  intl.formatMessage({ id: "message-delete-store" }) + storeId,
                         text: ' ',
                         icon: 'success',
                         timer: 2000,
@@ -46,8 +48,8 @@ export default function AdminStoresList({showComponent, getId}) {
             })
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to see more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text: intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 2000,
                 button: null
@@ -58,8 +60,8 @@ export default function AdminStoresList({showComponent, getId}) {
 
     return(
         <div className='adminSubComp'>
-            <div className='componentTitle'>Stores Management<button onClick={addNewStore} className='componentTitle__button'>Add new Store</button></div>
-            <div className='tableHeader'><div>Store name</div>|<div>Address</div>|<div>City</div>|<div>State</div>|<div>Action</div></div>
+            <div className='componentTitle'><FormattedMessage id="app.manage-store" defaultMessage="Stores Management"/><button onClick={addNewStore} className='componentTitle__button'><FormattedMessage id="app.btn-add-store" defaultMessage="Add new Store"/></button></div>
+            <div className='tableHeader'><div><FormattedMessage id="app.store-name" defaultMessage="Store name"/></div>|<div><FormattedMessage id="app.store-address" defaultMessage="Address"/></div>|<div><FormattedMessage id="app.store-city" defaultMessage="City"/></div>|<div><FormattedMessage id="app.store-state" defaultMessage="State"/></div>|<div><FormattedMessage id="app.action" defaultMessage="Action"/></div></div>
             <div className='adminTable'>
                 <ul>
                     {Array.isArray(stores) ? stores?.map(store => <li className='itemList' key={store.id}>
@@ -68,11 +70,11 @@ export default function AdminStoresList({showComponent, getId}) {
                         <div>{store.city}</div>
                         <div>{store.state}</div>
                         <div>
-                            <button onClick={e => editStore(store.id)} className='adminCP__button'>Edit</button>
-                            <button onClick={e => deleteStore(store.id)}className='adminCP__button'>Delete</button>
+                            <button onClick={e => editStore(store.id)} className='adminCP__button'><FormattedMessage id="app.btn-edit" defaultMessage="Edit"/></button>
+                            <button onClick={e => deleteStore(store.id)}className='adminCP__button'><FormattedMessage id="app.btn-delete" defaultMessage="Delete"/></button>
                         </div>
                         
-                        </li>) : <div className='noDataFound'>{stores}</div>}
+                        </li>) : <div className='noDataFound'><FormattedMessage id="message-no-found-store" defaultMessage="No stores found"/></div>}
                 </ul>
             </div>
         </div>

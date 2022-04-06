@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts, getCategories, getSearchProducts } from "../redux/actions";
+import { FormattedMessage, useIntl } from 'react-intl'
 
 export default function SearchBar() {
   const [display, setDisplay] = useState(false);
@@ -11,6 +12,7 @@ export default function SearchBar() {
 
   const dispatch = useDispatch();
   const wrapperRef = useRef(null);
+  const intl = useIntl();
 
   const { categories, products } = useSelector(state => state);
 
@@ -77,7 +79,8 @@ export default function SearchBar() {
   return (
     <div className="container">
       <div ref={wrapperRef} className="searchBar">
-        <input value={search} placeholder="Search" onClick={() => setDisplay(!display)} onChange={e => setSearch(e.target.value)} className="searchBar__searching"/>
+        <div className="autoComplete">
+        <input value={search} placeholder={intl.formatMessage({ id: 'placeholderSearch' })} onClick={() => setDisplay(!display)} onChange={e => setSearch(e.target.value)} className="searchBar__searching"/>
         {display && (
           <div className="autoContainer">
             {options.filter(({ name }) => name.toLowerCase().includes(search.toLowerCase())).slice(0,5).map((value, i) => 
@@ -93,16 +96,17 @@ export default function SearchBar() {
               )}
           </div>
         )}
+        </div>
         <select onChange={handleSelect} value={filter}>
-          <option value=''>All Categories</option>
+          <option value=''>{intl.formatMessage({ id: 'placeholderAllCategories' })}</option>
         {categories?.map((ca,i) => {
           return <option key={i} value={ca.name}>
             {ca.name}
           </option>
         })}
         </select>
-        <button type='submit' onClick={e => handleSubmit(e)} className="searchBar__btn">Search</button>
-        <button type='reset' onClick={e => cleanState(e)} className="searchBar__btn" >Reset Filters</button>
+        <button type='submit' onClick={e => handleSubmit(e)} className="searchBar__btn"><FormattedMessage id="app.search" defaultMessage="Search"/></button>
+        <button type='reset' onClick={e => cleanState(e)} className="searchBar__btn" ><FormattedMessage id="app.reset" defaultMessage="Reset filters"/></button>
       </div>
     </div>
   )

@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { postDiscount, deleteDiscount, getDiscounts } = require("../utils/createDiscount-utils");
+const { postDiscount, deleteDiscount, getDiscounts, updateProductsDiscount } = require("../utils/createDiscount-utils");
 const createDiscount = Router();
 
 const adminOnly = require('../utils/adminOnly');
@@ -12,6 +12,17 @@ createDiscount.post('/', async (req, res) =>{
         res.send('Succesfully created discount');
     } catch (err) {
         res.status(404).json("Could not create discount: " + err)
+    }
+})
+
+createDiscount.post('/update', async (req, res) =>{
+    try {
+        const { categoryId, discount, weekday } = req.body
+        const updatedProducts = await updateProductsDiscount(discount, categoryId, weekday) 
+        if(!updatedProducts) res.status(404).send("Could not update products discount");
+        res.send('Succesfully update products discount');
+    } catch (err) {
+        res.status(404).json("Error ocurred: " + err)
     }
 })
 

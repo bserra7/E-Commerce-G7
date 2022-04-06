@@ -24,8 +24,8 @@ stores.get("/", async (req, res) => {
 
 stores.post("/", async (req, res) => {
     try {
-        const { name, address, city, zip_code, state, country } = req.body;
-        if(!name || !address || !city || !zip_code || !state || !country) throw Error ("Missing data on request")
+        const { name, address, city, zip_code, state, country, lat, lng } = req.body;
+        if(!name || !address || !city || !zip_code || !state || !country || !lat || !lng) throw Error ("Missing data on request")
         const [existent, newStore] = await Store.findOrCreate({
             where: {name: name},
             defaults: {
@@ -34,7 +34,9 @@ stores.post("/", async (req, res) => {
             city,
             zip_code,
             state,
-            country
+            country,
+            lat,
+            lng
         }});
 
         if(!newStore) throw Error ("The store with that name already exists!")
@@ -42,13 +44,14 @@ stores.post("/", async (req, res) => {
         res.json("Store created successfully!");
 
     } catch (err) {
+        console.log(err)
         res.status(404).json("Error ocurred: " + err)
     }
 });
 
 stores.put("/", adminOnly, async (req, res) => {
     try {
-        const { id, name, address, city, zip_code, state, country } = req.body;
+        const { id, name, address, city, zip_code, state, country, lat, lng } = req.body;
 
         const store = await Store.findByPk(id);
         if(!store) throw Error ("The Store doesn't exist");
@@ -59,7 +62,9 @@ stores.put("/", adminOnly, async (req, res) => {
             city: city ? city : store.city,
             zip_code: zip_code ? zip_code : store.zip_code,
             state: state ? state : store.state,
-            country: country ? country : store.country
+            country: country ? country : store.country,
+            lat: lat ? lat : store.lat,
+            lng: lng ? lng : store.lng
         });
 
         res.json(store);

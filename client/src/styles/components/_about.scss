@@ -1,0 +1,48 @@
+
+.about {
+  padding-bottom: 2rem;
+  &__title {
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    margin: 2rem auto;
+    width: max-content;
+    border-bottom: 2px solid $black;
+    padding-bottom: .5rem;
+    letter-spacing: 1px;
+  }
+  &__title.first {
+    margin-top: 0;
+  }
+
+  &__subtitle {
+    margin: .5rem 0;
+    font-size: 1rem;
+  }
+
+  &__description {
+    ul{
+      margin: 1rem 0;
+    }
+    ul li {
+      margin-bottom: .5rem;
+    }
+    ul li span {
+      filter: grayscale(1);
+      margin-right: .5rem;
+    }
+  }
+
+  &__tecnologies {
+
+    @include mq(medium) {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    li {
+      font-size: .9rem;
+      margin-left: 1rem;
+      line-height: 1.4rem;
+    }
+  }
+}

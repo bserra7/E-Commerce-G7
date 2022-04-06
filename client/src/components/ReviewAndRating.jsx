@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
 import Rating from '@material-ui/lab/Rating';
 import swal from 'sweetalert';
-import { getReviews } from "../redux/actions";
+import { FormattedMessage, useIntl } from 'react-intl'
+import { getProductDetail, getReviews } from "../redux/actions";
 
 export default function ReviewAndRating({productId}) {
   const dispatch = useDispatch();
+  const intl = useIntl();
   const [rating, setRating] = useState(0);
   const [input, setInput] = useState('');
 
@@ -19,6 +21,16 @@ export default function ReviewAndRating({productId}) {
 
   const handleSubmit = async e => {
     e.preventDefault();
+    if(!input || !rating){
+      swal({
+        title: intl.formatMessage( { id: "message-forgot"}),
+        text: intl.formatMessage( { id: "message-leave-comment"}),
+        icon: 'error',
+        timer: 4000,
+        button: 'Ok'
+      })
+      return
+    }
     const response = await axios.post('/review', {
       review: input,
       rate: rating,
@@ -28,14 +40,15 @@ export default function ReviewAndRating({productId}) {
   
     if(response.status === 200) {
       swal({
-        title: 'Your review has been saved',
-        text: 'Thanks for your feedback',
+        title: intl.formatMessage( { id: "message-saved-review"} ),
+        text: intl.formatMessage( { id: "message-thanks-review"} ),
         icon: 'success',
         timer: 3000,
         button: null
       })
     }
     dispatch(getReviews(productId));
+    dispatch(getProductDetail(productId));
   }
 
 
@@ -53,7 +66,7 @@ export default function ReviewAndRating({productId}) {
         />
       <span className="rating-number">{rating}</span>
       </div>
-          <button onClick={handleSubmit}>Submit Review</button>
+          <button onClick={handleSubmit}><FormattedMessage id="app.submit-review" defaultMessage="Submit Review"/></button>
     </div>
   )
 }

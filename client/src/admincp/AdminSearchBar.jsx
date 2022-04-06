@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllOrders, getAllProducts, getAllUsers, getCategories, getSearchProducts, getSearchUsers, } from "../redux/actions";
+import { FormattedMessage, useIntl } from 'react-intl'
 
 export default function AdminSearchBar(props) {
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state)
+  const intl = useIntl();
 
   useEffect(() =>{
     dispatch(getCategories())
@@ -72,26 +74,26 @@ export default function AdminSearchBar(props) {
     <div className="container">
       <div className="searchBar">
         {props.search === 'users' && <>
-        <input name="username" value={user.username} placeholder={`Search username`} onChange= {handleUserChange} className="searchBar__searching"/>
-        <input name="email" value={user.email} placeholder={`Search email`} onChange= {handleUserChange} className="searchBar__searching"/>
-        <input name="name" value={user.name} placeholder={`Search name`} onChange= {handleUserChange} className="searchBar__searching"/>
-        <input name="lastName" value={user.lastName} placeholder={`Search lastname`} onChange= {handleUserChange} className="searchBar__searching"/>
+        <input name="username" value={user.username} placeholder={intl.formatMessage({ id: 'placeholderSearch-username' })} onChange= {handleUserChange} className="searchBar__searching"/>
+        <input name="email" value={user.email} placeholder={intl.formatMessage({ id: 'placeholderSearch-email' })} onChange= {handleUserChange} className="searchBar__searching"/>
+        <input name="name" value={user.name} placeholder={intl.formatMessage({ id: 'placeholderSearch-name' })} onChange= {handleUserChange} className="searchBar__searching"/>
+        <input name="lastName" value={user.lastName} placeholder={intl.formatMessage({ id: 'placeholderSearch-lastname' })} onChange= {handleUserChange} className="searchBar__searching"/>
         </>}
 
-        {props.search !== 'users' && <input value={value} placeholder={`Search ${props.search}`} onChange= {handleInputChange} className="searchBar__searching"/>}
+        {props.search !== 'users' && <input value={value} placeholder={intl.formatMessage({ id: 'placeholderSearch' })} onChange= {handleInputChange} className="searchBar__searching"/>}
         {props.search === 'orders' && <select onChange={handleSelect} value={status}>
-          <option value='' hidden disabled>Order Status</option>
-        <option key='pending' value='pending'>Pending</option>
-        <option key='processing' value='processing'>Processing</option>
-        <option key='complete' value='complete'>Complete</option>
-        <option key='canceled' value='canceled'>Canceled</option>
+          <option value='' hidden disabled>{intl.formatMessage({ id: "app.option-status" })}</option>
+        <option key='pending' value='pending'>{intl.formatMessage({ id: "app.status-pending" })}</option>
+        <option key='processing' value='processing'>{intl.formatMessage({ id: "app.btn-processing" })}</option>
+        <option key='complete' value='complete'>{intl.formatMessage({ id: "app.btn-complete" })}</option>
+        <option key='canceled' value='canceled'>{intl.formatMessage({ id: "app.btn-cancelled" })}</option>
         </select>}
         {props.search === 'products' && <select onChange={handleSelect} value={category}>
-          <option value=''>All Categories</option>
+          <option value=''>{intl.formatMessage({ id: 'placeholderAllCategories' })}</option>
           {categories?.map((ca,i) => <option key={i} value={ca.name}>{ca.name}</option>)}
         </select>}
-        <button type='submit' onClick={e => handleSubmit(e)} className="searchBar__btn">Search</button>
-        <button type='reset' onClick={e => cleanState(e)} className="searchBar__btn" >Reset Filters</button>
+        <button type='submit' onClick={e => handleSubmit(e)} className="searchBar__btn"><FormattedMessage id="app.search" defaultMessage="Search"/></button>
+        <button type='reset' onClick={e => cleanState(e)} className="searchBar__btn" ><FormattedMessage id="app.reset" defaultMessage="Reset Filters"/></button>
       </div>
     </div>
   )

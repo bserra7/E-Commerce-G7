@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserWishlist, getVisitedProducts } from '../redux/actions';
-import Slider from './Slider/Slider';
 import FrecuentlyVisited from './FrecuentlyVisited';
 import WishlistView from './WishlistView';
 import useUser from './Login/hooks/useUser';
 import WhatsApp from './WhatsApp';
+import ChatBot from "../components/Chatbot/ChatBot";
+import 'react-chatbot-kit/build/main.css';
+import OffersDisplay from './OffersDisplay';
+import Slider from './Slider/Slider.jsx';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -21,12 +24,14 @@ const Home = () => {
   return (
     <div className="shop">
       <Slider />
+      <OffersDisplay/>
       {!isLogged ? false : 
         <div>
           <FrecuentlyVisited />
           <WishlistView />
-          <WhatsApp />
         </div>}
+        <WhatsApp />
+        <ChatBot />
       </div>)
 };
 

@@ -20,9 +20,9 @@ overflow:visible;
 }
 
 .main-menu {
-background:#212121;
-border-right:1px solid #e5e5e5;
-position:absolute;
+background: $very-dark-blue;
+border-right:5px solid $orange;
+position:fixed;
 top:0;
 bottom:0;
 height:100%;
@@ -107,8 +107,9 @@ margin:0;
 padding:0;
 }
 .main-menu li:hover {
-color:#fff;
-background-color:#5fa2db;
+    cursor: pointer;
+    color:#fff;
+    background-color:$orange;
 }
 .area {
 float: left;

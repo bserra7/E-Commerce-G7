@@ -42,6 +42,38 @@ const postDiscount = async (discount, categoryId, weekday) => {
 
 };
 
+const updateProductsDiscount = async (discount, categoryId, weekday) => {
+    discount = parseInt(discount)
+    if (!discount || !categoryId) throw Error('A valid category and a discount are required')
+
+    const checkDiscount = await Discount_category.findByPk(categoryId)
+
+    if (!checkDiscount) throw Error('Category dont has a discount')
+
+    // encotramos todos los productos de la categoria que posee el descuento
+    const productsToDiscount = await product_category.findAll({
+        where: {
+            categoryId
+        }
+    })
+
+    const discountedProducts = await Promise.all(
+        productsToDiscount.map((p) => {
+            Product.findByPk(p.productId)
+            .then(
+                prod => prod.update({
+                    // discount es un campo virutal pero el setter de la base de datos se encarga de setear el valor apropiado, recibe un string de dos palabras
+                    // seteamos el campo descuento al descuento apropiado
+                    discount : `discount_${weekday} ${discount}`
+                })
+            )
+        })
+    )
+    
+    return discountedProducts;
+
+};
+
 const deleteDiscount = async categoryId => {
     // lo necesitamos para saber para que día de la semana estaba programado el descuento
     let discountToDelete = await Discount_category.findOne(
@@ -89,4 +121,4 @@ const getDiscounts = async () => {
     } 
 }
 
-module.exports = { postDiscount, deleteDiscount, getDiscounts }
+module.exports = { postDiscount, deleteDiscount, getDiscounts, updateProductsDiscount }

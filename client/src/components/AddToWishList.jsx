@@ -5,9 +5,11 @@ import axios from "axios";
 import swal from "sweetalert";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserWishlist } from "../redux/actions";
+import { useIntl } from "react-intl";
 
 export function AddToWishList({ userId, productId }) {
   const dispatch = useDispatch();
+  const intl = useIntl();
   const id = useSelector((state) => state?.user?.id);
   const stateWishlist = useSelector((state) => state.wishlist);
   const stateDetail = useSelector((state) => state.details);
@@ -17,17 +19,21 @@ export function AddToWishList({ userId, productId }) {
   const [wishlist, setWishlist] = useState();
 
   useEffect(() => {
-    const resultSearch = stateWishlist?.map((el) => el.id).includes(stateDetail?.id);
+    dispatch(getUserWishlist(id));
+  }, []) // eslint-disable-line
+
+  useEffect(() => {
+    const resultSearch = stateWishlist?.find((el) => el.id === stateDetail?.id);
     if (resultSearch) setAdding(true);
     else return setAdding(false);
-  }, [stateWishlist, stateDetail]);
+  }, [stateWishlist, stateDetail]); // eslint-disable-line
 
   useEffect(() => {
     setWishlist({
       userId: userId,
       productId: productId,
     });
-  }, [stateWishlist]); // eslint-disable-next-line
+  }, [stateWishlist]); // eslint-disable-line
 
   const handleSubmit = async () => {
     const response = await axios.post("/wishlist", wishlist);
@@ -35,7 +41,7 @@ export function AddToWishList({ userId, productId }) {
       dispatch(getUserWishlist(id));
       setAdding(true);
       swal({
-        title: "Added to wishlist!",
+        title: intl.formatMessage({ id: "message-added" }),
         text: " ",
         icon: "success",
         timer: 3000,
@@ -43,7 +49,7 @@ export function AddToWishList({ userId, productId }) {
       });
     } else {
       swal({
-        title: "Something went wrong",
+        title: intl.formatMessage({ id: "message-error" }),
         text: " ",
         icon: "error",
         timer: 3000,
@@ -58,7 +64,7 @@ export function AddToWishList({ userId, productId }) {
       dispatch(getUserWishlist(id));
       setAdding(false);
       swal({
-        title: "Removed from wishlist!",
+        title: intl.formatMessage({ id: "message-removed" }),
         text: " ",
         icon: "success",
         timer: 3000,
@@ -66,7 +72,7 @@ export function AddToWishList({ userId, productId }) {
       });
     } else {
       swal({
-        title: "Something went wrong",
+        title: intl.formatMessage({ id: "message-error" }),
         text: " ",
         icon: "error",
         timer: 3000,

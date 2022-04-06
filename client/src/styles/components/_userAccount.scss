@@ -11,9 +11,12 @@
 
   &__title {
     margin-bottom: 1rem;
-  }
-  &__title:last-of-type {
-    margin-top: 1rem;
+    h3 {
+      font-size: 2rem;
+    }
+    h3:last-of-type {
+      margin-top: 2rem;
+    }
   }
 
   &__button {
@@ -23,6 +26,38 @@
     text-align: center;
     display: flex;
     align-items: center;
-    margin-top: 1.5rem !important;
+  }
+
+  &__item {
+    span:first-of-type {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+    span:last-of-type {
+      font-size: .9rem;
+      font-family: $font-roboto;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+
+    @include mq(medium) {
+      flex-direction: row;
+    }
+
+    a, button {
+      width: 100%;
+      justify-content: center;
+      margin-top: 0;
+    }
+    a {
+      margin-top: 1rem;
+      @include mq(medium) {
+        margin-top: .5rem;
+        margin-right: .5rem;
+      }
+    }
   }
 }

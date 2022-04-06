@@ -15,7 +15,10 @@
       background-color: $black; 
       background-image: -webkit-linear-gradient(90deg,rgba(255, 255, 255, .2) 25%,transparent 25%,transparent 50%,rgba(255, 255, 255, .2) 50%,rgba(255, 255, 255, .2) 75%,transparent 75%,transparent)
   }
-
+  .no-offers{
+    font-size: 1.5rem;
+    padding: 2rem 0;
+  }
 }
 .visited {
     display: flex;
@@ -70,4 +73,13 @@
         text-decoration:line-through;
         color: $grayish-blue
       }
+      .discount-price {
+        font-size: 1.2rem;
+      }
+      .discount {
+        display: block;
+        font-size: .9rem;
+        color: rgb(22, 199, 22);
+      }
+
   }

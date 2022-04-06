@@ -1,0 +1,113 @@
+
+.sucursales {
+  margin-bottom: 2rem;
+
+
+  &__button {
+    @include button();
+    margin-bottom: .5rem;
+  }
+
+  &__wrapper {
+    @include mq(medium) {
+      display: grid;
+      grid-template-columns: 75% 25%;
+    }
+  }
+
+  &__buttons {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+
+    @include mq(medium) {
+      height: 70vh;
+      overflow: hidden;
+      overflow: auto;
+      
+      &::-webkit-scrollbar{
+        width: 12px;
+        height: 10px;
+        background-color: #F5F5F5;
+      }
+      &::-webkit-scrollbar-track{
+          box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+          background-color: #F5F5F5;
+      }
+      &::-webkit-scrollbar-thumb{
+          background-color: $black; 
+          background-image: -webkit-linear-gradient(90deg,rgba(255, 255, 255, .2) 25%,transparent 25%,transparent 50%,rgba(255, 255, 255, .2) 50%,rgba(255, 255, 255, .2) 75%,transparent 75%,transparent)
+      }
+    }
+
+    button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      outline: none;
+      padding-bottom: 1rem;
+      border: 1px solid #dadada;
+      cursor: pointer;
+      transition: background-color .2s ease;
+
+      &:hover {
+        background-color: darken(#dadada, 1);
+      }
+
+      @include mq(medium) {
+        border: none;
+        border-bottom: 1px solid #dadada;
+      }
+
+      &:last-of-type {
+        @include mq(medium) {
+          border-bottom: none;
+        }
+      }
+
+      figure {
+        width: 30px;
+        height: 30px;
+        margin-left: 1rem;
+        flex-basis: 20%;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+
+      div {
+        padding-top: 1rem;
+        flex-basis: 80%;
+        text-align: left;
+        margin-left: 1rem;
+        font-family: $font-roboto;
+
+        @include mq(medium) {
+          margin-left: 1.5rem;
+        }
+
+        * {
+          margin-bottom: .3rem;
+        }
+
+        h2 {
+          text-transform: uppercase;
+          letter-spacing: 1.2px;
+          font-size: .9rem;
+        }
+
+        p,span {
+          font-size: .8rem;
+          text-transform: capitalize;
+          font-style: italic;
+          color: $dark-grayish-blue;
+        }
+      }
+    }
+  }
+}

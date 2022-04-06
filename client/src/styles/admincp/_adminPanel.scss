@@ -1,41 +1,11 @@
 .adminCP{
     &__button {
+        @include button();
         padding: 0 1rem;
-        margin: 0 5px;
+        margin: 5px 5px;
         height: 2.3rem;
-        border: none;
-        color: $white;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        text-align: center;
-        position: relative;
-        transition: all .15s ease;
-        background-color: rgba($black,.75);
-        cursor: pointer;
-    
-        &:hover::before {
-          width: 100%;
-          transform: skew(0deg);
-          left: 0;
-          transition: all .3s ease;
-        }
-    
-        &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 50%;
-          width: 20px;
-          height: 100%;
-          transform: translateX(-50%) skew(20deg);
-          background-color: rgba($black,.3);
-          z-index: -10;
-        }
-        &:disabled {
-            background-color: $grayish-blue;
-          }
-      }
+        letter-spacing: 0px;
+    }
 }
 .adminContainer{
     margin-left: 60px;
@@ -44,15 +14,23 @@
 .adminSubComp{
     height: 100%;
     margin: 20px 20px 0 20px;
+    &__welcome{
+        margin-left: 30px;
+        font-size: 1.5rem;
+        span {
+            display: flex;
+            flex-direction: column;
+        }
+    }
 }
 .componentTitle{
-    margin: 30px 0 30px;
+    margin: 30px;
     width: 100%;
     font-size: 40px;
 
     &__button {
         float: right;
-        margin-right: 2rem;
+        margin-right: 4rem;
         @include button();
     }
 }
@@ -109,6 +87,10 @@
     margin-right: 20px;
     border: 1px solid $grayish-blue;
     background-color: $light-grayish-blue;
+    .link {
+        text-decoration: none;
+        color: $black;
+    }
 }
 .prodList{
     div:nth-child(odd){
@@ -125,8 +107,18 @@
         text-align: center;
     }
     div:nth-child(2){
-        padding-left: 150px;
+        padding-left: 130px;
         text-align: left;
+        span {
+            margin: 0 5px;
+        }
+        .discounted {
+            text-decoration: line-through;
+            color: $grayish-blue;
+        }
+        .fullprice {
+            font-weight: 600;
+        }
     }
 }
 
@@ -139,4 +131,19 @@
         width: 20%;
         text-align: center;
     }
+}
+
+.textEditor {
+    max-width: 900px;
+    height: 592px;
+    display: block;
+    border: 1px solid $grayish-blue;
+}
+.editorDash {
+    display: flex;
+    justify-content: center;
+}
+
+.editorBox{
+    padding: 10px 20px;
 }

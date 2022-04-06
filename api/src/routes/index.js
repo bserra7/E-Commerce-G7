@@ -16,7 +16,7 @@ const createOrder = require("./createOrder-route");
 const deleteUser = require("./deleteUser-route")
 const allOrders = require("./getOrders-route");
 const orderRoute = require("./getOrder-route")
-const postReview = require("./newReview-route");
+const review = require("./review-route");
 const allUsers = require("./getUsers-route");
 const userRole = require("./userRole-route")
 const orderStatus = require("./orderStatus-route")
@@ -31,7 +31,7 @@ const visitedProducts = require("./getProductsVisited-route");
 const discount = require("./createDiscount-route");
 const wishlist = require("./manageWishlist-route");
 const store = require('./store')
-//const setRoles = require('./setRolesDB-route')
+const contactUs = require("./contactUs-route")
 
 // Middlewares
 const auth = require("./authenticate-route");
@@ -85,7 +85,7 @@ router.use('/notification', notificationOrder)
 
 router.use("/users", allUsers);
 
-router.use("/review", postReview);
+router.use("/review", review);
 
 router.use('/reviews', allReviews);
 
@@ -109,7 +109,7 @@ router.use("/stores", store);
 
 router.use("/payment", payment);
 
-// Eliminar luego
-//router.use("/set/role", setRoles);
+router.use("/contact", contactUs)
+
 
 module.exports = router;

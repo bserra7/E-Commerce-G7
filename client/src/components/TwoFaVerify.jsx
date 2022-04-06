@@ -4,9 +4,11 @@ import swal from 'sweetalert';
 import { useDispatch, useSelector } from "react-redux";
 import { verifyTwoFA } from "../redux/actions";
 import { useHistory } from "react-router-dom";
+import { FormattedMessage, useIntl } from 'react-intl'
 
 export default function TwoFaVerify() {
   const history = useHistory();
+  const intl = useIntl();  
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const [code, setCode] = useState('')
@@ -37,8 +39,8 @@ export default function TwoFaVerify() {
     const response = await axios.post('/twofa/resend', {userId: user?.id})
     if(response.status === 200) {
       swal({
-        title: "Code Resend!",
-        text: `Check your email again. You can resend 2FA every ${seconds/60} minute`,
+        title: intl.formatMessage( { id: "message-resent" }),
+        text: intl.formatMessage( { id: "message-check" }) + `${seconds/60} min.`,
         icon: "success",
         timer: 3000
       });
@@ -51,8 +53,8 @@ export default function TwoFaVerify() {
       const response = await axios.post('/twofa/verify', {userId: user?.id, code});
       if(response.status === 200) {
         swal({
-          title: "Code Verified!",
-          text: "You can proceed to the page",
+          title: intl.formatMessage( { id: "message-code" }),
+          text: intl.formatMessage( { id: "message-proceed" }),
           icon: "success",
           timer: 3000
         });
@@ -61,8 +63,8 @@ export default function TwoFaVerify() {
         history.push('/')
       }else {
         swal({
-          title: "Wrong code!",
-          text: "Please verify your code and try again!",
+          title: intl.formatMessage( { id: "message-code-wrong" }),
+          text: intl.formatMessage( { id: "message-verify-code" }),
           icon: "error",
           timer: 3000
         });
@@ -71,8 +73,8 @@ export default function TwoFaVerify() {
     catch (error) {
       console.log(error)
       swal({
-        title: "Something went wrong",
-        text: "The 2FA code is not valid",
+        title: intl.formatMessage( { id: "message-error" }),
+        text: intl.formatMessage( { id: "message-error-2FA" }),
         icon: "error",
         button: "Ok"
       });
@@ -82,11 +84,11 @@ export default function TwoFaVerify() {
   return (
   <div className="resetPassword">
       <form className="resetPassword__form" onSubmit={handleSubmit}>       
-        <h2 className="resetPassword__title">2FA Verification</h2>
+        <h2 className="resetPassword__title"><FormattedMessage id="app.2FA" defaultMessage="2FA Verification"/></h2>
         <input value={code} type="text" name="2FAcode" placeholder="Introduce your 2FA code" onChange={handleCode}/>
-        <button type="submit" disabled={!code}>Verify</button>
+        <button type="submit" disabled={!code}><FormattedMessage id="app.veriry" defaultMessage="Verify"/></button>
       </form>
-      <button style={{ marginTop: "20px",}} disabled={active} onClick={resendCode}>Re Send 2FA Code {active && "("+seconds+")"}</button>
+      <button style={{ marginTop: "20px",}} disabled={active} onClick={resendCode}><FormattedMessage id="app.re-send" defaultMessage="Re Send 2FA Code "/>{active && "("+seconds+")"}</button>
     </div>
   )
 }

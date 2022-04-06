@@ -2,15 +2,22 @@
 .dashboardUser {
   > .container {
     margin-top: 1rem;
-    display: flex;
-    justify-content: center;
+    
 
     @include mq(medium) {
+      display: flex;
+      justify-content: center;
       margin-top: 2.5rem;
     }
 
     * + * {
-      margin-left: 1rem;
+
+      margin-top: .5rem;
+
+      @include mq(medium) {
+        margin-left: 1.5rem;
+        margin-top: 0;
+      }
     }
   }
 
@@ -21,6 +28,8 @@
 
   &__link {
      color: #68707d;
+     display: inline-block;
+     width: fit-content;
 
      &.active {
       border-bottom: 2px solid $orange;

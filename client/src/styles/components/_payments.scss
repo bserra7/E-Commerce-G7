@@ -1,10 +1,24 @@
-.payments { 
+.payments {
     @include mq(medium) {
       bottom: -4rem;
-      transform: translateX(0%);
+      // transform: translateX(0%);
       left: 26rem;
     }
     &__button {
         @include button();
+        top: 0;
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        padding: 0 .5rem;
+        
+        @include mq(medium) {
+          padding: 0 2.8rem;
+        }
     }
+  }
+
+  .orderCheckout .payments .payments__button {
+    top: 0;
+    left: 0;
   }

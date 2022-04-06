@@ -1,24 +1,15 @@
 import React from 'react'
+import whatsapp from '../assets/images/whatsapp.png'
 
 const WhatsApp = ({ numero, mensaje }) => {
-    const borrarEsto = {
+    const styles = {
         height: "50px",
         width: "50px",
         borderRadius: "100%",
-        position: "sticky",
-        left: "100%",
-        bottom: "0px",
+        position: "fixed",
+        right: "1.5rem",
+        bottom: "2rem",
         margin: "5px",
-        backgroundColor: "#25D366",
-    }
-
-    const estoTambien = {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-        height: "100%",
-        color: "white"
     }
 
     const format = (value) => {
@@ -31,9 +22,10 @@ const WhatsApp = ({ numero, mensaje }) => {
     const link = `https://api.whatsapp.com/send?phone=${numero}&text=${mensaje}`
 
     return (
-        <div style={borrarEsto} >
-            {/* poner icono de whatsapp */}
-            <a style={estoTambien} href={link} target='blank'>W</a>
+        <div style={styles} >
+            <a href={link} target='blank'>
+                <img src={whatsapp} alt="whatsapp" />
+            </a>
         </div>
     )
 }

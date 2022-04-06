@@ -1,0 +1,185 @@
+.footer {
+  background-color: $black;
+  padding: 4.2rem 0;
+  padding-bottom: 1.5rem;
+  margin-top: 4rem;
+
+  @include mq(medium) {
+    padding: 4.2rem 3rem;
+    padding-bottom: 0;
+  }
+  @include mq(large) {
+    padding: 4.2rem 5rem;
+    padding-bottom: 0;
+  }
+
+  @include mq(x-large) {
+    padding: 4.2rem 9rem;
+    padding-bottom: 0;
+  }
+
+
+  &__list {
+
+    @include mq(medium) {
+      display: flex;
+      padding-bottom: 4rem;
+    }
+
+    * {
+      @include mq(medium) {
+        margin-right: .75rem;
+      }
+    }
+  }
+
+  &__history,
+  &__support,
+  &__buy {
+    display: block;
+    margin-top: 1.55rem;
+    border-bottom: thin solid #2c2c2d;
+    padding-bottom: 1.5rem;
+    padding-left: 2rem;
+
+     @include mq(medium) {
+       display: none;
+       border-bottom: none;
+     }
+  }
+
+  &__history.desktop,
+  &__support.desktop,
+  &__buy.desktop {
+    display: none;
+
+     @include mq(medium) {
+       display: block;
+       margin-top: 0;
+     }
+  }
+
+  &__history.desktop {
+    padding-left: 0;
+  }
+
+  &__link {
+    font-family: $font-kumbh-sans;
+    color: $white;
+    line-height: 1.8rem;
+    font-size: .9rem;
+    transition: color .2s ease;
+
+      &:hover {
+        color: $grayish-blue;
+      }
+  }
+
+  &__btn {
+    padding: 1.25rem 1.85rem;
+    display: block;
+    background: transparent;
+    color: $white;
+    border: none;
+    outline: none;
+    border-bottom: thin solid #2c2c2d;
+    width: 100%;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: .8rem;
+    letter-spacing: 1px;
+    text-align: left;
+
+    &:first-of-type {
+      border-top: thin solid #2c2c2d;
+    }
+
+    @include mq(medium) {
+      display: none;
+    }
+  }
+
+  &__social {
+    display: flex;
+    margin: 3.74rem 0;
+    padding: 0 3rem;
+
+    @include mq(medium) {
+      margin: 0;
+      margin-left: auto;
+      margin-right: 0;
+      padding: 0;
+    }
+
+    a {
+      display: block;
+
+      &:first-child {
+        margin-right: 1.5rem;
+
+        @include mq(medium) {
+          margin-right: 0;
+        }
+      }
+
+      img {
+        width: 30px;
+        height: 30px;
+        filter: invert(100%);
+      }
+    }
+  }
+
+  &__subfooter {
+    border-top: thin solid #2c2c2d;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 10% 40% 40% 10%;
+    grid-template-rows: repeat(3, 30px);
+    justify-content: center;
+    padding: 1rem 0;
+
+    @include mq(medium) {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    a, p {
+      color: $grayish-blue;
+      font-size: .8rem;
+      transition: color .2s ease;
+
+      &:hover {
+        color: #969696;
+      }
+    }
+
+    .politics {
+      grid-column: 2 / 3;
+      grid-row: 1 / 2;
+    }
+    .book {
+      grid-column: 3 / 4;
+      grid-row: 1 / 2;
+    }
+    .copyright {
+      grid-column: 2 / span 2;
+      grid-row: 2 / 3;
+    }
+    .payment {
+      grid-row: 3 / 4;
+      grid-column: 2 / span 2;
+      display: flex;
+      justify-content: center;
+
+
+      img {
+        width: 150px;
+        height: 50px;
+        border-radius: 10px;
+      }
+
+    }
+  }
+}

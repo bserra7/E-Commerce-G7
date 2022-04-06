@@ -3,34 +3,60 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategories, getProductDetail } from '../redux/actions';
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
+import { FormattedMessage, useIntl, createIntl, createIntlCache } from 'react-intl'
 import swal from 'sweetalert';
+import MessageEnglish from './../lang/en-UK.json'
+import MensajeEspañol from './../lang/es-ES.json'
 
 export function validate(input) {
     let errors = {};
+
+    const cache = createIntlCache();
+    
+    let localeDefault;
+    let messagesDefault;
+
+    const lang = localStorage.getItem('lang')
+
+    if(lang) {
+        
+        localeDefault = lang
+
+        if(lang === 'en-UK') {
+            messagesDefault = MessageEnglish;
+        } else if (lang === 'es-ES') {
+            messagesDefault = MensajeEspañol
+        } else {
+            localeDefault = 'en-UK'
+            messagesDefault = MessageEnglish;
+        }
+    }
+
+    const intl = createIntl({ locale: localeDefault, messages: messagesDefault, }, cache);
   
     if (!input.name) {
-      errors.name = "Introduce the product name";
+      errors.name = intl.formatMessage({id: "validation-name-product"});
     } 
     else if (input.name.length < 4) {
-        errors.name = "Product name is too short.";
+        errors.name = intl.formatMessage({id: "validation-name-product-length"});
     } 
     else if (!input.price) {
-        errors.price = "Introduce the product price"
+        errors.price = intl.formatMessage({id: "validation-product-price"});
     } 
     else if (!/^-?\d+\.?\d*$/.test(input.price)){
-        errors.price = "Only numbers allowed"
+        errors.price = intl.formatMessage({id: "validation-zip-numbers"});
     }
     else if(!input.description){
-       errors.description = "Write a brief description of your product"
+       errors.description = intl.formatMessage({id: "validation-description-product"});
     }
     else if(!input.stock){
-        errors.stock = "Stock number"
+        errors.stock = intl.formatMessage({id: "validation-stock-product"});
     } 
     else if (!/^-?\d+\.?\d*$/.test(input.stock)){
-        errors.stock = "Only numbers allowed"
+        errors.stock = intl.formatMessage({id: "validation-zip-numbers"});
     }
     else if(!input.categories.length){
-        errors.categories = "Choose the categories"
+        errors.categories = intl.formatMessage({id: "validation-choose-categories"});
     }
     return errors;
 }
@@ -38,6 +64,7 @@ export function validate(input) {
 
 export function UpdateProduct(props){
     const dispatch = useDispatch();
+    const intl = useIntl();
     const id = props.id || props.match.params.id;
     const history = useHistory();
 
@@ -103,7 +130,7 @@ export function UpdateProduct(props){
         const response = await axios.put("/product/update", product);
         if(response.status === 200){
             swal({
-                title: 'Product was updated successfully!',
+                title: intl.formatMessage({ id: "message-product-update" }),
                 text: ' ',
                 icon: 'success',
                 timer: 3000,
@@ -113,7 +140,7 @@ export function UpdateProduct(props){
             else history.push("/")
         }else {
             swal({
-                title: 'Something went wrong',
+                title: intl.formatMessage({ id: "message-error" }),
                 text: ' ',
                 icon: 'error',
                 timer: 3000,
@@ -126,38 +153,38 @@ export function UpdateProduct(props){
     return (
          <div className={history.location.pathname === '/admincp' ? "adminContainer editForms" : "container"}>
             <div className="updateProduct register">
-                <h1 className='updateProduct__title'>Update Product</h1>
+                <h1 className='updateProduct__title'><FormattedMessage id="app.update-product" defaultMessage="Update Product"/></h1>
                 <form onSubmit={(e)=>{handleSubmit(e)}} className="well form-horizontal">
                     <div className="register-group">
-                        <label className="col-md-4 control-label">Name:</label>
+                        <label className="col-md-4 control-label"><FormattedMessage id="app.name" defaultMessage="Name:"/></label>
                         <input name="name" value={input.name} onChange={handleChange} />
                         <div className='register__error'>{errors.name}</div>
                     </div>
                     <div className="register-group">
-                    <label className="col-md-4 control-label">Price:</label>
+                    <label className="col-md-4 control-label"><FormattedMessage id="app.price-product" defaultMessage="Price: (in USD)"/></label>
                     <input name="price" value={input.price} onChange={handleChange} />
                     <div className='register__error'>{errors.price}</div>
                     </div>
                     <div className="register-group">
-                    <label className="col-md-4 control-label">Description:</label>
+                    <label className="col-md-4 control-label"><FormattedMessage id="app.description-product" defaultMessage="Description:"/></label>
                     <textarea name="description" value={input.description} onChange={handleChange} ></textarea>
                     <div className='register__error'>{errors.description}</div>
                     </div>
                     <div className="register-group">
-                    <label className="col-md-4 control-label">Image:</label>
+                    <label className="col-md-4 control-label"><FormattedMessage id="app.image-product" defaultMessage="Image:"/></label>
                     <input name="images" value={input.images} onChange={handleChange} />
                     <div className='register__error'>{errors.images}</div>
                     </div>
                     <div className="register-group">
-                    <label className="col-md-4 control-label">Stock:</label>
+                    <label className="col-md-4 control-label"><FormattedMessage id="app.stock-product" defaultMessage="Stock:"/></label>
                     <input type='number' min='0' max='100' name="stock" value={input.stock} onChange={handleChange} />
                     <div className='register__error'>{errors.stock}</div>
                     </div>
                     <div className="register-group">
-                    <label className="col-md-4 control-label">Categories:</label>
+                    <label className="col-md-4 control-label"><FormattedMessage id="app.stock-categories" defaultMessage="Categories:"/></label>
                     <div>
                     <select defaultValue='none' name="categories" onChange={handleSelect} autoComplete='off'>
-                    <option value="none" disabled hidden>Choose one or more</option>
+                    <option value="none" disabled hidden>{intl.formatMessage({ id: "message-options" })}</option>
                     {stateCategories?.map(category => <option key={category.id} value={category.name}>{category.name}</option>)}
                     </select>
                     <div className='register__error'>{errors.categories}</div>
@@ -165,10 +192,10 @@ export function UpdateProduct(props){
                     <div className="formWrapper"><div className="addedCat">{input.categories?.map(category => <div key={category} className="catContainer"><div className="category">{category}</div><div className="deleteCat" id={category} onClick={handleDelete}>x</div></div>)}</div></div>
                     </div>
                     <div className="wrapper-buttons">
-                    {history.location.pathname === '/admincp' ? false : <Link to='/'><button className="register__button">Back</button></Link>}
+                    {history.location.pathname === '/admincp' ? false : <Link to='/'><button className="register__button"><FormattedMessage id="app.button-back" defaultMessage="Back"/></button></Link>}
                         <button className={history.location.pathname === '/admincp' ? 'register__button' : "register__button save" }
                      type="submit"
-                     disabled={!input.name || !input.price || !input.description || !input.stock || !input.categories.length}>Save</button>
+                     disabled={!input.name || !input.price || !input.description || !input.stock || !input.categories.length}><FormattedMessage id="app.button-save" defaultMessage="Save"/></button>
                     </div>
                 </form>
             </div>

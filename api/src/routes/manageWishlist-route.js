@@ -7,7 +7,6 @@ wishlist.get("/", async (req, res) => {
         const { userId } = req.query;
         const wishlist = await getWishlist(userId);
         if(!wishlist) return res.status(403).json("The user wishlist doens't exist");
-        console.log(wishlist);
         res.json(wishlist);
     } catch(err) {
         res.status(404).json("Error ocurred: " + err);

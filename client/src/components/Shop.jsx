@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts } from '../redux/actions';
 import Products from './Products';
 import Paginate from './Paginate';
 import WhatsApp from './WhatsApp';
+import { FormattedMessage } from 'react-intl';
 
 const Shop = () => {
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state);
+  const { products, pag } = useSelector((state) => state);
   const stock = Array.isArray(products) && products?.filter(product => product.stock > 0)
+  const top = useRef(null)
 
-  const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(6);
-  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfLastProduct = pag * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = Array.isArray(products) && stock.slice(indexOfFirstProduct, indexOfLastProduct);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   useEffect(() => {
     dispatch(getAllProducts());
@@ -25,16 +25,16 @@ const Shop = () => {
 
   return (
     <>
-      <div className="container shop">
-        <h2 className="shop__title">SHOP</h2>
+      <div ref={top} className="container shop">
+        <h2 className="shop__title"><FormattedMessage id="app.shop-title" defaultMessage="SHOP" /></h2>
 
         {!Array.isArray(stock) ? (
-          <h2>No results found</h2>
+          <h2><FormattedMessage id="app.no-results" defaultMessage="No results found" /></h2>
         ) : (
           <div>
             <Products products={currentProducts} />
             <div className="pagination">
-              <Paginate productsPerPage={productsPerPage} currentPage={currentPage} productsAmount={stock.length} paginate={paginate} />
+              <Paginate productsPerPage={productsPerPage} currentPage={pag} productsAmount={stock.length} top={top} />
             </div>
           </div>
         )}
