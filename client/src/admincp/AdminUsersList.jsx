@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllUsers } from '../redux/actions';
 import AdminSearchBar from './AdminSearchBar';
 import swal from 'sweetalert';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 export default function AdminUsersList({getId, showComponent}) {
     const dispatch = useDispatch();
+    const intl = useIntl();
     const loggedUser = useSelector(state => state.user)
     const users = useSelector(state => state.allUsers);
     useEffect(()=>{
@@ -17,15 +18,15 @@ export default function AdminUsersList({getId, showComponent}) {
     const forceResetPassword = (userId) => {
         try {
             swal({
-                title: 'Do you want reset user password?',
-                text: "You won't be able to revert this!",
+                title: intl.formatMessage({ id: "message-reset-pass" }),
+                text: intl.formatMessage({ id: "message-text-disc" }),
                 icon: 'warning',
-                buttons: ['No','Yes']
+                buttons: ['No', intl.formatMessage({ id: "message-yes" })]
             }).then(async (result) => {
                 if (result) {
                 await axios.put('/password/reset', {userId});
                 swal({
-                        title: 'You forced password reset',
+                        title: intl.formatMessage({ id: "message-reset-forced" }),
                         text: ' ',
                         icon: 'success',
                         timer: 2000,
@@ -35,8 +36,8 @@ export default function AdminUsersList({getId, showComponent}) {
             })
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to see more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text: intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 2000,
                 button: null
@@ -56,15 +57,15 @@ export default function AdminUsersList({getId, showComponent}) {
         else if(sessionStorage.getItem('jwt')) token = sessionStorage.getItem('jwt');
         try {
             swal({
-                title: 'Do you want delete the user?',
-                text: "You won't be able to revert this!",
+                title: intl.formatMessage({ id: "message-delete-user-quest" }),
+                text: intl.formatMessage({ id: "message-text-disc" }),
                 icon: 'warning',
-                buttons: ['No','Yes']
+                buttons: ['No', intl.formatMessage({ id: "message-yes" })]
             }).then(async (result) => {
                 if (result) {
                     await axios.delete('/user', {data: {token, userId}});
                     swal({
-                        title: 'You deleted the user with ID: ' + userId,
+                        title: intl.formatMessage({ id: "message-delete-user" }) + userId,
                         text: ' ',
                         icon: 'success',
                         timer: 2000,
@@ -75,8 +76,8 @@ export default function AdminUsersList({getId, showComponent}) {
             })
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to see more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text: intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 2000,
                 button: null

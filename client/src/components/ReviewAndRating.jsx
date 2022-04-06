@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
 import Rating from '@material-ui/lab/Rating';
 import swal from 'sweetalert';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { getProductDetail, getReviews } from "../redux/actions";
 
 export default function ReviewAndRating({productId}) {
   const dispatch = useDispatch();
+  const intl = useIntl();
   const [rating, setRating] = useState(0);
   const [input, setInput] = useState('');
 
@@ -22,8 +23,8 @@ export default function ReviewAndRating({productId}) {
     e.preventDefault();
     if(!input || !rating){
       swal({
-        title: 'Oops! You forgot something',
-        text: 'You must leave a comment and rate the product',
+        title: intl.formatMessage( { id: "message-forgot"}),
+        text: intl.formatMessage( { id: "message-leave-comment"}),
         icon: 'error',
         timer: 4000,
         button: 'Ok'
@@ -39,8 +40,8 @@ export default function ReviewAndRating({productId}) {
   
     if(response.status === 200) {
       swal({
-        title: 'Your review has been saved',
-        text: 'Thanks for your feedback',
+        title: intl.formatMessage( { id: "message-saved-review"} ),
+        text: intl.formatMessage( { id: "message-thanks-review"} ),
         icon: 'success',
         timer: 3000,
         button: null

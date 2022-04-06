@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from "@react-google-maps/api";
+import { FormattedMessage } from 'react-intl';
 const API_KEY = "AIzaSyBXDnxAg_a40ale9Hb5Hm8uejsM17qdKs4";
 
 const Map = ({ center, markers }) => {
@@ -71,7 +72,7 @@ const Map = ({ center, markers }) => {
                                         <p>{center.state}</p>
                                         <br />
                                         <hr />
-                                        <small>Monday to Friday from 8AM - 1PM and 5PM - 8PM.</small>
+                                        <small><FormattedMessage id="app.date-hour" defaultMessage="Monday to Friday from 8AM - 1PM and 5PM - 8PM."/></small>
                                     </div>
                                 </InfoWindow>
                             }

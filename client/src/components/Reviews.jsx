@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {FaStar} from 'react-icons/fa'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { clearStore, getAllUsers, getProductDetail, getReviews } from "../redux/actions";
 import axios from "axios";
 import swal from 'sweetalert';
 
 export default function Reviews({ id }) {
     const dispatch = useDispatch();
+    const intl = useIntl();
     const reviews = useSelector((state) => state.reviews);
 
     const users = useSelector((state) => state.allUsers);
@@ -29,7 +30,7 @@ export default function Reviews({ id }) {
         const response = await axios.delete('/review', { data: { userId, productId } });
         if (response.status === 200) {
             swal({
-                title: 'Review deleted successfully!',
+                title: intl.formatMessage( { id: "message-delete-review" }),
                 text: ' ',
                 icon: 'success',
                 timer: 3000,

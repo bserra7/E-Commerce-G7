@@ -5,22 +5,47 @@ import axios from 'axios';
 import Select from 'react-select'
 import CreateCategory from "../components/CreateCategory";
 import swal from 'sweetalert';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl, createIntl, createIntlCache } from 'react-intl'
+import MessageEnglish from '../lang/en-UK.json'
+import MensajeEspañol from '../lang/es-ES.json'
 
 export function validate(discount) {
     let errors = {};
 
+    const cache = createIntlCache();
+    
+    let localeDefault;
+    let messagesDefault;
+
+    const lang = localStorage.getItem('lang')
+
+    if(lang) {
+        
+        localeDefault = lang
+
+        if(lang === 'en-UK') {
+            messagesDefault = MessageEnglish;
+        } else if (lang === 'es-ES') {
+            messagesDefault = MensajeEspañol
+        } else {
+            localeDefault = 'en-UK'
+            messagesDefault = MessageEnglish;
+        }
+    }
+
+    const intl = createIntl({ locale: localeDefault, messages: messagesDefault, }, cache);
+
     if(!discount.categoryId){
-        errors.categoryId = "Select a category or create a new one"
+        errors.categoryId = intl.formatMessage({id: "validation-select-category"});
     }
     else if(!discount.weekday){
-        errors.weekday = "Set a Weekday"
+        errors.weekday = intl.formatMessage({id: "validation-set-weekday"});
     } 
     else if(!discount.discount){
-        errors.discount = "Set a Discount"
+        errors.discount = intl.formatMessage({id: "validation-set-discount"});
     } 
     else if (!/^-?\d+\.?\d*$/.test(discount.discount)){
-        errors.discount = "Only numbers allowed"
+        errors.discount = intl.formatMessage({id: "validation-zip-numbers"});
     }
     return errors;
 }
@@ -28,6 +53,7 @@ export function validate(discount) {
 
 export function AdminSetDiscounts({showComponent}){
     const dispatch = useDispatch();
+    const intl = useIntl();
     const stateCategories = useSelector((state)=>state.categories)
     
     const options = stateCategories.map((e)=> {
@@ -83,7 +109,7 @@ export function AdminSetDiscounts({showComponent}){
         const response = await axios.post("/discount", discount)
         if(response.status === 200){
             swal({
-                title: 'Discount was set successfully!',
+                title: intl.formatMessage({ id: "message-set-discount" }),
                 text: ' ',
                 icon: 'success',
                 timer: 3000,
@@ -97,7 +123,7 @@ export function AdminSetDiscounts({showComponent}){
             showComponent('discounts')
         }else {
             swal({
-                title: 'Something went wrong',
+                title: intl.formatMessage({ id: "message-error" }),
                 text: ' ',
                 icon: 'error',
                 timer: 3000,

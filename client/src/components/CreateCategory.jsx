@@ -25,7 +25,7 @@ export function CreateCategory(){
         e.preventDefault();
         if(validateCategory(nameCategory)){
             swal({
-                title: 'This category already exists',
+                title: intl.formatMessage({ id: "message-category-exists" }),
                 text: ' ',
                 icon: 'error',
                 timer: 3000,
@@ -36,7 +36,7 @@ export function CreateCategory(){
             const response = await axios.post("/category", {nameCategory: nameCategory})
             if(response.status === 200){
                 swal({
-                    title: 'Category was created successfully!',
+                    title: intl.formatMessage({ id: "message-category-create" }),
                     text: ' ',
                     icon: 'success',
                     timer: 3000,

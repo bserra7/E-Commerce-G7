@@ -3,35 +3,60 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategories, getProductDetail } from '../redux/actions';
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl, createIntl, createIntlCache } from 'react-intl'
 import swal from 'sweetalert';
+import MessageEnglish from './../lang/en-UK.json'
+import MensajeEspañol from './../lang/es-ES.json'
 
 export function validate(input) {
     let errors = {};
+
+    const cache = createIntlCache();
+    
+    let localeDefault;
+    let messagesDefault;
+
+    const lang = localStorage.getItem('lang')
+
+    if(lang) {
+        
+        localeDefault = lang
+
+        if(lang === 'en-UK') {
+            messagesDefault = MessageEnglish;
+        } else if (lang === 'es-ES') {
+            messagesDefault = MensajeEspañol
+        } else {
+            localeDefault = 'en-UK'
+            messagesDefault = MessageEnglish;
+        }
+    }
+
+    const intl = createIntl({ locale: localeDefault, messages: messagesDefault, }, cache);
   
     if (!input.name) {
-      errors.name = "Introduce the product name";
+      errors.name = intl.formatMessage({id: "validation-name-product"});
     } 
     else if (input.name.length < 4) {
-        errors.name = "Product name is too short.";
+        errors.name = intl.formatMessage({id: "validation-name-product-length"});
     } 
     else if (!input.price) {
-        errors.price = "Introduce the product price"
+        errors.price = intl.formatMessage({id: "validation-product-price"});
     } 
     else if (!/^-?\d+\.?\d*$/.test(input.price)){
-        errors.price = "Only numbers allowed"
+        errors.price = intl.formatMessage({id: "validation-zip-numbers"});
     }
     else if(!input.description){
-       errors.description = "Write a brief description of your product"
+       errors.description = intl.formatMessage({id: "validation-description-product"});
     }
     else if(!input.stock){
-        errors.stock = "Stock number"
+        errors.stock = intl.formatMessage({id: "validation-stock-product"});
     } 
     else if (!/^-?\d+\.?\d*$/.test(input.stock)){
-        errors.stock = "Only numbers allowed"
+        errors.stock = intl.formatMessage({id: "validation-zip-numbers"});
     }
     else if(!input.categories.length){
-        errors.categories = "Choose the categories"
+        errors.categories = intl.formatMessage({id: "validation-choose-categories"});
     }
     return errors;
 }
@@ -39,6 +64,7 @@ export function validate(input) {
 
 export function UpdateProduct(props){
     const dispatch = useDispatch();
+    const intl = useIntl();
     const id = props.id || props.match.params.id;
     const history = useHistory();
 
@@ -104,7 +130,7 @@ export function UpdateProduct(props){
         const response = await axios.put("/product/update", product);
         if(response.status === 200){
             swal({
-                title: 'Product was updated successfully!',
+                title: intl.formatMessage({ id: "message-product-update" }),
                 text: ' ',
                 icon: 'success',
                 timer: 3000,
@@ -114,7 +140,7 @@ export function UpdateProduct(props){
             else history.push("/")
         }else {
             swal({
-                title: 'Something went wrong',
+                title: intl.formatMessage({ id: "message-error" }),
                 text: ' ',
                 icon: 'error',
                 timer: 3000,
@@ -158,7 +184,7 @@ export function UpdateProduct(props){
                     <label className="col-md-4 control-label"><FormattedMessage id="app.stock-categories" defaultMessage="Categories:"/></label>
                     <div>
                     <select defaultValue='none' name="categories" onChange={handleSelect} autoComplete='off'>
-                    <option value="none" disabled hidden>Choose one or more</option>
+                    <option value="none" disabled hidden>{intl.formatMessage({ id: "message-options" })}</option>
                     {stateCategories?.map(category => <option key={category.id} value={category.name}>{category.name}</option>)}
                     </select>
                     <div className='register__error'>{errors.categories}</div>

@@ -5,35 +5,60 @@ import axios from 'axios';
 import Select from 'react-select'
 import CreateCategory from "./CreateCategory";
 import swal from 'sweetalert';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl, createIntl, createIntlCache } from 'react-intl'
+import MessageEnglish from './../lang/en-UK.json'
+import MensajeEspañol from './../lang/es-ES.json'
 
 export function validate(input) {
 
     let errors = {};
+
+    const cache = createIntlCache();
+    
+    let localeDefault;
+    let messagesDefault;
+
+    const lang = localStorage.getItem('lang')
+
+    if(lang) {
+        
+        localeDefault = lang
+
+        if(lang === 'en-UK') {
+            messagesDefault = MessageEnglish;
+        } else if (lang === 'es-ES') {
+            messagesDefault = MensajeEspañol
+        } else {
+            localeDefault = 'en-UK'
+            messagesDefault = MessageEnglish;
+        }
+    }
+
+    const intl = createIntl({ locale: localeDefault, messages: messagesDefault, }, cache);
   
     if (!input.name) {
-      errors.name = "Introduce the product name";
+      errors.name = intl.formatMessage({id: "validation-name-product"});
     } 
     else if (input.name.length < 4) {
-        errors.name = "Product name is too short";
+        errors.name = intl.formatMessage({id: "validation-name-product-length"});
     } 
     else if (!input.price) {
-        errors.price = "Introduce the product price"
+        errors.price = intl.formatMessage({id: "validation-product-price"});
     } 
     else if (!/^-?\d+\.?\d*$/.test(input.price)){
-        errors.price = "Only numbers allowed"
+        errors.price = intl.formatMessage({id: "validation-zip-numbers"});
     }
     else if(!input.description){
-       errors.description = "Write a brief description of your product"
+       errors.description = intl.formatMessage({id: "validation-description-product"});
     }
     else if(!input.stock){
-        errors.stock = "Stock number"
+        errors.stock = intl.formatMessage({id: "validation-stock-product"});
     } 
     else if (!/^-?\d+\.?\d*$/.test(input.stock)){
-        errors.stock = "Only numbers allowed"
+        errors.stock = intl.formatMessage({id: "validation-zip-numbers"});
     }
     else if(!input.categories.length){
-        errors.categories = "Select the categories or create a new one"
+        errors.categories = intl.formatMessage({id: "validation-categories-product"});
     }
     return errors;
 }
@@ -42,6 +67,7 @@ export function validate(input) {
 export function CreateProduct(){
     const dispatch = useDispatch();
     const stateCategories = useSelector((state)=>state.categories)
+    const intl = useIntl();
     
 
     const options = stateCategories.map((e)=> {
@@ -91,7 +117,7 @@ export function CreateProduct(){
         const response = await axios.post("/product", input)
         if(response.status === 200){
             swal({
-                title: 'Product was created successfully!',
+                title: intl.formatMessage({ id: "message-product-create" }),
                 text: ' ',
                 icon: 'success',
                 timer: 3000,
@@ -108,7 +134,7 @@ export function CreateProduct(){
             })
         }else {
             swal({
-                title: 'Something went wrong',
+                title: intl.formatMessage({ id: "message-error" }),
                 text: ' ',
                 icon: 'error',
                 timer: 3000,

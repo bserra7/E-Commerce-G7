@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 export function Payment(props) {
+
+  const intl = useIntl();
 
   const styles = {
     display: "flex",
@@ -20,9 +22,9 @@ export function Payment(props) {
            <div className="orderDetails__item" style={styles}>
               <div className="item__details">
                 <div className="item__title">
-                    {paymentStatus === 'success' ? `Your Payment has been Approved ✅` : 
-                    paymentStatus === 'failure' ? `Your Payment has been Rejected ❌` : 
-                    `Your Payment is Pending ⏱️`}
+                    {paymentStatus === 'success' ? intl.formatMessage( { id: "message-success"}) `✅` : 
+                    paymentStatus === 'failure' ? intl.formatMessage( { id: "message-failure"})`❌` : 
+                    intl.formatMessage( { id: "message-pending"})`⏱️`}
                 </div>
                 <div className="item__description">
                   {<Link to={`/user/account/order/detail/${orderId}`}>

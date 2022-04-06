@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 export function OrderShipping ({confirmed,setShipping}){
+
+    const intl = useIntl();
 
     const { user } = useSelector(state => state)
 
@@ -28,7 +30,7 @@ export function OrderShipping ({confirmed,setShipping}){
     const handleSubmit = event => {
         event.preventDefault();
         swal({
-            title: 'Your Shipping information was updated!',
+            title: intl.formatMessage( { id: "message-shipping-updated"}),
             text: ' ',
             icon: 'success',
             timer: 2000,

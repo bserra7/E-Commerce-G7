@@ -7,10 +7,11 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { userLogin } from '../../redux/actions';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 export default function Login() {
   const dispatch = useDispatch();
+  const intl = useIntl();
   const [errors, setErrors] = useState({});
   const [input, setInput] = useState({
     username: '',
@@ -74,7 +75,7 @@ export default function Login() {
               type="text"
               className="form-control"
               name="username"
-              placeholder="Username"
+              placeholder={intl.formatMessage({ id: 'placeholderUsername' })}
               onChange={handleChange}
             />
             <input
@@ -83,7 +84,7 @@ export default function Login() {
               className="form-control"
               name="password"
               onChange={handleChange}
-              placeholder="Password"
+              placeholder={intl.formatMessage({ id: 'placeholderPassword' })}
             />
             <span className="error">{errors.username}</span>
             <span className="error">{errors.password}</span>
@@ -100,7 +101,7 @@ export default function Login() {
             <GoogleLogin
               className="btn-google"
               clientId="827278609523-buiubpo31u43c0snvgsjhukdtces0ijo.apps.googleusercontent.com"
-              buttonText="Log in"
+              buttonText= {intl.formatMessage({ id: 'placeholderLogin' })}
               onSuccess={responseGoogle}
               onFailure={responseGoogle}
               cookiePolicy={'single_host_origin'}

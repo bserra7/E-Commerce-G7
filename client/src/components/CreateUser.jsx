@@ -7,72 +7,97 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllUsers } from "../redux/actions";
 import swal from 'sweetalert';
 import WhatsApp from "./WhatsApp";
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl, createIntl, createIntlCache } from 'react-intl'
+import MessageEnglish from './../lang/en-UK.json'
+import MensajeEspañol from './../lang/es-ES.json'
 
 export function validate(user, users) {
     const emails = users?.map(user => user.email)
     const usernames = users?.map(user => user.username)
     let errors = {};
 
+    const cache = createIntlCache();
+    
+    let localeDefault;
+    let messagesDefault;
+
+    const lang = localStorage.getItem('lang')
+
+    if(lang) {
+        
+        localeDefault = lang
+
+        if(lang === 'en-UK') {
+            messagesDefault = MessageEnglish;
+        } else if (lang === 'es-ES') {
+            messagesDefault = MensajeEspañol
+        } else {
+            localeDefault = 'en-UK'
+            messagesDefault = MessageEnglish;
+        }
+    }
+
+    const intl = createIntl({ locale: localeDefault, messages: messagesDefault, }, cache);
+
     if (!user.name) {
-        errors.name = "Write your name";
+        errors.name = intl.formatMessage({id: "validation-name"}); 
     }
     else if (!/^[^\W0-9_][a-zA-Z\u00f1\u00d1\s]+$/.test(user.name)) {
-        errors.name = "Invalid name";
+        errors.name = intl.formatMessage({id: "validation-name-invalid"});
     }
     else if (!user.lastName) {
-        errors.lastName = "Write your last name";
+        errors.lastName = intl.formatMessage({id: "validation-lastname"}); 
     }
     else if (!/^[^\W0-9_][a-zA-Z\u00f1\u00d1\s]+$/.test(user.lastName)) {
-        errors.lastName = "Invalid last name";
+        errors.lastName = intl.formatMessage({id: "validation-lastname-invalid"}); 
     }
     else if (!user.username) {
-        errors.username = "Introduce a username"
+        errors.username = intl.formatMessage({id: "validation-username"});
     }
     else if (!/^[^\W0-9_][a-zA-Z0-9\u00f1\u00d1\s]+$/.test(user.username)) {
-        errors.username = "Invalid username";
+        errors.username = intl.formatMessage({id: "validation-username-invalid"});
     }
     else if (usernames.includes(user.username)) {
-        errors.username = "Username already in use";
+        errors.username = intl.formatMessage({id: "validation-username-in-use"});
     }
     else if (!user.password) {
-        errors.password = "Write a password"
+        errors.password = intl.formatMessage({id: "validation-password"});
     }
     else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(user.password)) {
-        errors.password = "Password must contain eight characters, at least one uppercase letter, one lowercase letter and one number"
+        errors.password = intl.formatMessage({id: "validation-password-req"});
     }
     else if (!user.password2) {
-        errors.password2 = "Repeat your password"
+        errors.password2 = intl.formatMessage({id: "validation-password-repeat"});
     }
     else if (user.password !== user.password2) {
-        errors.password2 = "Password doesn't match"
+        errors.password2 = intl.formatMessage({id: "validation-password-match"});
     }
     else if (!user.email) {
-        errors.email = "Enter your e-mail"
+        errors.email = intl.formatMessage({id: "validation-email"});
     }
     else if (!/\S+@\S+\.\S+/.test(user.email)) {
-        errors.email = "Invalid e-mail";
+        errors.email = intl.formatMessage({id: "validation-email-invalid"});
     }
     else if (emails.includes(user.email)) {
-        errors.email = "Email already in use";
+        errors.email = intl.formatMessage({id: "validation-email-in-use"});
     }
     else if (!user.country) {
-        errors.country = "Introduce your country name"
+        errors.country = intl.formatMessage({id: "validation-country"});
     }
     else if (!user.city) {
-        errors.city = "Introduce your city name"
+        errors.city = intl.formatMessage({id: "validation-city"});
     }
     else if (!user.address) {
-        errors.address = "Write your address"
+        errors.address = intl.formatMessage({id: "validation-address"});
     }
     else if (!user.dateOfBirth) {
-        errors.dateOfBirth = "Select your date of birth"
+        errors.dateOfBirth = intl.formatMessage({id: "validation-birthday"});
     }
     else if (!user.zip_code) {
-        errors.zip_code = "Introduce the zip code"
+        errors.zip_code = intl.formatMessage({id: "validation-zip"});
     }
     else if (!/^-?\d+\.?\d*$/.test(user.zip_code)) {
-        errors.zip_code = "Only numbers allowed"
+        errors.zip_code = intl.formatMessage({id: "validation-zip-numbers"});
     }
     return errors;
 }
@@ -82,6 +107,8 @@ export function CreateUser() {
     const history = useHistory();
     const dispatch = useDispatch();
     const users = useSelector(state => state.allUsers);
+
+    const intl = useIntl();
 
     const { isLogged } = useUser();
 
@@ -137,7 +164,7 @@ export function CreateUser() {
         const response = await axios.post("/user", user)
         if (response.status === 200) {
             swal({
-                title: 'You registered successfully',
+                title: intl.formatMessage({ id: "message-register" }),
                 text: ' ',
                 icon: 'success',
                 timer: 3000,
@@ -146,7 +173,7 @@ export function CreateUser() {
             history.push("/")
         } else {
             swal({
-                title: 'Something went wrong',
+                title: intl.formatMessage({ id: "message-error" }),
                 text: ' ',
                 icon: 'error',
                 timer: 3000,

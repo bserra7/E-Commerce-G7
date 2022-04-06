@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { getUserDetail, userLogin, verifyTwoFA } from "../redux/actions";
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 export default function TwoFaActivate(){
     const dispatch = useDispatch();
+    const intl = useIntl();
     const userLogged = useSelector(state => state.user);
     const userDetail = useSelector(state => state.userDetail)
 
@@ -23,16 +24,16 @@ export default function TwoFaActivate(){
             const response = await axios.put('/twofa', {action: 'set', userId: userLogged?.id, two_fa: boolean})
             if(response.status === 200 && boolean === true) {
                 swal({
-                  title: '2FA Activated!',
-                  text: 'You have been set 2FA successfully!',
+                  title: intl.formatMessage({ id: "message-active" }),
+                  text: intl.formatMessage({ id: "message-active-success" }),
                   icon: 'success',
                   timer: 3000,
                   button: null
                 })
             } else if(response.status === 200 && boolean === false) {
                 swal({
-                    title: '2FA Deactivated!',
-                    text: 'You have been deactivated 2FA!',
+                    title: intl.formatMessage({ id: "message-deactive" }),
+                    text: intl.formatMessage({ id: "message-deactive-success" }),
                     icon: 'warning',
                     timer: 3000,
                     button: null
@@ -42,8 +43,8 @@ export default function TwoFaActivate(){
             dispatch(getUserDetail(userLogged?.id));
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to know more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text:  intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 3000,
                 button: null

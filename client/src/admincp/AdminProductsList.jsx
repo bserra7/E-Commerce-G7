@@ -5,10 +5,11 @@ import { getAllProducts } from '../redux/actions';
 import { Link } from 'react-router-dom';
 import AdminSearchBar from './AdminSearchBar';
 import swal from 'sweetalert';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 export default function AdminProductsList({showComponent, getId}) {
     const dispatch = useDispatch();
+    const intl = useIntl();
     const products = useSelector(state => state.products);
 
     useEffect(()=>{
@@ -30,15 +31,15 @@ export default function AdminProductsList({showComponent, getId}) {
         else if(sessionStorage.getItem('jwt')) token = sessionStorage.getItem('jwt');
         try {
             swal({
-                title: 'Do you want delete the user?',
-                text: "You won't be able to revert this!",
+                title: intl.formatMessage({ id: "message-delete-prod-quest" }),
+                text: intl.formatMessage({ id: "message-text-disc" }),
                 icon: 'warning',
-                buttons: ['No','Yes']
+                buttons: ['No', intl.formatMessage({ id: "message-yes" })]
             }).then(async (result) => {
                 if (result) {
                     await axios.delete('/product', {data: {token, productId}});
                     swal({
-                        title: 'You deleted the product with ID: ' + productId,
+                        title: intl.formatMessage({ id: "message-delete-prod" }) + productId,
                         text: ' ',
                         icon: 'success',
                         timer: 2000,
@@ -49,8 +50,8 @@ export default function AdminProductsList({showComponent, getId}) {
             })
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to see more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text: intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 2000,
                 button: null

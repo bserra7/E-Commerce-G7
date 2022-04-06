@@ -3,38 +3,64 @@ import { useDispatch, useSelector } from "react-redux";
 import { getStoreDetail } from '../redux/actions';
 import axios from 'axios';
 import swal from 'sweetalert';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl, createIntl, createIntlCache } from 'react-intl'
+import MessageEnglish from '../lang/en-UK.json'
+import MensajeEspañol from '../lang/es-ES.json'
 const API_KEY = "AIzaSyBXDnxAg_a40ale9Hb5Hm8uejsM17qdKs4";
 
 export function validate(store) {
     let errors = {};
 
+    const cache = createIntlCache();
+    
+    let localeDefault;
+    let messagesDefault;
+
+    const lang = localStorage.getItem('lang')
+
+    if(lang) {
+        
+        localeDefault = lang
+
+        if(lang === 'en-UK') {
+            messagesDefault = MessageEnglish;
+        } else if (lang === 'es-ES') {
+            messagesDefault = MensajeEspañol
+        } else {
+            localeDefault = 'en-UK'
+            messagesDefault = MessageEnglish;
+        }
+    }
+
+    const intl = createIntl({ locale: localeDefault, messages: messagesDefault, }, cache);
+
     if (!store.name) {
-        errors.name = "Write your name";
+        errors.name = intl.formatMessage({id: "validation-name-store"});
     }
     else if (!store.country) {
-        errors.country = "Introduce store country"
+        errors.country = intl.formatMessage({id: "validation-store-country"});
     }
     else if (!store.city) {
-        errors.city = "Introduce store city"
+        errors.city = intl.formatMessage({id: "validation-store-city"});
     }
     else if (!store.address) {
-        errors.address = "Write store address"
+        errors.address = intl.formatMessage({id: "validation-store-address"});
     }
     else if (!store.state) {
-        errors.state = "Introduce store state"
+        errors.state = intl.formatMessage({id: "validation-store-state"});
     }
     else if (!store.zip_code) {
-        errors.zip_code = "Introduce the zip code"
+        errors.zip_code = intl.formatMessage({id: "validation-store-zip"});
     }
     else if (!/^-?\d+\.?\d*$/.test(store.zip_code)) {
-        errors.zip_code = "Only numbers allowed"
+        errors.zip_code = intl.formatMessage({id: "validation-zip-numbers"});
     }
     return errors;
 }
 
 export function AdminEditStore(props) {
     const dispatch = useDispatch();
+    const intl = useIntl();
 
     const id = props.id;
 
@@ -82,15 +108,15 @@ export function AdminEditStore(props) {
         const location = promise.data.results[0].geometry.location
         try {
             swal({
-                title: 'Do you want save changes?',
+                title: intl.formatMessage({ id: "message-save-changes" }),
                 text: " ",
                 icon: 'warning',
-                buttons: ['No', 'Yes']
+                buttons: ['No', intl.formatMessage({ id: "message-yes" })]
             }).then(async (result) => {
                 if (result) {
                     await axios.put("/stores", { ...store, ...location, token });
                     swal({
-                        title: 'Store changes saved',
+                        title: intl.formatMessage({ id: "message-save-store-changes" }),
                         text: ' ',
                         icon: 'success',
                         timer: 2000,
@@ -101,8 +127,8 @@ export function AdminEditStore(props) {
             })
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to see more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text:  intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 2000,
                 button: null

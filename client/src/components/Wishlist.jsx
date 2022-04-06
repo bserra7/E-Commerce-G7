@@ -4,11 +4,12 @@ import { getUserWishlist } from "../redux/actions";
 import axios from "axios";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { FaStar } from "react-icons/fa";
 
 export function Wishlist() {
   const dispatch = useDispatch();
+  const intl = useIntl();
   const { user, wishlist } = useSelector((state) => state);
 
 
@@ -20,16 +21,16 @@ export function Wishlist() {
       let userId = user?.id
     try {
         swal({
-            title: 'Do you want to remove this product?',
+          title: intl.formatMessage({ id: "message-removed" }),
             text: " ",
             icon: 'warning',
-            buttons: ['No','Yes']
+            buttons: ['No', intl.formatMessage({ id: "message-yes" })]
         }).then(async (result) => {
             if (result) {
                 await axios.delete('/wishlist', {data: {userId, productId}});
                 dispatch(getUserWishlist(userId));
                 swal({
-                    title: 'Removed from wishlist!',
+                  title: intl.formatMessage({ id: "message-removed" }),
                     text: ' ',
                     icon: 'success',
                     timer: 2000,
@@ -40,8 +41,8 @@ export function Wishlist() {
         })
     } catch (error) {
         swal({
-            title: 'Something went wrong',
-            text: 'Check console to see more about error',
+            title: intl.formatMessage({ id: "message-error" }),
+            text: intl.formatMessage({ id: "message-error-check" }),
             icon: 'error',
             timer: 2000,
             button: null

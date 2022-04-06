@@ -41,7 +41,7 @@ export function AddToWishList({ userId, productId }) {
       dispatch(getUserWishlist(id));
       setAdding(true);
       swal({
-        title: intl.formatMessage({ id: 'message-added' }),
+        title: intl.formatMessage({ id: "message-added" }),
         text: " ",
         icon: "success",
         timer: 3000,
@@ -49,7 +49,7 @@ export function AddToWishList({ userId, productId }) {
       });
     } else {
       swal({
-        title: "Something went wrong",
+        title: intl.formatMessage({ id: "message-error" }),
         text: " ",
         icon: "error",
         timer: 3000,
@@ -64,7 +64,7 @@ export function AddToWishList({ userId, productId }) {
       dispatch(getUserWishlist(id));
       setAdding(false);
       swal({
-        title: "Removed from wishlist!",
+        title: intl.formatMessage({ id: "message-removed" }),
         text: " ",
         icon: "success",
         timer: 3000,
@@ -72,7 +72,7 @@ export function AddToWishList({ userId, productId }) {
       });
     } else {
       swal({
-        title: "Something went wrong",
+        title: intl.formatMessage({ id: "message-error" }),
         text: " ",
         icon: "error",
         timer: 3000,

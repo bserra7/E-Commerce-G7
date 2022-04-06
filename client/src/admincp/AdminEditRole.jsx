@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllRoles, getAllUsers} from '../redux/actions';
 import AdminSearchBar from './AdminSearchBar';
 import swal from 'sweetalert';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl} from 'react-intl'
 
 export default function AdminEditRole({showComponent}) {
     const dispatch = useDispatch();
+    const intl = useIntl();
     const loggedUser = useSelector(state => state.user)
     const users = useSelector(state => state.allUsers);
 
@@ -26,7 +27,7 @@ export default function AdminEditRole({showComponent}) {
         try {
             await axios.put('/user/role', {userId, role: role[Object.keys(role)[0]], token});
             swal({
-                title: 'User role changed successfully',
+                title: intl.formatMessage({ id: "message-change-role" }),
                 text: ' ',
                 icon: 'success',
                 timer: 3000,
@@ -35,8 +36,8 @@ export default function AdminEditRole({showComponent}) {
             showComponent('editRole');
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to see more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text: intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 2000,
                 button: null

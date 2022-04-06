@@ -8,11 +8,12 @@ import swal from 'sweetalert';
 import { clearCart } from "../redux/actions";
 import OrderShipping from "./OrderShipping";
 import WhatsApp from "./WhatsApp";
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 
 export function OrderCheckout() {
     const history = useHistory();
+    const intl = useIntl();
     const dispatch = useDispatch();
     const { isLogged } = useUser();
     const { cart, user } = useSelector(state => state);
@@ -35,10 +36,10 @@ export function OrderCheckout() {
     useEffect(() => {
         if (!isLogged) {
             swal({
-                title: 'You must be logged to proceed Checkout',
-                text: 'Please log in to finish your purchase',
+                title: intl.formatMessage( { id: "message-logged" }),
+                text: intl.formatMessage( { id: "message-logged-finish" }),
                 icon: 'error',
-                buttons: ['Cancel', 'Ok']
+                buttons: [intl.formatMessage( { id: "message-cancel" }), 'Ok']
             }).then(proceed => {
                 if (proceed) history.push('/login');
                 else history.push('/');
@@ -92,8 +93,8 @@ export function OrderCheckout() {
             if (response.status === 200) {
                 orderId = response.data.id;
                 swal({
-                    title: 'Your order has been confirmed',
-                    text: 'Thanks for your purchase',
+                    title: intl.formatMessage({ id: "message-confirm" }),
+                    text: intl.formatMessage({ id: "message-thanks" }),
                     icon: 'success',
                     timer: 3000,
                     button: null
@@ -107,8 +108,8 @@ export function OrderCheckout() {
             localStorage.removeItem('cart')
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to see more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text:  intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 3000,
                 button: null

@@ -3,29 +3,52 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import { useSelector } from 'react-redux';
 import useUser from './Login/hooks/useUser';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl, createIntl, createIntlCache } from 'react-intl'
+import MessageEnglish from './../lang/en-UK.json'
+import MensajeEspañol from './../lang/es-ES.json'
 
 export function validate(input) {
   let errors = {};
 
+  const cache = createIntlCache();
+    
+    let localeDefault;
+    let messagesDefault;
+
+    const lang = localStorage.getItem('lang')
+
+    if(lang) {
+        
+        localeDefault = lang
+
+        if(lang === 'en-UK') {
+            messagesDefault = MessageEnglish;
+        } else if (lang === 'es-ES') {
+            messagesDefault = MensajeEspañol
+        } else {
+            localeDefault = 'en-UK'
+            messagesDefault = MessageEnglish;
+        }
+    }
+
+    const intl = createIntl({ locale: localeDefault, messages: messagesDefault, }, cache);
+
   if (!input.currentPassword) {
-    errors.currentPassword = 'You must introduce your current password';
+    errors.currentPassword = intl.formatMessage({id: "validation-current-pass"});
   } else if (!input.newPassword) {
-    errors.newPassword = 'Write a new password';
-  } else if (
-    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(input.newPassword)
-  ) {
-    errors.newPassword =
-      'Password must contain eight characters minimum, at least one uppercase letter, one lowercase letter and one number';
+    errors.newPassword = intl.formatMessage({id: "validation-new-password"});
+  } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(input.newPassword)) {
+    errors.newPassword = intl.formatMessage({id: "validation-password-req"});
   } else if (!input.repeatPassword) {
-    errors.repeatPassword = 'Repeat your password';
+    errors.repeatPassword = intl.formatMessage({id: "validation-password-repeat"});
   } else if (input.newPassword !== input.repeatPassword) {
-    errors.repeatPassword = "Password doesn't match";
+    errors.repeatPassword = intl.formatMessage({id: "validation-password-match"});
   }
   return errors;
 }
 
 export default function ResetPassword() {
+  const intl = useIntl();
   const user = useSelector((state) => state.user);
   const [errors, setErrors] = useState({});
   const [inputs, setInputs] = useState({
@@ -58,8 +81,8 @@ export default function ResetPassword() {
       });
       if (response.status === 200) {
         swal({
-          title: 'Password Reset Successfully!',
-          text: 'Your new password have been set. Please Login again',
+          title: intl.formatMessage( { id: "message-reset-success"}),
+          text: intl.formatMessage( { id: "message-new-pass"}),
           icon: 'success',
           timer: 2000,
         });
@@ -68,8 +91,8 @@ export default function ResetPassword() {
     } catch (error) {
       console.log(error);
       swal({
-        title: 'Something went wrong',
-        text: 'Your current password is not valid',
+        title: intl.formatMessage( { id: "message-error"}),
+        text: intl.formatMessage( { id: "message-error-password"}),
         icon: 'error',
         button: 'Ok',
       });
@@ -84,7 +107,7 @@ export default function ResetPassword() {
           value={inputs.currentPassword}
           type="password"
           name="currentPassword"
-          placeholder="Current Password..."
+          placeholder={intl.formatMessage({ id: 'placeholderCurrent' })}
           onChange={handleChange}
         />
         <span className="error">{errors.currentPassword}</span>
@@ -93,7 +116,7 @@ export default function ResetPassword() {
           type="password"
           name="newPassword"
           onChange={handleChange}
-          placeholder="New Password..."
+          placeholder={intl.formatMessage({ id: 'placeholderNew' })}
         />
         <span className="error">{errors.newPassword}</span>
         <input
@@ -101,7 +124,7 @@ export default function ResetPassword() {
           type="password"
           name="repeatPassword"
           onChange={handleChange}
-          placeholder="Repeat Password..."
+          placeholder={intl.formatMessage({ id: 'placeholderRepeat' })}
         />
         <span className="error">{errors.repeatPassword}</span>
         <button type="submit"><FormattedMessage id="app.new-pass" defaultMessage="Set New Password"/></button>

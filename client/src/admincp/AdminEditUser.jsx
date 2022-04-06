@@ -3,63 +3,93 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllUsers, getUserDetail } from '../redux/actions';
 import axios from 'axios';
 import swal from 'sweetalert';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl, createIntl, createIntlCache } from 'react-intl'
+import MessageEnglish from '../lang/en-UK.json'
+import MensajeEspañol from '../lang/es-ES.json'
+
 
 export function validate(user, users, userDetail) {
     const usernames = users?.map(user => user.username);
     const emails = users?.map(user => user.email);
     let errors = {};
+
+    const cache = createIntlCache();
+    
+    let localeDefault;
+    let messagesDefault;
+
+    const lang = localStorage.getItem('lang')
+
+    if(lang) {
+        
+        localeDefault = lang
+
+        if(lang === 'en-UK') {
+            messagesDefault = MessageEnglish;
+        } else if (lang === 'es-ES') {
+            messagesDefault = MensajeEspañol
+        } else {
+            localeDefault = 'en-UK'
+            messagesDefault = MessageEnglish;
+        }
+    }
+
+    const intl = createIntl({ locale: localeDefault, messages: messagesDefault, }, cache);
   
     if (!user.name) {
-        errors.name = "Write a name";
+        errors.name = intl.formatMessage({id: "validation-a-name"});
     } 
     else if (!/^[^\W0-9_][a-zA-Z\u00f1\u00d1\s]+$/.test(user.name)){
-      errors.name = "Invalid name";
+      errors.name = intl.formatMessage({id: "validation-name-invalid"});
     }
     else if (!user.lastName) {
-        errors.lastName = "Write user last name";
+        errors.lastName = intl.formatMessage({id: "validation-lastname-user"});
     } 
     else if (!/^[^\W0-9_][a-zA-Z\u00f1\u00d1\s]+$/.test(user.lastName)){
-        errors.lastName = "Invalid last name";
+        errors.lastName = intl.formatMessage({id: "validation-lastname-invalid"});
     }
     else if(!user.username) {
-        errors.username = "Introduce a username"
+        errors.username = intl.formatMessage({id: "validation-username"});
     }
-    else if (usernames.includes(user.username) && user.username !== userDetail?.username){
-        errors.username = "Username already in use";
+    else if (!/^[^\W0-9_][a-zA-Z0-9\u00f1\u00d1\s]+$/.test(user.username)){
+        errors.username = intl.formatMessage({id: "validation-username-invalid"});
+    }
+    else if (usernames.includes(user.username) && user.username !== userDetail?.username) {
+        errors.username = intl.formatMessage({id: "validation-username-in-use"});
     }
     else if (!user.email){
-      errors.email = "Enter an e-mail"
+      errors.email = intl.formatMessage({id: "validation-email-user"});
     }
     else if(!/\S+@\S+\.\S+/.test(user.email)){
-        errors.email = "Invalid e-mail";
+        errors.email = intl.formatMessage({id: "validation-email-invalid"});
     }
     else if (emails.includes(user.email) && user.email !== userDetail?.email){
-        errors.email = "Email already in use";
+        errors.email = intl.formatMessage({id: "validation-email-in-use"});
     }
     else if (!user.country){
-      errors.country = "Introduce user country name"
+      errors.country = intl.formatMessage({id: "validation-country-user"});
     }
     else if (!user.city){
-      errors.city = "Introduce user city name"
+      errors.city = intl.formatMessage({id: "validation-city-user"});
     }
     else if (!user.address){
-      errors.address = "Write user address"
+      errors.address = intl.formatMessage({id: "validation-address-user"});
     }
     else if(!user.dateOfBirth) {
-        errors.dateOfBirth = "Select user date of birth"
+        errors.dateOfBirth = intl.formatMessage({id: "validation-birthday-user"});
     }
     else if(!user.zip_code) {
-        errors.zip_code = "Introduce user zip code"
+        errors.zip_code = intl.formatMessage({id: "validation-zip"});
     }
     else if (!/^-?\d+\.?\d*$/.test(user.zip_code)){
-        errors.zip_code = "Only numbers allowed"
+        errors.zip_code = intl.formatMessage({id: "validation-zip-numbers"});
     }
     return errors;
 }
 
 export function AdminEditUser(props){
     const dispatch = useDispatch();
+    const intl = useIntl();
     const users = useSelector(state => state.allUsers);
 
     const id = props.id;
@@ -111,15 +141,15 @@ export function AdminEditUser(props){
         else if(sessionStorage.getItem('jwt')) token = sessionStorage.getItem('jwt');
         try {
             swal({
-                title: 'Do you want save changes?',
+                title: intl.formatMessage({ id: "message-save-changes" }),
                 text: " ",
                 icon: 'warning',
-                buttons: ['No','Yes']
+                buttons: ['No', intl.formatMessage({ id: "message-yes" })]
             }).then(async (result) => {
                 if (result) {
                     await axios.put("/user/edit", {...user, token});
                     swal({
-                        title: 'User changes saved',
+                        title: intl.formatMessage({ id: "message-save-changes-user" }),
                         text: ' ',
                         icon: 'success',
                         timer: 2000,
@@ -130,8 +160,8 @@ export function AdminEditUser(props){
             })
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to see more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text: intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 2000,
                 button: null

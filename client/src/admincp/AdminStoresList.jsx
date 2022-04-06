@@ -3,10 +3,11 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllStores } from '../redux/actions';
 import swal from 'sweetalert';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 export default function AdminStoresList({showComponent, getId}) {
     const dispatch = useDispatch();
+    const intl = useIntl();
     const stores = useSelector(state => state.stores);
 
     useEffect(()=>{
@@ -28,15 +29,15 @@ export default function AdminStoresList({showComponent, getId}) {
         else if(sessionStorage.getItem('jwt')) token = sessionStorage.getItem('jwt');
         try {
             swal({
-                title: 'Do you want delete the store?',
-                text: "You won't be able to revert this!",
+                title: intl.formatMessage({ id: "message-store-delete" }),
+                text: intl.formatMessage({ id: "message-text-disc" }),
                 icon: 'warning',
-                buttons: ['No','Yes']
+                buttons: ['No', intl.formatMessage({ id: "message-yes" })]
             }).then(async (result) => {
                 if (result) {
                     await axios.delete('/stores', {data: {token, storeId}});
                     swal({
-                        title: 'You deleted the store with Number: ' + storeId,
+                        title:  intl.formatMessage({ id: "message-delete-store" }) + storeId,
                         text: ' ',
                         icon: 'success',
                         timer: 2000,
@@ -47,8 +48,8 @@ export default function AdminStoresList({showComponent, getId}) {
             })
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to see more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text: intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 2000,
                 button: null

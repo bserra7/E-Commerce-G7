@@ -4,23 +4,48 @@ import { useSelector } from "react-redux"
 import axios from 'axios';
 import '../styles/styles.scss'
 import swal from 'sweetalert';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl, createIntl, createIntlCache } from 'react-intl'
+import MessageEnglish from './../lang/en-UK.json'
+import MensajeEspañol from './../lang/es-ES.json'
 
 export function validate(form) {
 
     let errors = {};
 
+    const cache = createIntlCache();
+    
+    let localeDefault;
+    let messagesDefault;
+
+    const lang = localStorage.getItem('lang')
+
+    if(lang) {
+        
+        localeDefault = lang
+
+        if(lang === 'en-UK') {
+            messagesDefault = MessageEnglish;
+        } else if (lang === 'es-ES') {
+            messagesDefault = MensajeEspañol
+        } else {
+            localeDefault = 'en-UK'
+            messagesDefault = MessageEnglish;
+        }
+    }
+
+    const intl = createIntl({ locale: localeDefault, messages: messagesDefault, }, cache);
+
     if (!form.name) {
-        errors.name = "Write your name";
+        errors.name = intl.formatMessage({id: "validation-name"});
     }
     else if (!form.email) {
-        errors.email = "Enter your e-mail"
+        errors.email = intl.formatMessage({id: "validation-email"});
     }
     else if (!/\S+@\S+\.\S+/.test(form.email)) {
-        errors.email = "Invalid e-mail";
+        errors.email = intl.formatMessage({id: "validation-email-invalid"});
     }
     else if (!form.message) {
-        errors.message = "Leave a message"
+        errors.message = intl.formatMessage({id: "validation-leave-message"});
     }
     return errors;
 }
@@ -28,6 +53,8 @@ export function validate(form) {
 
 export function Contact() {
     const { user } = useSelector(s => s)
+
+    const intl = useIntl();
 
     const history = useHistory();
     const [errors, setErrors] = useState({})
@@ -66,7 +93,7 @@ export function Contact() {
         const response = await axios.post("/contact", form)
         if (response.status === 200) {
             swal({
-                title: 'You message was send successfully',
+                title: intl.formatMessage({ id: "message-sent" }),
                 text: ' ',
                 icon: 'success',
                 timer: 3000,
@@ -75,7 +102,7 @@ export function Contact() {
             history.push("/")
         } else {
             swal({
-                title: 'Something went wrong',
+                title: intl.formatMessage({ id: "message-error" }),
                 text: ' ',
                 icon: 'error',
                 timer: 3000,

@@ -3,11 +3,12 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllDiscounts, getAllProducts } from '../redux/actions';
 import swal from 'sweetalert';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 export default function AdminDiscountsList({showComponent, getId}) {
     const dispatch = useDispatch();
     const discounts = useSelector(state => state.discounts);
+    const intl = useIntl();
 
     useEffect(()=>{
         dispatch(getAllDiscounts());
@@ -58,15 +59,15 @@ export default function AdminDiscountsList({showComponent, getId}) {
         else if(sessionStorage.getItem('jwt')) token = sessionStorage.getItem('jwt');
         try {
             swal({
-                title: 'Do you want delete that discount?',
-                text: "You won't be able to revert this!",
+                title: intl.formatMessage({ id: "message-delete-disc" }),
+                text: intl.formatMessage({ id: "message-text-disc" }),
                 icon: 'warning',
-                buttons: ['No','Yes']
+                buttons: ['No', intl.formatMessage({ id: "message-yes" })]
             }).then(async (result) => {
                 if (result) {
                     await axios.delete('/discount', {data: {categoryId, token}});
                     swal({
-                        title: 'You deleted the selected Discount',
+                        title: intl.formatMessage({ id: "message-delete-success" }),
                         text: ' ',
                         icon: 'success',
                         timer: 2000,
@@ -77,8 +78,8 @@ export default function AdminDiscountsList({showComponent, getId}) {
             })
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to see more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text:  intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 2000,
                 button: null

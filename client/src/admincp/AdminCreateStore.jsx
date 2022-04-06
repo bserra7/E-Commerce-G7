@@ -2,38 +2,65 @@ import React, { useState } from "react";
 import axios from 'axios';
 import '../styles/styles.scss'
 import swal from 'sweetalert';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl, createIntl, createIntlCache } from 'react-intl'
+import MessageEnglish from '../lang/en-UK.json'
+import MensajeEspañol from '../lang/es-ES.json'
 const API_KEY = "AIzaSyBXDnxAg_a40ale9Hb5Hm8uejsM17qdKs4";
 
 export function validate(store) {
     let errors = {};
 
+    const cache = createIntlCache();
+    
+    let localeDefault;
+    let messagesDefault;
+
+    const lang = localStorage.getItem('lang')
+
+    if(lang) {
+        
+        localeDefault = lang
+
+        if(lang === 'en-UK') {
+            messagesDefault = MessageEnglish;
+        } else if (lang === 'es-ES') {
+            messagesDefault = MensajeEspañol
+        } else {
+            localeDefault = 'en-UK'
+            messagesDefault = MessageEnglish;
+        }
+    }
+
+    const intl = createIntl({ locale: localeDefault, messages: messagesDefault, }, cache);
+
     if (!store.name) {
-        errors.name = "Write your name";
+        errors.name = intl.formatMessage({id: "validation-name-store"});
     }
     else if (!store.country) {
-        errors.country = "Introduce store country"
+        errors.country = intl.formatMessage({id: "validation-store-country"});
     }
     else if (!store.city) {
-        errors.city = "Introduce store city"
+        errors.city = intl.formatMessage({id: "validation-store-city"});
     }
     else if (!store.address) {
-        errors.address = "Write store address"
+        errors.address = intl.formatMessage({id: "validation-store-address"});
     }
     else if (!store.state) {
-        errors.state = "Introduce store state"
+        errors.state = intl.formatMessage({id: "validation-store-state"});
     }
     else if (!store.zip_code) {
-        errors.zip_code = "Introduce the zip code"
+        errors.zip_code = intl.formatMessage({id: "validation-store-zip"});
     }
     else if (!/^-?\d+\.?\d*$/.test(store.zip_code)) {
-        errors.zip_code = "Only numbers allowed"
+        errors.zip_code = intl.formatMessage({id: "validation-zip-numbers"});
     }
     return errors;
 }
 
 
 export function AdminCreateStore({ showComponent }) {
+    const intl = useIntl();
+
     const [errors, setErrors] = useState({})
 
     const [store, setStore] = useState({
@@ -74,7 +101,7 @@ export function AdminCreateStore({ showComponent }) {
         const response = await axios.post("/stores", { ...store, ...location })
         if (response.status === 200) {
             swal({
-                title: 'Store was created successfully',
+                title: intl.formatMessage({ id: "message-added-store" }),
                 text: ' ',
                 icon: 'success',
                 timer: 3000,
@@ -83,7 +110,7 @@ export function AdminCreateStore({ showComponent }) {
             showComponent('stores');
         } else {
             swal({
-                title: 'Something went wrong',
+                title: intl.formatMessage({ id: "message-error" }),
                 text: ' ',
                 icon: 'error',
                 timer: 3000,

@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrderDetail, getPaymentDetail } from "../redux/actions";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 export default function PaymentDetail(props, {meliId, idOrder}) {
     const dispatch = useDispatch();
+    const intl = useIntl();
     const orderDetail = useSelector((state) => state.orderDetail);
     const paymentDetail = useSelector((state) => state.paymentDetail);
     const paymentId = meliId || props.match?.params.id;
@@ -21,9 +22,9 @@ export default function PaymentDetail(props, {meliId, idOrder}) {
                      <div className="orderDetails__item">
                         <div className="item__details">
                         <div className="item__title" style={{textAlign: "center", marginBottom: "1.5rem"}}>
-                            {paymentDetail?.status === 'approved' ? `Your Payment has been ${paymentDetail?.status} ✅` : 
-                            paymentDetail?.status === 'rejected' ? `Your Payment has been ${paymentDetail?.status} ❌` : 
-                            `Your Payment is ${paymentDetail?.status} ⏱️`}
+                            {paymentDetail?.status === 'approved' ? intl.formatMessage( {id: "message-payment" })` ${paymentDetail?.status} ✅` : 
+                            paymentDetail?.status === 'rejected' ? intl.formatMessage( {id: "message-payment" })` ${paymentDetail?.status} ❌` : 
+                            intl.formatMessage( {id: "message-payment-is" })` ${paymentDetail?.status} ⏱️`}
                         </div>
                         <div className="item__description">
                             <ul>

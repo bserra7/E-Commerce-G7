@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllOrders } from '../redux/actions';
 import AdminSearchBar from './AdminSearchBar';
 import swal from 'sweetalert';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 export default function AdminOrdersList({getId, showComponent}) {
     const dispatch = useDispatch();
+    const intl = useIntl();
     let orders = useSelector(state => state.orders);
     useEffect(()=>{
         dispatch(getAllOrders());
@@ -25,8 +26,8 @@ export default function AdminOrdersList({getId, showComponent}) {
         try {
             await axios.put('/order/status', { orderId, status: event.target.value, token });
             swal({
-                title: 'Order status changed',
-                text: 'The status of order ID: ' + orderId + ' change to: ' + event.target.value,
+                title: intl.formatMessage({ id: "message-order-change" }),
+                text: intl.formatMessage({ id: "message-id-order-status" }) + orderId + intl.formatMessage({ id: "message-change-to" }) + event.target.value,
                 icon: 'success',
                 timer: 3000,
                 button: null
@@ -34,8 +35,8 @@ export default function AdminOrdersList({getId, showComponent}) {
             dispatch(getAllOrders());
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to see more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text: intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 2000,
                 button: null

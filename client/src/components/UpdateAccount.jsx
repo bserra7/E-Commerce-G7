@@ -3,50 +3,75 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
 import swal from 'sweetalert';
 import { getAllUsers } from '../redux/actions';
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl, createIntl, createIntlCache } from 'react-intl'
+import MessageEnglish from './../lang/en-UK.json'
+import MensajeEspañol from './../lang/es-ES.json'
 
 export function validate(user, users) {
     const emails = users?.map(user => user.email)
     let errors = {};
+
+    const cache = createIntlCache();
+    
+    let localeDefault;
+    let messagesDefault;
+
+    const lang = localStorage.getItem('lang')
+
+    if(lang) {
+        
+        localeDefault = lang
+
+        if(lang === 'en-UK') {
+            messagesDefault = MessageEnglish;
+        } else if (lang === 'es-ES') {
+            messagesDefault = MensajeEspañol
+        } else {
+            localeDefault = 'en-UK'
+            messagesDefault = MessageEnglish;
+        }
+    }
+
+    const intl = createIntl({ locale: localeDefault, messages: messagesDefault, }, cache);
   
     if (!user.name) {
-      errors.name = "Write your name";
+      errors.name = intl.formatMessage({id: "validation-name"}); 
     } 
     else if (!/^[^\W0-9_][a-zA-Z\u00f1\u00d1\s]+$/.test(user.name)){
-      errors.name = "Invalid name";
+      errors.name = intl.formatMessage({id: "validation-name-invalid"});
     }
     else if (!user.lastName) {
-        errors.lastName = "Write your last name";
+        errors.lastName = intl.formatMessage({id: "validation-lastname"}); 
     } 
     else if (!/^[^\W0-9_][a-zA-Z\u00f1\u00d1\s]+$/.test(user.lastName)){
-        errors.lastName = "Invalid last name";
+        errors.lastName = intl.formatMessage({id: "validation-lastname-invalid"});
     }
     else if (!user.email){
-      errors.email = "Enter your e-mail"
+      errors.email = intl.formatMessage({id: "validation-email"});
     }
     else if(!/\S+@\S+\.\S+/.test(user.email)){
-        errors.email = "Invalid e-mail";
+        errors.email = intl.formatMessage({id: "validation-email-invalid"});
     }
     else if (emails.includes(user.email)){
-        errors.email = "Email already in use";
+        errors.email = intl.formatMessage({id: "validation-email-in-use"});
     }
     else if (!user.country){
-      errors.country = "Introduce your country name"
+      errors.country = intl.formatMessage({id: "validation-country"});
     }
     else if (!user.city){
-      errors.city = "Introduce your city name"
+      errors.city = intl.formatMessage({id: "validation-city"});
     }
     else if (!user.address){
-      errors.address = "Write your address"
+      errors.address = intl.formatMessage({id: "validation-address"});
     }
     else if(!user.dateOfBirth) {
-        errors.dateOfBirth = "Select your date of birth"
+        errors.dateOfBirth = intl.formatMessage({id: "validation-birthday"});
     }
     else if(!user.zip_code) {
-        errors.zip_code = "Introduce the zip code"
+        errors.zip_code = intl.formatMessage({id: "validation-zip"});
     }
     else if (!/^-?\d+\.?\d*$/.test(user.zip_code)){
-        errors.zip_code = "Only numbers allowed"
+        errors.zip_code = intl.formatMessage({id: "validation-zip-numbers"});
     }
   
     return errors;
@@ -55,6 +80,7 @@ export function validate(user, users) {
 
 export function UpdateAccount(props){
     const dispatch = useDispatch();
+    const intl = useIntl();
     const users = useSelector(state => state.allUsers);
 
     const userDetails = useSelector((state) => state?.user)
@@ -97,15 +123,15 @@ export function UpdateAccount(props){
         e.preventDefault();
         try {
             swal({
-                title: 'Do you want save changes?',
+                title: intl.formatMessage( { id: "message-save-changes"}),
                 text: " ",
                 icon: 'warning',
-                buttons: ['No','Yes']
+                buttons: ['No', intl.formatMessage({ id: "message-yes" })]
             }).then(async (result) => {
                 if (result) {
                     await axios.put("/user/update", user);
                     swal({
-                        title: 'User changes saved',
+                        title: intl.formatMessage( { id: "message-save-changes-user" } ),
                         text: ' ',
                         icon: 'success',
                         timer: 2000,
@@ -115,8 +141,8 @@ export function UpdateAccount(props){
             })
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to see more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text:  intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 2000,
                 button: null
