@@ -27,7 +27,8 @@ import {
   GET_STORE_DETAIL,
   GET_ALL_DISCOUNTS,
   GET_PAYMENT_DETAIL,
-  GET_ALL_PAYMENTS
+  GET_ALL_PAYMENTS,
+  PAG_CURRENT
 
 } from '../actions';
 
@@ -51,7 +52,8 @@ const initialState = {
   storeDetail: {},
   discounts: [],
   paymentDetail: {},
-  payments: []
+  payments: [],
+  pag: 1
 };
 
 function rootReducer(state = initialState, action) {
@@ -239,6 +241,11 @@ function rootReducer(state = initialState, action) {
         return {
           ...state,
           wishlist: action.payload
+        }
+    case PAG_CURRENT:
+        return {
+          ...state,
+          pag: state.pag + action.payload
         }
 
     default:

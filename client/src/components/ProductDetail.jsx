@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { clearStore, getProductDetail, addProduct, productAmountSum, getReviews } from '../redux/actions';
 import useUser from './Login/hooks/useUser';
 import ReviewAndRating from './ReviewAndRating';
@@ -18,6 +18,7 @@ export function ProductDetail(props) {
     const { details, cart, user, reviews } = useSelector((state) => state);
     const alreadyCommented = reviews.find(review => user?.id === review?.userId);
     const { currency, multiplier } = useCurrency();
+    const history = useHistory()
 
     const { isLogged } = useUser();
 
@@ -55,8 +56,9 @@ export function ProductDetail(props) {
     const buttonDisabled = details.stock <= 0 ? true : false
 
     return (
-        <><a id="abajo" ></a>
+        <>
             <div className='container'>
+                <Link to="#" style={{ color: "gray" }} onClick={() => history.goBack()} >back</Link>
                 {Object.keys(details).length ?
                     <div>
                         <div className='productDetail'>
@@ -69,23 +71,23 @@ export function ProductDetail(props) {
                                 {isLogged && <AddToWishList userId={user?.id} productId={id} />}
                                 {details.discount > 0 ?
                                     <>
-                                        <span className='price-discount'>{currency === "USD" && "US"} {formatter(currency).format(details?.price*multiplier)}</span>
-                                        <span className='price'>{currency === "USD" && "US"} {formatter(currency).format(details?.discounted_price*multiplier)}</span> <span className='discount'>-{details.discount}% OFF</span>
-                                    </> : <span className='price'>{currency === "USD" && "US"} {formatter(currency).format(details?.price*multiplier)}</span>
+                                        <span className='price-discount'>{currency === "USD" && "US"} {formatter(currency).format(details?.price * multiplier)}</span>
+                                        <span className='price'>{currency === "USD" && "US"} {formatter(currency).format(details?.discounted_price * multiplier)}</span> <span className='discount'>-{details.discount}% OFF</span>
+                                    </> : <span className='price'>{currency === "USD" && "US"} {formatter(currency).format(details?.price * multiplier)}</span>
                                 }
                                 <p className='description'>{details.description}</p>
-                                {details.stock ? <p className='stock'><span><FormattedMessage id="app.stock" defaultMessage="In stock"/></span> ({details.stock} <FormattedMessage id="app.available" defaultMessage="available"/>)</p> : <p className='stock'><span>⚠️<FormattedMessage id="app.not-available" defaultMessage="This product isn't available for shopping"/></span></p>}
-                                <p className='rating'><span><FormattedMessage id="app.rating" defaultMessage="Rating:"/></span> {Number(details.rating?.toFixed(1))}</p>
-                                <button className='addBtn' disabled={buttonDisabled} onClick={() => handleAddCart(details)}><FormattedMessage id="app.add" defaultMessage="Add product"/></button>
-                                {user?.roleId < 3 && <Link className='updateBtn' to={`/product/update/${id}`}><button><FormattedMessage id="app.edit-prod" defaultMessage="Edit product"/></button></Link>}
+                                {details.stock ? <p className='stock'><span><FormattedMessage id="app.stock" defaultMessage="In stock" /></span> ({details.stock} <FormattedMessage id="app.available" defaultMessage="available" />)</p> : <p className='stock'><span>⚠️<FormattedMessage id="app.not-available" defaultMessage="This product isn't available for shopping" /></span></p>}
+                                <p className='rating'><span><FormattedMessage id="app.rating" defaultMessage="Rating:" /></span> {Number(details.rating?.toFixed(1))}</p>
+                                <button className='addBtn' disabled={buttonDisabled} onClick={() => handleAddCart(details)}><FormattedMessage id="app.add" defaultMessage="Add product" /></button>
+                                {user?.roleId < 3 && <Link className='updateBtn' to={`/product/update/${id}`}><button><FormattedMessage id="app.edit-prod" defaultMessage="Edit product" /></button></Link>}
                             </div>
                         </div>
                         <div className='wrapper-reviews'>
                             <Reviews id={id} className='reviews' />
                             {isLogged && !alreadyCommented ?
                                 <ReviewAndRating productId={details.id} /> :
-                                isLogged ? <p style={{ fontStyle: "italic", fontFamily: "roboto", fontSize: ".95rem" }}><FormattedMessage id="app.review" defaultMessage="You've already reviewed this product. Thanks for your feedback"/></p> 
-                                : <p style={{ fontStyle: "italic", fontFamily: "roboto", fontSize: ".95rem" }}><FormattedMessage id="app.logged-review" defaultMessage="You must be logged to add a review. "/></p>}
+                                isLogged ? <p style={{ fontStyle: "italic", fontFamily: "roboto", fontSize: ".95rem" }}><FormattedMessage id="app.review" defaultMessage="You've already reviewed this product. Thanks for your feedback" /></p>
+                                    : <p style={{ fontStyle: "italic", fontFamily: "roboto", fontSize: ".95rem" }}><FormattedMessage id="app.logged-review" defaultMessage="You must be logged to add a review. " /></p>}
                         </div>
                     </div>
                     : (<div style={{ height: "100vh" }} >Loading...</div>)}
