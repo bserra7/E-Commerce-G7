@@ -30,6 +30,7 @@ export const GET_STORE_DETAIL = "GET_STORE_DETAIL";
 export const GET_ALL_DISCOUNTS = "GET_ALL_DISCOUNTS";
 export const GET_PAYMENT_DETAIL = "GET_PAYMENT_DETAIL";
 export const GET_ALL_PAYMENTS = "GET_ALL_PAYMENTS";
+export const PAG_CURRENT = "PAG_CURRENT";
 
 export const getAllProducts = () => {
   return async (dispatch) => {
@@ -351,4 +352,11 @@ export const getUserWishlist = (userId) => {
     }
   };
 };
+
+export const currentPag = (value) => {
+  return {
+    type: PAG_CURRENT,
+    payload: value
+  }
+}
 

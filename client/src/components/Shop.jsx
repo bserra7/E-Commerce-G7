@@ -8,16 +8,14 @@ import { FormattedMessage } from 'react-intl';
 
 const Shop = () => {
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state);
+  const { products, pag } = useSelector((state) => state);
   const stock = Array.isArray(products) && products?.filter(product => product.stock > 0)
   const top = useRef(null)
 
-  const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(6);
-  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfLastProduct = pag * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = Array.isArray(products) && stock.slice(indexOfFirstProduct, indexOfLastProduct);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   useEffect(() => {
     dispatch(getAllProducts());
@@ -36,7 +34,7 @@ const Shop = () => {
           <div>
             <Products products={currentProducts} />
             <div className="pagination">
-              <Paginate productsPerPage={productsPerPage} currentPage={currentPage} productsAmount={stock.length} paginate={paginate} top={top} />
+              <Paginate productsPerPage={productsPerPage} currentPage={pag} productsAmount={stock.length} top={top} />
             </div>
           </div>
         )}
