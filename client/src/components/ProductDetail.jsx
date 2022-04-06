@@ -58,7 +58,7 @@ export function ProductDetail(props) {
     return (
         <>
             <div className='container'>
-                <Link to="#" style={{ color: "gray" }} onClick={() => history.goBack()} >back</Link>
+                <Link to="#" style={{ color: "gray" }} onClick={() => history.goBack()} ><FormattedMessage id="app.back" defaultMessage="Back" /></Link>
                 {Object.keys(details).length ?
                     <div>
                         <div className='productDetail'>
