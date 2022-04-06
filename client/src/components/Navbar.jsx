@@ -13,7 +13,6 @@ import ukflag from '../assets/images/UK-flag.png'
 import spflag from '../assets/images/SPAIN-flag.png'
 import { FormattedMessage } from 'react-intl'
 import { langContext } from './../context/langContext';
-import currContext from '../context/currencyContext';
 import useCurrency from '../context/useCurrency';
 
 const Navbar = () => {
@@ -48,27 +47,39 @@ const Navbar = () => {
     setShowCart(!showCart);
   };
 
+  if(localStorage.getItem('lang') === 'en-UK'){
+    document.querySelector(".language-english")?.classList.add("active")
+  }else{
+    document.querySelector(".language-spanish")?.classList.add("active")
+  }
+
+  if(localStorage.getItem('currency') === 'USD'){
+    document.querySelector(".currency-usd")?.classList.add("active")
+  }else{
+    document.querySelector(".currency-ars")?.classList.add("active")
+  }
+
   const handleEnglish = () => {
     idioma.setLanguage('en-UK');
-    document.querySelector(".language-english").classList.add("active")
-    document.querySelector(".language-spanish").classList.remove("active")
+    document.querySelector(".language-english")?.classList.add("active")
+    document.querySelector(".language-spanish")?.classList.remove("active")
   }
   const handleSpanish = () => {
     idioma.setLanguage('es-ES')
-    document.querySelector(".language-spanish").classList.add("active")
-    document.querySelector(".language-english").classList.remove("active")
+    document.querySelector(".language-spanish")?.classList.add("active")
+    document.querySelector(".language-english")?.classList.remove("active")
   }
 
   const handleCurrencyUSD = () => {
     setCurrency('USD');
-    document.querySelector(".currency-usd").classList.add("active")
-    document.querySelector(".currency-ars").classList.remove("active")
+    document.querySelector(".currency-usd")?.classList.add("active")
+    document.querySelector(".currency-ars")?.classList.remove("active")
   }
 
   const handleCurrencyARS = () => {
     setCurrency('ARS');
-    document.querySelector(".currency-ars").classList.add("active")
-    document.querySelector(".currency-usd").classList.remove("active")
+    document.querySelector(".currency-ars")?.classList.add("active")
+    document.querySelector(".currency-usd")?.classList.remove("active")
   }
 
   return (
@@ -158,7 +169,7 @@ const Navbar = () => {
         <div className="navbar__cart">
         <figure className='navbar__currency'>
                 <span className='currency-usd' onClick={handleCurrencyUSD} alt='USD' height="20px" width="50px">USD</span>
-                <span className='currency-ars active' onClick={handleCurrencyARS} alt='ARS' height="20px" width="50px">ARS</span>
+                <span className='currency-ars' onClick={handleCurrencyARS} alt='ARS' height="20px" width="50px">ARS</span>
               </figure>
           <figure>
             <div style={{ position: "relative" }}>
@@ -190,7 +201,7 @@ const Navbar = () => {
             {/* () => idioma.setLanguage('en-UK') */}
           <figure className='navbar__language'>
             <img className='language-english' src={ukflag} onClick={handleEnglish} alt='EN-LANG' height="20px" width="50px" />
-            <img className='language-spanish active' src={spflag} onClick={handleSpanish} alt='ES-LANG' height="20px" width="50px" />
+            <img className='language-spanish' src={spflag} onClick={handleSpanish} alt='ES-LANG' height="20px" width="50px" />
           </figure>
         </div>
       </div>
