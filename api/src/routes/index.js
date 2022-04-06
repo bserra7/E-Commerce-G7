@@ -40,7 +40,6 @@ const { isAuthenticated } = require('../utils/isAuthenticated');
 const adminOnly = require('../utils/adminOnly');
 const superAdminOnly = require("../utils/superAdminOnly");
 const payment = require("./getPayment-route");
-const setRoles = require("./setRolesDB-route");
 
 // Config routers
 // Example: router.use('/users', getUsers);
@@ -58,7 +57,7 @@ router.use("/product", newProduct);
 
 router.use("/user", user);
 
-router.use("/user/role", userRole)
+router.use("/user/role", superAdminOnly, userRole)
 
 router.use("/user/edit", adminOnly, editUser);
 
@@ -112,6 +111,5 @@ router.use("/payment", payment);
 
 router.use("/contact", contactUs)
 
-router.use("/set/role", setRoles)
 
 module.exports = router;

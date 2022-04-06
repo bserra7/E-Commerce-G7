@@ -35,7 +35,7 @@ export default function AdminPanel() {
         setId(id);
     }
 
-/*     useEffect(() => {
+    useEffect(() => {
         if (sessionStorage.getItem('jwt')) {
             axios.post('/admin/authenticate', { token: sessionStorage.getItem('jwt') })
                 .then(res => {
@@ -59,11 +59,11 @@ export default function AdminPanel() {
                 })
         }
         else history.push('/');
-    }, []) */
+    }, [])
 
     return (
         <div>
-            {user?.roleId < 5 &&
+            {user?.roleId < 3 &&
                 <div>
                     <AdminSideBar showComponent={showComponent} />
                     <div className='adminContainer'>
