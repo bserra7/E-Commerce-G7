@@ -28,7 +28,7 @@ const Shop = () => {
       <div ref={top} className="container shop">
         <h2 className="shop__title"><FormattedMessage id="app.shop-title" defaultMessage="SHOP" /></h2>
 
-        {!Array.isArray(stock) ? (
+        {!Array.isArray(stock) && !stock?.length ? (
           <h2><FormattedMessage id="app.no-results" defaultMessage="No results found" /></h2>
         ) : (
           <div>
