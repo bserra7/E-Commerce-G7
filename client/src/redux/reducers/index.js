@@ -149,7 +149,7 @@ function rootReducer(state = initialState, action) {
     case GET_ROLES:
         return{
           ...state,
-          allRoles: action.payload?.filter(role => role.id > 1)
+          allRoles: action.payload
         }
 
     case GET_SEARCH_PRODUCTS:
