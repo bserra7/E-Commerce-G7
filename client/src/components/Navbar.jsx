@@ -48,6 +48,29 @@ const Navbar = () => {
     setShowCart(!showCart);
   };
 
+  const handleEnglish = () => {
+    idioma.setLanguage('en-UK');
+    document.querySelector(".language-english").classList.add("active")
+    document.querySelector(".language-spanish").classList.remove("active")
+  }
+  const handleSpanish = () => {
+    idioma.setLanguage('es-ES')
+    document.querySelector(".language-spanish").classList.add("active")
+    document.querySelector(".language-english").classList.remove("active")
+  }
+
+  const handleCurrencyUSD = () => {
+    setCurrency('USD');
+    document.querySelector(".currency-usd").classList.add("active")
+    document.querySelector(".currency-ars").classList.remove("active")
+  }
+
+  const handleCurrencyARS = () => {
+    setCurrency('ARS');
+    document.querySelector(".currency-ars").classList.add("active")
+    document.querySelector(".currency-usd").classList.remove("active")
+  }
+
   return (
     <div className="container">
       <div className="navbar">
@@ -133,9 +156,9 @@ const Navbar = () => {
         
 
         <div className="navbar__cart">
-        <figure>
-                <span onClick={()=>setCurrency('USD')} alt='USD' height="20px" width="50px">USD</span><br/><br/>
-                <span onClick={()=>setCurrency('ARS')} alt='ARS' height="20px" width="50px">ARS</span>
+        <figure className='navbar__currency'>
+                <span className='currency-usd' onClick={handleCurrencyUSD} alt='USD' height="20px" width="50px">USD</span>
+                <span className='currency-ars active' onClick={handleCurrencyARS} alt='ARS' height="20px" width="50px">ARS</span>
               </figure>
           <figure>
             <div style={{ position: "relative" }}>
@@ -164,9 +187,10 @@ const Navbar = () => {
                 <Link to="/login" className='navbarLogin__button'><FormattedMessage id="app.login" defaultMessage="Login" /></Link>
               </div>
             </div>}
-          <figure>
-            <img src={ukflag} onClick={() => idioma.setLanguage('en-UK')} alt='EN-LANG' height="20px" width="50px" /><br />
-            <img src={spflag} onClick={() => idioma.setLanguage('es-ES')} alt='ES-LANG' height="20px" width="50px" />
+            {/* () => idioma.setLanguage('en-UK') */}
+          <figure className='navbar__language'>
+            <img className='language-english' src={ukflag} onClick={handleEnglish} alt='EN-LANG' height="20px" width="50px" />
+            <img className='language-spanish active' src={spflag} onClick={handleSpanish} alt='ES-LANG' height="20px" width="50px" />
           </figure>
         </div>
       </div>
