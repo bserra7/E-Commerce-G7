@@ -24,6 +24,11 @@
   &__btn {
     float: right;
     @include button();
+    padding: 0 .5rem;
+
+    @include mq(medium) {
+      padding: 0 2.8rem;
+    }
   }
 
   &__item {

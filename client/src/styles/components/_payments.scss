@@ -8,5 +8,17 @@
         @include button();
         top: 0;
         position: absolute;
+        right: 1rem;
+        top: 1rem;
+        padding: 0 .5rem;
+        
+        @include mq(medium) {
+          padding: 0 2.8rem;
+        }
     }
+  }
+
+  .orderCheckout .payments .payments__button {
+    top: 0;
+    left: 0;
   }
