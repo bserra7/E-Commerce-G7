@@ -77,6 +77,12 @@ function App() {
     if(localStorage.getItem('currency')){
       setCurrency(localStorage.getItem('currency'))
     }
+    if(!localStorage.getItem('currency')){
+      localStorage.setItem('currency', 'USD');
+    }
+    if(!localStorage.getItem('lang')){
+      localStorage.setItem('lang', 'en-UK');
+    }
     if(localStorage.getItem("cart")){
       let cartStorage = localStorage.getItem('cart')
       cartStorage = JSON.parse(cartStorage)
