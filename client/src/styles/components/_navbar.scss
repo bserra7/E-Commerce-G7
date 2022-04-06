@@ -60,11 +60,16 @@
     }
 
     figure:last-of-type {
-      margin-left: 1rem;
+      margin-left: .5rem;
     }
 
     img {
       width: 30px;
     }
+  }
+
+  &__language {
+    display: flex;
+    align-items: center;
   }
 }

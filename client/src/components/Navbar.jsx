@@ -153,10 +153,10 @@ const Navbar = () => {
                 <Link to="/login" className='navbarLogin__button'><FormattedMessage id="app.login" defaultMessage="Login"/></Link>
               </div>
             </div>}
-            <figure>
-                <img src={ukflag} onClick={()=>idioma.setLanguage('en-UK')} alt='EN-LANG' height="20px" width="50px"/><br/>
-                <img src={spflag} onClick={()=>idioma.setLanguage('es-ES')} alt='ES-LANG' height="20px" width="50px"/>
-              </figure>
+            <figure className='navbar__language'>
+                <img onClick={() => idioma.setLanguage('en-UK')} src={ukflag} alt='EN-LANG' height="20px" width="50px"/>
+                <img onClick={() => idioma.setLanguage('es-ES')} src={spflag} alt='ES-LANG' height="20px" width="50px"/>
+            </figure>
         </div>
       </div>
     </div>
