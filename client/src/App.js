@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, BrowserRouter as Router, useHistory, useParams } from 'react-router-dom';
@@ -38,6 +38,7 @@ import Footer from './components/Footer';
 import NotFound404 from './components/NotFound404';
 import ScrollComponent from './components/ScrollComponent';
 import useCurrency from './context/useCurrency';
+import { langContext } from './context/langContext';
 
 export const alert2FA = () => {
   swal({
@@ -55,6 +56,7 @@ function App() {
   const { cart } = useSelector(state => state)
   const userLogged = useSelector(state => state?.user);
   const { setCurrency } = useCurrency();
+  const idioma = useContext(langContext);
 
   const resetPasswordAlert = () => {
     swal({
@@ -81,6 +83,7 @@ function App() {
       localStorage.setItem('currency', 'USD');
     }
     if(!localStorage.getItem('lang')){
+      idioma.setLanguage('en-UK')
       localStorage.setItem('lang', 'en-UK');
     }
     if(localStorage.getItem("cart")){

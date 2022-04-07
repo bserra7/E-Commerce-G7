@@ -7,7 +7,11 @@ let localDefault;
 let messagesDefault;
 const lang = localStorage.getItem('lang');
 
-if (lang){
+if(!lang){
+  localStorage.setItem('lang', 'en-UK');
+  localDefault = 'en-UK';
+  messagesDefault = MessageEnglish
+} else if (lang){
   localDefault = lang;
   if(lang === 'es-ES') messagesDefault = MessageSpanish
   else messagesDefault = MessageEnglish

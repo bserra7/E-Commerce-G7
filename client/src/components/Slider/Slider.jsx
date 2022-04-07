@@ -6,7 +6,7 @@ import dataSlider from './dataSlider'
 import Dots from './Dots';
 import SliderContent from './SliderContent'
 
-const len = dataSlider.length - 1;
+const len = dataSlider?.length - 1;
 
 const Slider = () => {
   const [activeIndex, setActiveIndex] = useState(0);
