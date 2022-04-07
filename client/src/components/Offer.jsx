@@ -21,7 +21,7 @@ export default function Offer({id, name, images, price, rating, discount, discou
                     <span className="discount-price">{currency === "USD" && "US"} {formatter(currency).format(discounted_price*multiplier)}</span>
                     <span className="discount">-{discount}% OFF</span>
                 </span>
-                <span>{!rating ? <span><FormattedMessage id="app.no-rated" defaultMessage="No rated yet"/></span> : [...Array(rating)].map(star =>{return <FaStar key={Math.random().toString(16).slice(2)} color="orange" size={16}/>})}</span>
+                <span>{!rating ? <span><FormattedMessage id="app.no-rated" defaultMessage="No rated yet"/></span> : [...Array(rating)]?.map(star =>{return <FaStar key={Math.random().toString(16).slice(2)} color="orange" size={16}/>})}</span>
             </Link>
             ) : (
             <h2>Loading...</h2>

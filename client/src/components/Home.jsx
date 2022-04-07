@@ -12,7 +12,7 @@ import Slider from './Slider/Slider.jsx';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { user, wishlist } = useSelector((state) => state);
+  const { user } = useSelector((state) => state);
   const { isLogged } = useUser();
 
   useEffect(() => {
