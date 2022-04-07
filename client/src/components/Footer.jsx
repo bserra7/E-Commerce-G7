@@ -29,32 +29,26 @@ const Footer = () => {
         {
           showHistory && <div className='footer__history'>
             <li className='footer__item'>
-              <Link to="#" className='footer__link'><FormattedMessage id="app.history" defaultMessage="Our History"/></Link>
+              <Link to="/about" className='footer__link'><FormattedMessage id="app.history" defaultMessage="Our History"/></Link>
             </li>
             <li className='footer__item'>
-              <Link to="#" className='footer__link'><FormattedMessage id="app.contact-us" defaultMessage="Contact Us"/></Link>
+              <Link to="/contact" className='footer__link'><FormattedMessage id="app.contact-us" defaultMessage="Contact Us"/></Link>
             </li>
             <li className='footer__item'>
-              <Link to="#" className='footer__link'><FormattedMessage id="app.my-account" defaultMessage="My Account"/></Link>
-            </li>
-            <li className='footer__item'>
-              <Link to="#" className='footer__link'><FormattedMessage id="app.local-shipping" defaultMessage="Local Shipping"/></Link>
+              <Link to="/user/account/profile" className='footer__link'><FormattedMessage id="app.my-account" defaultMessage="My Account"/></Link>
             </li>
           </div>
         }
 
         <div className='footer__history desktop'>
           <li className='footer__item'>
-            <Link to="#" className='footer__link'><FormattedMessage id="app.history" defaultMessage="Our History"/></Link>
+            <Link to="/about#" className='footer__link'><FormattedMessage id="app.history" defaultMessage="Our History"/></Link>
           </li>
           <li className='footer__item'>
-            <Link to="#" className='footer__link'><FormattedMessage id="app.contact-us" defaultMessage="Contact Us"/></Link>
+            <Link to="/contact" className='footer__link'><FormattedMessage id="app.contact-us" defaultMessage="Contact Us"/></Link>
           </li>
           <li className='footer__item'>
-            <Link to="#" className='footer__link'><FormattedMessage id="app.my-account" defaultMessage="My Account"/></Link>
-          </li>
-          <li className='footer__item'>
-            <Link to="#" className='footer__link'><FormattedMessage id="app.local-shipping" defaultMessage="Local Shipping"/></Link>
+            <Link to="/user/account/profile" className='footer__link'><FormattedMessage id="app.my-account" defaultMessage="My Account"/></Link>
           </li>
         </div>
 
@@ -62,64 +56,46 @@ const Footer = () => {
         {
           showSupport && <div className='footer__support'>
             <li className='footer__item'>
-              <Link to="#" className='footer__link'><FormattedMessage id="app.frequent" defaultMessage="Frequent Questions"/></Link>
-            </li>
-            <li className='footer__item'>
-              <Link to="#" className='footer__link'><FormattedMessage id="app.guarantee" defaultMessage="Guarantee"/></Link>
-            </li>
-            <li className='footer__item'>
-              <Link to="#" className='footer__link'><FormattedMessage id="app.instruction" defaultMessage="Instructions"/></Link>
-            </li>
-            <li className='footer__item'>
-              <Link to="#" className='footer__link'><FormattedMessage id="app.promotions" defaultMessage="Promotions"/></Link>
+              <Link to="/" className='footer__link'><FormattedMessage id="app.promotions" defaultMessage="Promotions"/></Link>
             </li>
           </div>
         }
 
         <div className='footer__support desktop'>
           <li className='footer__item'>
-            <Link to="#" className='footer__link'><FormattedMessage id="app.frequent" defaultMessage="Frequent Questions"/></Link>
-          </li>
-          <li className='footer__item'>
-            <Link to="#" className='footer__link'><FormattedMessage id="app.guarantee" defaultMessage="Guarantee"/></Link>
-          </li>
-          <li className='footer__item'>
-            <Link to="#" className='footer__link'><FormattedMessage id="app.instruction" defaultMessage="Instructions"/></Link>
-          </li>
-          <li className='footer__item'>
-            <Link to="#" className='footer__link'><FormattedMessage id="app.promotions" defaultMessage="Promotions"/></Link>
+            <Link to="/" className='footer__link'><FormattedMessage id="app.promotions" defaultMessage="Promotions"/></Link>
           </li>
         </div>
 
         <button className='footer__btn' onClick={handleBuy}><FormattedMessage id="app.buy" defaultMessage="Buy"/></button>
         {showBuy && <div className='footer__buy'>
           <li className='footer__item'>
-            <Link to="#" className='footer__link'><FormattedMessage id="app.wireless" defaultMessage="Wireless Headphones"/></Link>
+            <Link to="/shop" className='footer__link'><FormattedMessage id="app.monitors" defaultMessage="Monitors"/></Link>
           </li>
           <li className='footer__item'>
-            <Link to="#" className='footer__link'><FormattedMessage id="app.wireless" defaultMessage="Wireless Headphones"/></Link>
+            <Link to="/shop" className='footer__link'><FormattedMessage id="app.wireless" defaultMessage="Wireless Headphones"/></Link>
           </li>
           <li className='footer__item'>
-            <Link to="#" className='footer__link'><FormattedMessage id="app.accessories" defaultMessage="Accessories"/></Link>
+            <Link to="/shop" className='footer__link'><FormattedMessage id="app.accessories" defaultMessage="Accessories"/></Link>
           </li>
           <li className='footer__item'>
-            <Link to="#" className='footer__link'><FormattedMessage id="app.laptops" defaultMessage="Laptops"/></Link>
+            <Link to="/shop" className='footer__link'><FormattedMessage id="app.laptops" defaultMessage="Laptops"/></Link>
           </li>
         </div>
         }
 
         <div className='footer__buy desktop'>
           <li className='footer__item'>
-            <Link to="#" className='footer__link'><FormattedMessage id="app.wireless" defaultMessage="Wireless Headphones"/></Link>
+            <Link to="/shop" className='footer__link'><FormattedMessage id="app.monitors" defaultMessage="Monitors"/></Link>
           </li>
           <li className='footer__item'>
-            <Link to="#" className='footer__link'><FormattedMessage id="app.wireless" defaultMessage="Wireless Headphones"/></Link>
+            <Link to="/shop" className='footer__link'><FormattedMessage id="app.wireless" defaultMessage="Wireless Headphones"/></Link>
           </li>
           <li className='footer__item'>
-            <Link to="#" className='footer__link'><FormattedMessage id="app.accessories" defaultMessage="Accessories"/></Link>
+            <Link to="/shop" className='footer__link'><FormattedMessage id="app.accessories" defaultMessage="Accessories"/></Link>
           </li>
           <li className='footer__item'>
-            <Link to="#" className='footer__link'><FormattedMessage id="app.laptops" defaultMessage="Laptops"/></Link>
+            <Link to="/shop" className='footer__link'><FormattedMessage id="app.laptops" defaultMessage="Laptops"/></Link>
           </li>
         </div>
 
@@ -134,10 +110,10 @@ const Footer = () => {
       </ul>
 
       <div className="footer__subfooter">
-        <Link to="#" className='politics'><FormattedMessage id="app.privacy" defaultMessage="Privacy Policy"/></Link>
-        <Link to="#" className='book'>🕮 <FormattedMessage id="app.complaint" defaultMessage="Complaints Book"/></Link>
+        <Link to="/" className='politics'><FormattedMessage id="app.privacy" defaultMessage="Privacy Policy"/></Link>
+        <Link to="/" className='book'>🕮 <FormattedMessage id="app.complaint" defaultMessage="Complaints Book"/></Link>
         <p className="copyright">&copy; <FormattedMessage id="app.rights" defaultMessage="2022 ElectroShop. All Rights Reserved"/></p>
-        <Link to="#" className='payment'>
+        <Link to="/" className='payment'>
           <img src={iconMercadoPago} alt="mercado pago" />
         </Link>
       </div>

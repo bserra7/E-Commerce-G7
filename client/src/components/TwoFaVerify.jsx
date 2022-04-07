@@ -40,7 +40,7 @@ export default function TwoFaVerify() {
     if(response.status === 200) {
       swal({
         title: intl.formatMessage( { id: "message-resent" }),
-        text: intl.formatMessage( { id: "message-check" }) `${seconds/60} min.`,
+        text: intl.formatMessage( { id: "message-check" }) + `${seconds/60} min.`,
         icon: "success",
         timer: 3000
       });

@@ -24,15 +24,15 @@ export default function AdminDiscountsList({showComponent, getId}) {
         else if(sessionStorage.getItem('jwt')) token = sessionStorage.getItem('jwt');
         try {
             swal({
-                title: 'Do you want update all product discounts with this category?',
-                text: "You won't be able to revert this!",
+                title: intl.formatMessage({ id: "message-disc-update" }),
+                text: intl.formatMessage({ id: "message-text-disc" }),
                 icon: 'warning',
-                buttons: ['No','Yes']
+                buttons: ['No', intl.formatMessage({ id: "message-yes" })]
             }).then(async (result) => {
                 if (result) {
                     await axios.post('/discount/update', {...discount, token});
                     swal({
-                        title: 'You updated the products with selected discount',
+                        title:  intl.formatMessage({ id: "message-update-discount" }),
                         text: ' ',
                         icon: 'success',
                         timer: 2000,
@@ -43,8 +43,8 @@ export default function AdminDiscountsList({showComponent, getId}) {
             })
         } catch (error) {
             swal({
-                title: 'Something went wrong',
-                text: 'Check console to see more about error',
+                title: intl.formatMessage({ id: "message-error" }),
+                text:  intl.formatMessage({ id: "message-error-check" }),
                 icon: 'error',
                 timer: 2000,
                 button: null
@@ -100,7 +100,7 @@ export default function AdminDiscountsList({showComponent, getId}) {
                         <div>{discount?.weekday}</div>
                         <div>N/A</div>
                         <div>
-                            <button onClick={e => UpdateProductDiscount(discount)}className='adminCP__button'>Update Products</button>
+                            <button onClick={e => UpdateProductDiscount(discount)}className='adminCP__button'><FormattedMessage id="app.update-product" defaultMessage="Update Products"/></button>
                             <button onClick={e => deleteDiscount(discount.categoryId)}className='adminCP__button'><FormattedMessage id="app.btn-delete" defaultMessage="Delete"/></button>
                         </div>
                         

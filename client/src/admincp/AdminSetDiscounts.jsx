@@ -60,13 +60,13 @@ export function AdminSetDiscounts({showComponent}){
         return {name: "categoryId", label: e.name, value: e.id}
     })
     const weekdays = [
-        {name: "weekday", label: "Sunday", value: "sunday"},
-        {name: "weekday", label: "Monday", value: "monday"},
-        {name: "weekday", label: "Tuesday", value: "tuesday"},
-        {name: "weekday", label: "Wednesday", value: "wednesday"},
-        {name: "weekday", label: "Thursday", value: "thursday"},
-        {name: "weekday", label: "Friday", value: "friday"},
-        {name: "weekday", label: "Saturday", value: "saturday"},
+        {name: "weekday", label: intl.formatMessage({id: "weekday-sunday"}), value: "sunday"},
+        {name: "weekday", label: intl.formatMessage({id: "weekday-monday"}), value: "monday"},
+        {name: "weekday", label: intl.formatMessage({id: "weekday-tuesday"}), value: "tuesday"},
+        {name: "weekday", label: intl.formatMessage({id: "weekday-wednesday"}), value: "wednesday"},
+        {name: "weekday", label: intl.formatMessage({id: "weekday-thursday"}), value: "thursday"},
+        {name: "weekday", label: intl.formatMessage({id: "weekday-friday"}), value: "friday"},
+        {name: "weekday", label: intl.formatMessage({id: "weekday-saturday"}), value: "saturday"},
     ]
 
     const [errors, setErrors] = useState({})

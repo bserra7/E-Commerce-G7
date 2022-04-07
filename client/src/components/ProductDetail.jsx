@@ -11,6 +11,7 @@ import WhatsApp from './WhatsApp';
 import { FormattedMessage } from 'react-intl'
 import useCurrency from '../context/useCurrency';
 import formatter from '../lang/NumberFormat';
+import { FaStar } from 'react-icons/fa';
 
 export function ProductDetail(props) {
     const dispatch = useDispatch();
@@ -58,7 +59,7 @@ export function ProductDetail(props) {
     return (
         <>
             <div className='container'>
-                <Link to="#" style={{ color: "gray" }} onClick={() => history.goBack()} >back</Link>
+                <Link to="#" style={{ color: "gray" }} onClick={() => history.goBack()} ><FormattedMessage id="app.back" defaultMessage="Back" /></Link>
                 {Object.keys(details).length ?
                     <div>
                         <div className='productDetail'>
@@ -77,7 +78,7 @@ export function ProductDetail(props) {
                                 }
                                 <p className='description'>{details.description}</p>
                                 {details.stock ? <p className='stock'><span><FormattedMessage id="app.stock" defaultMessage="In stock" /></span> ({details.stock} <FormattedMessage id="app.available" defaultMessage="available" />)</p> : <p className='stock'><span>⚠️<FormattedMessage id="app.not-available" defaultMessage="This product isn't available for shopping" /></span></p>}
-                                <p className='rating'><span><FormattedMessage id="app.rating" defaultMessage="Rating:" /></span> {Number(details.rating?.toFixed(1))}</p>
+                                <p className='rating'><span><FormattedMessage id="app.rating" defaultMessage="Rating:" /></span> {details?.rating === null ? "0" : [...Array(details?.rating)].map(star =>{return <FaStar key={Math.random().toString(16).slice(2)} color="orange" size={15}/>})}</p>
                                 <button className='addBtn' disabled={buttonDisabled} onClick={() => handleAddCart(details)}><FormattedMessage id="app.add" defaultMessage="Add product" /></button>
                                 {user?.roleId < 3 && <Link className='updateBtn' to={`/product/update/${id}`}><button><FormattedMessage id="app.edit-prod" defaultMessage="Edit product" /></button></Link>}
                             </div>

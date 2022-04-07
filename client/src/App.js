@@ -152,8 +152,8 @@ function App() {
             <Route exact path='/user/account/order/payment/:id' component={PaymentDetail}/>
             <Route><NotFound404/></Route>
           </Switch>
-        </Router>}
-        <Footer />
+          <Footer />
+        </Router>}   
       </UserContextProvider>
     </div>
   );
