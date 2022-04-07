@@ -12,7 +12,7 @@ module.exports = {
             if (sortBy === 'viejos') return a.id - b.id
         });
     
-        if(!foundReviews.length) throw Error('El producto no tiene reviews')
+/*         if(!foundReviews.length) throw Error('El producto no tiene reviews') */
 
         return foundReviews 
     }
