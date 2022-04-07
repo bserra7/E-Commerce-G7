@@ -17,7 +17,7 @@ export function ProductDetail(props) {
     const dispatch = useDispatch();
     const id = props.match.params.id;
     const { details, cart, user, reviews } = useSelector((state) => state);
-    const alreadyCommented = reviews.find(review => user?.id === review?.userId);
+    const alreadyCommented = reviews?.find(review => user?.id === review?.userId);
     const { currency, multiplier } = useCurrency();
     const history = useHistory()
 
