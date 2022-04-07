@@ -44,7 +44,7 @@ export default function OrderDetail(props) {
                                     
                                 </li>
                                 {orderDetail?.payment_status === 'approved' && <Link to={`/user/account/order/payment/${orderDetail?.payment_meli_id}`}>
-                                    <button className="orderDetails__btn" style={{position: "absolute", top: "2rem", right: "1rem"}}><FormattedMessage id="app.pay-details" defaultMessage="Payment Details"/></button>
+                                {history.location.pathname !== '/admincp' && <button className="orderDetails__btn" style={{position: "absolute", top: "2rem", right: "1rem"}}><FormattedMessage id="app.pay-details" defaultMessage="Payment Details"/></button>}
                                 </Link>}
                                 {(history.location.pathname !== '/admincp' && orderDetail?.payment_status !== 'approved') && <Payments className="orderCheckout" url={orderDetail?.payment_link}/>}
                                 <li>
