@@ -5,9 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userLogin, userLogout } from '../../../redux/actions';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 export default function useUser(){
     const dispatch = useDispatch();
+    const history = useHistory();
     const { jwt, setJwt } = useContext(Context);
     const [ state, setState ] = useState({
         loading: false,
@@ -36,6 +38,7 @@ export default function useUser(){
         Cookies.remove('jwt', { path: '/' })
         setJwt(null);
         dispatch(userLogout());
+        history.push('/');
     } //eslint-disable-line
 
     return {
