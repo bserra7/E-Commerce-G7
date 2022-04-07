@@ -7,7 +7,7 @@ import { FormattedMessage, useIntl, createIntl, createIntlCache } from 'react-in
 import MessageEnglish from './../lang/en-UK.json'
 import MensajeEspañol from './../lang/es-ES.json'
 
-export function validate(user, users) {
+export function validate(user, users, userDetails) {
     const emails = users?.map(user => user.email)
     let errors = {};
 
@@ -52,7 +52,7 @@ export function validate(user, users) {
     else if(!/\S+@\S+\.\S+/.test(user.email)){
         errors.email = intl.formatMessage({id: "validation-email-invalid"});
     }
-    else if (emails.includes(user.email)){
+    else if (emails.includes(user.email) && user.email !== userDetails?.email){
         errors.email = intl.formatMessage({id: "validation-email-in-use"});
     }
     else if (!user.country){
@@ -116,7 +116,7 @@ export function UpdateAccount(props){
         setErrors(validate({
             ...user,
             [e.target.name] : e.target.value
-        }, users))
+        }, users, userDetails))
     };
 
     const handleSubmit = async (e) => {
