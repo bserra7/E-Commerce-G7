@@ -8,7 +8,6 @@ import { FormattedMessage } from 'react-intl';
 export function DashboardUser() {
 
     const history = useHistory()
-    const { isLogged } = useUser();
 
     useEffect(() => {
         if (!localStorage.getItem('jwt') && !sessionStorage.getItem('jwt')) history.push("/")
@@ -19,7 +18,7 @@ export function DashboardUser() {
                     .then()
                     .catch(res => history.push("/"))
             })
-    }, [isLogged])
+    }, [])
 
     return (
         <>
