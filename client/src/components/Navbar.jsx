@@ -150,7 +150,7 @@ const Navbar = () => {
                 />
               </NavLink>
             </li>
-            <li className="list__item" onClick={handleClose}>
+            {!isLogged && <li className="list__item" onClick={handleClose}>
               <NavLink
                 to="/register"
                 className="list__link"
@@ -161,7 +161,7 @@ const Navbar = () => {
                   defaultMessage="Sign Up"
                 />
               </NavLink>
-            </li>
+            </li>}
           </ul>
         </nav>
         
