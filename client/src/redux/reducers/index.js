@@ -74,7 +74,7 @@ function rootReducer(state = initialState, action) {
     case GET_REVIEWS:
         return {
           ...state,
-          reviews: action.payload,
+          reviews: action.payload?.length ? action.payload : "No reviews found",
         };
     
     case CLEAR_STORE:
