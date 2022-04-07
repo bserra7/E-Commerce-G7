@@ -22,7 +22,7 @@ export default function ProductFav({id, name, images, price, rating, discount, d
                     <span>{currency === "USD" && "US"} {formatter(currency).format(discounted_price*multiplier)}</span>
                 </>
                 : <span>{currency === "USD" && "US"} {formatter(currency).format(price*multiplier)}</span> }</span>
-                <span>{!rating ? <span><FormattedMessage id="app.no-rated" defaultMessage="No rated yet"/></span> : [...Array(rating)]?.map(star =>{return <FaStar key={Math.random().toString(16).slice(2)} color="orange" size={16}/>})}</span>
+                <span>{!rating ? <span><FormattedMessage id="app.no-rated" defaultMessage="No rated yet"/></span> : [...Array(Math.floor(rating))]?.map(star =>{return <FaStar key={Math.random().toString(16).slice(2)} color="orange" size={16}/>})}</span>
             </Link>
             ) : (
             <h2>Loading...</h2>

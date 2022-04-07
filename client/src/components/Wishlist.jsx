@@ -68,7 +68,7 @@ export function Wishlist() {
                   <div key={prod.id}>
                       <Link to={`/product/${prod.id}`} className="wishlist__item">
                         <h2>{prod.name?.length > 30 ? prod.name?.slice(0,30) + " ..." : prod.name}</h2>
-                        {prod?.rating ? <span>{[...Array(prod?.rating)]?.map(star =>{return <FaStar key={Math.random().toString(16).slice(2)} color="orange" size={15}/>})}</span> :<span><FormattedMessage id="app.no-rated" defaultMessage="No rated yet"/></span>}
+                        {prod?.rating ? <span>{[...Array(Math.floor(prod?.rating))]?.map(star =>{return <FaStar key={Math.random().toString(16).slice(2)} color="orange" size={15}/>})}</span> :<span><FormattedMessage id="app.no-rated" defaultMessage="No rated yet"/></span>}
                         <figure>
                           <img src={prod.images} width='250px' height='250px' alt="productpic"/>
                         </figure>
