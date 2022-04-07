@@ -60,7 +60,7 @@ const ShoppingCart = ({cartShow}) => {
                                         <p>{product.amount}</p>
                                         <button onClick={() => handleSum(product.id)}>+</button>
                                     </div>
-                                    <p className='amount'>{currency === "USD" ? "US $": "$"} {`${(product.amount * (product.discount ? Number((product.discounted_price*multiplier).toFixed(2)) : Number((product.price*multiplier).toFixed(2))))}`}</p>
+                                    <p className='amount'>{currency === "USD" ? "US $": "$"} {`${Number((product.amount * (product.discount ? Number((product.discounted_price*multiplier).toFixed(2)) : Number((product.price*multiplier).toFixed(2)))).toFixed(2))}`}</p>
                                 </div>
                                 <button className='delete' onClick={() => handleRemove(product.id)}>🗑️</button>
                             </div>
