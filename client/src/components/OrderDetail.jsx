@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import { getOrderDetail } from "../redux/actions";
+import { clearStore, getOrderDetail } from "../redux/actions";
 import Payments from "./Payments";
 import { FormattedMessage } from 'react-intl';
 import useCurrency from '../context/useCurrency';
@@ -16,6 +16,9 @@ export default function OrderDetail(props) {
 
     useEffect(() => {
         dispatch(getOrderDetail(orderId));
+        return () => {
+            dispatch(clearStore("orderDetail"))
+        }
     }, []); //eslint-disable-line
 
     return (
