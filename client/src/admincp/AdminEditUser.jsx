@@ -42,11 +42,11 @@ export function validate(user, users, userDetail) {
     else if (!/^[^\W0-9_][a-zA-Z\u00f1\u00d1\s]+$/.test(user.name)){
       errors.name = intl.formatMessage({id: "validation-name-invalid"});
     }
-    else if (!user.lastName) {
-        errors.lastName = intl.formatMessage({id: "validation-lastname-user"});
+    else if (!user.last_name) {
+        errors.last_name = intl.formatMessage({id: "validation-lastname-user"});
     } 
-    else if (!/^[^\W0-9_][a-zA-Z\u00f1\u00d1\s]+$/.test(user.lastName)){
-        errors.lastName = intl.formatMessage({id: "validation-lastname-invalid"});
+    else if (!/^[^\W0-9_][a-zA-Z\u00f1\u00d1\s]+$/.test(user.last_name)){
+        errors.last_name = intl.formatMessage({id: "validation-lastname-invalid"});
     }
     else if(!user.username) {
         errors.username = intl.formatMessage({id: "validation-username"});
@@ -75,8 +75,8 @@ export function validate(user, users, userDetail) {
     else if (!user.address){
       errors.address = intl.formatMessage({id: "validation-address-user"});
     }
-    else if(!user.dateOfBirth) {
-        errors.dateOfBirth = intl.formatMessage({id: "validation-birthday-user"});
+    else if(!user.date_of_birth) {
+        errors.date_of_birth = intl.formatMessage({id: "validation-birthday-user"});
     }
     else if(!user.zip_code) {
         errors.zip_code = intl.formatMessage({id: "validation-zip"});
@@ -111,14 +111,14 @@ export function AdminEditUser(props){
     useEffect(() => {
         setUser({
             name: userDetails.name,
-            lastName: userDetails.last_name,
+            last_name: userDetails.last_name,
             username: userDetails.username,
             email: userDetails.email,
             country: userDetails.country,
             city: userDetails.city,
             zip_code: userDetails.zip_code,
             address: userDetails.address,
-            dateOfBirth: userDetails.dateOfBirth,
+            date_of_birth: userDetails.date_of_birth,
         })
     },[userDetails])
         
@@ -182,8 +182,8 @@ export function AdminEditUser(props){
                 </div>
                 <div className="register__group">
                 <label><FormattedMessage id="app.lastname" defaultMessage="Last name:" /></label>
-                <input name="lastName" value={user.lastName} onChange={handleChange} className="form-control"/>
-                <div className="register__error">{errors.lastName}</div>
+                <input name="last_name" value={user.last_name} onChange={handleChange} className="form-control"/>
+                <div className="register__error">{errors.last_name}</div>
                 </div>
                 <div className="register__group">
                 <label><FormattedMessage id="app.user" defaultMessage="Username:" /></label>
@@ -217,8 +217,8 @@ export function AdminEditUser(props){
                 </div>
                 <div className="register__group">
                 <label><FormattedMessage id="app.birthday" defaultMessage="Birthday:" /></label>
-                <input  type='date' name="dateOfBirth" value={user.dateOfBirth} onChange={handleChange} className="form-control"/>
-                <div className="register__error">{errors.dateOfBirth}</div>
+                <input  type='date' name="date_of_birth" value={user.date_of_birth} onChange={handleChange} className="form-control"/>
+                <div className="register__error">{errors.date_of_birth}</div>
                 </div>
                 <button className="register__button" type="submit" ><FormattedMessage id="app.btn-edit" defaultMessage="Edit" /></button>
             </form>
